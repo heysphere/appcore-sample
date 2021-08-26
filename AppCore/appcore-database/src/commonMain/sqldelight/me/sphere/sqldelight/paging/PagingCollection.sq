@@ -1,0 +1,10 @@
+CREATE TABLE PagingCollection (
+    id INTEGER PRIMARY KEY NOT NULL,
+    key TEXT UNIQUE NOT NULL
+);
+
+idByKey:
+SELECT id FROM PagingCollection WHERE key = ?;
+
+insert:
+INSERT OR ROLLBACK INTO PagingCollection (key) VALUES (?);

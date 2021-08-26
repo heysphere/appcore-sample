@@ -1,0 +1,13 @@
+import me.sphere.models.EmojiId;
+
+CREATE TABLE Emoji (
+    id TEXT AS EmojiId PRIMARY KEY NOT NULL,
+    imageId TEXT NOT NULL,
+    name TEXT
+) WITHOUT ROWID;
+
+get:
+SELECT * FROM Emoji WHERE id = ?;
+
+upsert:
+INSERT OR REPLACE INTO Emoji (id, imageId, name) VALUES (?, ?, ?);

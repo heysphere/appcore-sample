@@ -1,0 +1,26 @@
+local.properties
+caches/
+*.hprof
+
+.idea/misc.xml
+
+# Gradle
+.gradle/
+build/
+
+# IntelliJ
+# Created by https://www.toptal.com/developers/gitignore/api/intellij
+# Edit at https://www.toptal.com/developers/gitignore?templates=intellij
+
+### Intellij ###
+
+.idea/
+out/
+
+# File-based project format
+*.iws
+
+local.properties
+
+# JUnit runner
+*.log

@@ -1,0 +1,28 @@
+import kotlinx.datetime.Instant;
+
+CREATE TABLE PagingItem (
+    collectionId INTEGER NOT NULL REFERENCES PagingCollection(id),
+    position INTEGER NOT NULL,
+    itemId TEXT NOT NULL,
+    lastInSync BLOB AS Instant NOT NULL,
+
+    PRIMARY KEY (collectionId, position)
+) WITHOUT ROWID;
+
+add:
+INSERT OR REPLACE INTO PagingItem VALUES ?;
+
+itemAtPosition:
+SELECT itemId, lastInSync FROM PagingItem WHERE collectionId = ? AND position = ?;
+
+getForwardPage:
+SELECT itemId, lastInSync FROM PagingItem
+WHERE collectionId = ? AND position >= :start
+ORDER BY position ASC
+LIMIT :limit;
+
+shift:
+UPDATE PagingItem SET position = position + :offset WHERE position > :after AND collectionId = ?;
+
+deleteOnOrAfter:
+DELETE FROM PagingItem WHERE position >= :start AND collectionId = ?;

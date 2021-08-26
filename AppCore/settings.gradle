@@ -1,0 +1,32 @@
+pluginManagement {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'appcore'
+
+include 'appcore-api'
+include 'appcore-api-models'
+
+include 'appcore-utils'
+include 'appcore-database'
+
+include 'appcore-spi-network'
+include 'appcore-spi-logging'
+include 'appcore-spi-database'
+include 'appcore-spi-firestore'
+
+include 'appcore-actors-backend0'
+include 'appcore-actors-graphql'
+include 'appcore-schema-compat-test'
+
+include 'appcore-test-utils'
+include 'appcore-test-utils-database'
+include 'appcore-test-utils-network'
+
+include 'ios'

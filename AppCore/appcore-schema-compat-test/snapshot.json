@@ -1,0 +1,2283 @@
+{
+    "types": {
+        "me.sphere.models.chat.AnnouncementMessageInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "props": {
+                    "typeName": "me.sphere.models.chat.ActionableMessageData",
+                    "optionality": "REQUIRED"
+                },
+                "text": {
+                    "typeName": "me.sphere.models.chat.TextContent",
+                    "optionality": "REQUIRED"
+                },
+                "acknowledgements": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.PollMessageInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "props": {
+                    "typeName": "me.sphere.models.chat.ActionableMessageData",
+                    "optionality": "REQUIRED"
+                },
+                "text": {
+                    "typeName": "me.sphere.models.chat.TextContent",
+                    "optionality": "REQUIRED"
+                },
+                "permitsMultiplePollVotes": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                },
+                "numberOfVoters": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "pollVotes": {
+                    "typeName": "kotlin.collections.LinkedHashMap",
+                    "optionality": "REQUIRED"
+                },
+                "pollOptions": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                },
+                "uncommittedChoices": {
+                    "typeName": "kotlin.collections.LinkedHashSet?",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.LocalMessageReactorState": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "removed": {
+                    "typeName": "kotlin.collections.LinkedHashSet",
+                    "optionality": "OPTIONAL"
+                },
+                "inserted": {
+                    "typeName": "kotlin.collections.LinkedHashMap",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.chat.UnknownEventInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "senderInfo": {
+                    "typeName": "me.sphere.models.chat.MessageSenderInfo?",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageReactionsInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "order": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "OPTIONAL"
+                },
+                "reactors": {
+                    "typeName": "kotlin.collections.LinkedHashMap",
+                    "optionality": "OPTIONAL"
+                },
+                "reactorsInfo": {
+                    "typeName": "kotlin.collections.LinkedHashMap",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.chat.RemovedMessageInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "props": {
+                    "typeName": "me.sphere.models.chat.PrimitiveMessageData",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.PrimitiveMessageData": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "replyToSource": {
+                    "typeName": "me.sphere.models.chat.ReplyToSourceInfo?",
+                    "optionality": "OPTIONAL"
+                },
+                "clientGeneratedId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "senderInfo": {
+                    "typeName": "me.sphere.models.chat.MessageSenderInfo",
+                    "optionality": "REQUIRED"
+                },
+                "reactionsInfo": {
+                    "typeName": "me.sphere.models.chat.MessageReactionsInfo",
+                    "optionality": "REQUIRED"
+                },
+                "syncedShareInfo": {
+                    "typeName": "me.sphere.models.chat.MessageSyncedShareInfo?",
+                    "optionality": "REQUIRED"
+                },
+                "linkPreviews": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                },
+                "isDeletedOptimistically": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                },
+                "localReactorState": {
+                    "typeName": "me.sphere.models.chat.LocalMessageReactorState",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.OutgoingMessageStatus": {
+            "type": "me.sphere.test.TypeRecord.Enum",
+            "cases": [
+                "Sending",
+                "Sent",
+                "FailedToSend"
+            ]
+        },
+        "me.sphere.models.chat.ChatCapabilities": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "canAddMembers": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canRemoveAttendants": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canUnfollow": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canSetChatTitle": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canSetChatImage": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canEndChat": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canSendMessage": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canReactToMessage": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canPinMessageToAdminPinBoard": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canRemoveOwnMessage": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canRemoveAnyMessage": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canReplyToMessage": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canAddAppreciation": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canRemoveAppreciation": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canSendPoll": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "canSendImportantPoll": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                },
+                "isPollDefaultToImportant": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.chat.AnimatedImageMessageInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "props": {
+                    "typeName": "me.sphere.models.chat.PrimitiveMessageData",
+                    "optionality": "REQUIRED"
+                },
+                "text": {
+                    "typeName": "me.sphere.models.chat.TextContent",
+                    "optionality": "REQUIRED"
+                },
+                "animatedImages": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.AttendantInfoExtra": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "biography": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.SphereAdminPinboard": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "cardId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.FollowershipEventInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "followers": {
+                    "typeName": "kotlin.collections.LinkedHashMap",
+                    "optionality": "REQUIRED"
+                },
+                "unfollowers": {
+                    "typeName": "kotlin.collections.LinkedHashMap",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.FollowershipEventInfo.Info": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "name": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "color": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "imageId": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "occurred": {
+                    "typeName": "Instant",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.ImageMessageInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "props": {
+                    "typeName": "me.sphere.models.chat.PrimitiveMessageData",
+                    "optionality": "REQUIRED"
+                },
+                "text": {
+                    "typeName": "me.sphere.models.chat.TextContent",
+                    "optionality": "REQUIRED"
+                },
+                "images": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.ActionableMessageData": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "actionableUntil": {
+                    "typeName": "Instant?",
+                    "optionality": "REQUIRED"
+                },
+                "permitsActionFromSender": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                },
+                "isImportant": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                },
+                "dismissals": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                },
+                "clientGeneratedId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "senderInfo": {
+                    "typeName": "me.sphere.models.chat.MessageSenderInfo",
+                    "optionality": "REQUIRED"
+                },
+                "reactionsInfo": {
+                    "typeName": "me.sphere.models.chat.MessageReactionsInfo",
+                    "optionality": "REQUIRED"
+                },
+                "syncedShareInfo": {
+                    "typeName": "me.sphere.models.chat.MessageSyncedShareInfo?",
+                    "optionality": "REQUIRED"
+                },
+                "linkPreviews": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                },
+                "localStatus": {
+                    "typeName": "me.sphere.models.chat.MessageActionLocalStatus",
+                    "optionality": "REQUIRED"
+                },
+                "isDeletedOptimistically": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                },
+                "localReactorState": {
+                    "typeName": "me.sphere.models.chat.LocalMessageReactorState",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.chat.RawAttachmentMessageInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "props": {
+                    "typeName": "me.sphere.models.chat.PrimitiveMessageData",
+                    "optionality": "REQUIRED"
+                },
+                "text": {
+                    "typeName": "me.sphere.models.chat.TextContent",
+                    "optionality": "REQUIRED"
+                },
+                "rawAttachments": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageSyncedShareInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "source": {
+                    "typeName": "me.sphere.models.chat.MessageShareSource?",
+                    "optionality": "OPTIONAL"
+                },
+                "remotePins": {
+                    "typeName": "kotlin.collections.LinkedHashSet",
+                    "optionality": "OPTIONAL"
+                },
+                "localPins": {
+                    "typeName": "kotlin.collections.LinkedHashSet",
+                    "optionality": "OPTIONAL"
+                },
+                "localUnpins": {
+                    "typeName": "kotlin.collections.LinkedHashSet",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.chat.VideoMessageInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "props": {
+                    "typeName": "me.sphere.models.chat.PrimitiveMessageData",
+                    "optionality": "REQUIRED"
+                },
+                "text": {
+                    "typeName": "me.sphere.models.chat.TextContent",
+                    "optionality": "REQUIRED"
+                },
+                "videos": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.TextMessageInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "props": {
+                    "typeName": "me.sphere.models.chat.PrimitiveMessageData",
+                    "optionality": "REQUIRED"
+                },
+                "text": {
+                    "typeName": "me.sphere.models.chat.TextContent",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.ConversationEventInfo": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.models.chat.TextMessageInfo",
+                "me.sphere.models.chat.ImageMessageInfo",
+                "me.sphere.models.chat.AnimatedImageMessageInfo",
+                "me.sphere.models.chat.VideoMessageInfo",
+                "me.sphere.models.chat.RawAttachmentMessageInfo",
+                "me.sphere.models.chat.AnnouncementMessageInfo",
+                "me.sphere.models.chat.PollMessageInfo",
+                "me.sphere.models.chat.UnknownEventInfo",
+                "me.sphere.models.chat.RemovedMessageInfo",
+                "me.sphere.models.chat.FollowershipEventInfo"
+            ]
+        },
+        "me.sphere.models.sphere.SphereMemberCapabilities": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "canAddAppreciation": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                },
+                "canRemoveAppreciation": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.operations.OperationStatus": {
+            "type": "me.sphere.test.TypeRecord.Enum",
+            "cases": [
+                "Idle",
+                "Started",
+                "Success",
+                "Failure",
+                "Suspended"
+            ]
+        },
+        "me.sphere.models.feed.DbFeedItemInfo.Chat.Capabilities": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "archive": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.feed.DbFeedItemInfo": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.models.feed.DbFeedItemInfo.Chat",
+                "me.sphere.models.feed.DbFeedItemInfo.Event"
+            ]
+        },
+        "me.sphere.models.feed.DbFeedItemInfo.Event.LocalStatus": {
+            "type": "me.sphere.test.TypeRecord.Enum",
+            "cases": [
+                "DEFAULT",
+                "PENDING_RSVP"
+            ]
+        },
+        "me.sphere.models.feed.DbFeedItemInfo.Event.Capabilities": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "rsvp": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                },
+                "archive": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.feed.DbFeedItemInfo.Event": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                },
+                "status": {
+                    "typeName": "me.sphere.models.feed.DbFeedItemInfo.Event.LocalStatus",
+                    "optionality": "REQUIRED"
+                },
+                "rsvp": {
+                    "typeName": "me.sphere.models.event.SphereEventRSVP?",
+                    "optionality": "REQUIRED"
+                },
+                "name": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "startDate": {
+                    "typeName": "Instant",
+                    "optionality": "REQUIRED"
+                },
+                "endDate": {
+                    "typeName": "Instant?",
+                    "optionality": "REQUIRED"
+                },
+                "linkedChat": {
+                    "typeName": "me.sphere.models.feed.DbFeedItemInfo.Event.LinkedChat?",
+                    "optionality": "REQUIRED"
+                },
+                "capabilities": {
+                    "typeName": "me.sphere.models.feed.DbFeedItemInfo.Event.Capabilities",
+                    "optionality": "REQUIRED"
+                },
+                "localRSVP": {
+                    "typeName": "me.sphere.models.event.SphereEventRSVP?",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.feed.DbFeedItemInfo.MessageData": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sentAt": {
+                    "typeName": "Instant",
+                    "optionality": "REQUIRED"
+                },
+                "content": {
+                    "typeName": "me.sphere.models.feed.DbFeedItemInfo.MessageData.Content",
+                    "optionality": "REQUIRED"
+                },
+                "sender": {
+                    "typeName": "me.sphere.models.chat.MessageSenderInfo",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.feed.DbFeedItemInfo.Chat": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                },
+                "attendantId": {
+                    "typeName": "TaggedString?",
+                    "optionality": "OPTIONAL"
+                },
+                "title": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "isPrivate": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                },
+                "creator": {
+                    "typeName": "me.sphere.models.chat.MessageSenderInfo",
+                    "optionality": "REQUIRED"
+                },
+                "firstMessage": {
+                    "typeName": "me.sphere.models.feed.DbFeedItemInfo.MessageData?",
+                    "optionality": "REQUIRED"
+                },
+                "lastMessage": {
+                    "typeName": "me.sphere.models.feed.DbFeedItemInfo.MessageData?",
+                    "optionality": "REQUIRED"
+                },
+                "sampleAttendants": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                },
+                "capabilities": {
+                    "typeName": "me.sphere.models.feed.DbFeedItemInfo.Chat.Capabilities",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.feed.DbFeedItemInfo.Event.LinkedChat": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                },
+                "attendantId": {
+                    "typeName": "TaggedString?",
+                    "optionality": "OPTIONAL"
+                },
+                "creator": {
+                    "typeName": "me.sphere.models.chat.MessageSenderInfo",
+                    "optionality": "REQUIRED"
+                },
+                "firstMessage": {
+                    "typeName": "me.sphere.models.feed.DbFeedItemInfo.MessageData?",
+                    "optionality": "REQUIRED"
+                },
+                "lastMessage": {
+                    "typeName": "me.sphere.models.feed.DbFeedItemInfo.MessageData?",
+                    "optionality": "REQUIRED"
+                },
+                "sampleAttendants": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.feed.DbFeedItemInfo.MessageData.Content": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "text": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.event.SphereEventLocation": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "name": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.event.SphereEventViewerCapabilities.Remind": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "canRemind": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.event.SphereEventViewerCapabilities.RSVP": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "canRSVP": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.event.SphereEventViewerCapabilities": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "rsvp": {
+                    "typeName": "me.sphere.models.event.SphereEventViewerCapabilities.RSVP",
+                    "optionality": "OPTIONAL"
+                },
+                "delete": {
+                    "typeName": "me.sphere.models.event.SphereEventViewerCapabilities.Delete",
+                    "optionality": "OPTIONAL"
+                },
+                "edit": {
+                    "typeName": "me.sphere.models.event.SphereEventViewerCapabilities.Edit",
+                    "optionality": "OPTIONAL"
+                },
+                "remind": {
+                    "typeName": "me.sphere.models.event.SphereEventViewerCapabilities.Remind",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.event.SphereEventViewerCapabilities.Edit": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "canEdit": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.event.SphereEventCreator": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "agentId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "displayName": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "displayColor": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "displayImageId": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.event.SphereEventViewerCapabilities.Delete": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "canDelete": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.event.SphereEventInviteeCounts": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "pending": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "going": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "thinking": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "notGoing": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.EmojiImageId.Remote": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "imageId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageReplyDigest.Poll": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "body": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageTextMention": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "attendantId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "name": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "offset": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "length": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageShareSource": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "type": {
+                    "typeName": "me.sphere.models.chat.MessageShareSource.Type",
+                    "optionality": "REQUIRED"
+                },
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "conversationName": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "messageId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "messageCreatedAt": {
+                    "typeName": "Instant",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.ConversationLandingTarget.Resume": {
+            "type": "me.sphere.test.TypeRecord.Object"
+        },
+        "me.sphere.models.chat.TextMessageInput": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "body": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "mentions": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                },
+                "replyTo": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageReplyDigest.Removed": {
+            "type": "me.sphere.test.TypeRecord.Object"
+        },
+        "me.sphere.models.chat.ConversationLandingTarget.FirstUnread": {
+            "type": "me.sphere.test.TypeRecord.Object"
+        },
+        "me.sphere.models.chat.MessageLinkPreview": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "originalUrl": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "url": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "title": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "description": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "publisher": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "coverImageUrl": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "logoImageUrl": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.FileMessageInput": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "url": {
+                    "typeName": "me.sphere.models.FileUrl",
+                    "optionality": "REQUIRED"
+                },
+                "fileName": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "fileSize": {
+                    "typeName": "kotlin.Long",
+                    "optionality": "REQUIRED"
+                },
+                "replyTo": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageAttachmentIdentifier": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "type": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "id": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageReplyDigest.Attachment": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "filename": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageAttachmentInfo.Image": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "me.sphere.models.chat.MessageAttachmentIdentifier",
+                    "optionality": "REQUIRED"
+                },
+                "filename": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "fileSize": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "width": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "height": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.ReplyToSourceInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "eventId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "digest": {
+                    "typeName": "me.sphere.models.chat.MessageReplyDigest",
+                    "optionality": "REQUIRED"
+                },
+                "senderInfo": {
+                    "typeName": "me.sphere.models.chat.MessageSenderInfo",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageReplyDigest.Video": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "me.sphere.models.chat.MessageAttachmentIdentifier",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.ConversationEventIndex": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "createdAt": {
+                    "typeName": "Instant",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageReplyDigest.AnimatedImage": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "me.sphere.models.chat.MessageAttachmentIdentifier",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.PollMessageInput": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "body": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "mentions": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                },
+                "options": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                },
+                "isMultipleChoice": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                },
+                "isImportant": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageReplyDigest": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.models.chat.MessageReplyDigest.Text",
+                "me.sphere.models.chat.MessageReplyDigest.Poll",
+                "me.sphere.models.chat.MessageReplyDigest.Image",
+                "me.sphere.models.chat.MessageReplyDigest.Video",
+                "me.sphere.models.chat.MessageReplyDigest.Attachment",
+                "me.sphere.models.chat.MessageReplyDigest.AnimatedImage",
+                "me.sphere.models.chat.MessageReplyDigest.Removed"
+            ]
+        },
+        "me.sphere.models.chat.PaginationDirection": {
+            "type": "me.sphere.test.TypeRecord.Enum",
+            "cases": [
+                "Backward",
+                "Forward"
+            ]
+        },
+        "me.sphere.models.chat.ImageMessageInput": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "url": {
+                    "typeName": "me.sphere.models.FileUrl",
+                    "optionality": "REQUIRED"
+                },
+                "fileSize": {
+                    "typeName": "kotlin.Long",
+                    "optionality": "REQUIRED"
+                },
+                "width": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "height": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "replyTo": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageInput.Mention": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "mentionableId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "offset": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "length": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.ConversationLandingTarget.Teleport": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "targetMessageId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.PollOption": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "title": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageReactionKey.Appreciation": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                },
+                "name": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "color": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "emojiImageId": {
+                    "typeName": "me.sphere.models.EmojiImageId",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.AnnouncementMessageInput": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "body": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "mentions": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.ConversationLandingTarget.Latest": {
+            "type": "me.sphere.test.TypeRecord.Object"
+        },
+        "Instant": {
+            "type": "me.sphere.test.TypeRecord.Primitive",
+            "kind": "STRING"
+        },
+        "me.sphere.models.chat.MessageAttachmentInfo.Raw": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "me.sphere.models.chat.MessageAttachmentIdentifier",
+                    "optionality": "REQUIRED"
+                },
+                "filename": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "fileSize": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageShareSource.Type": {
+            "type": "me.sphere.test.TypeRecord.Enum",
+            "cases": [
+                "PIN_SHARE"
+            ]
+        },
+        "me.sphere.models.chat.MessageInput": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.models.chat.TextMessageInput",
+                "me.sphere.models.chat.AnnouncementMessageInput",
+                "me.sphere.models.chat.PollMessageInput",
+                "me.sphere.models.chat.AnimatedImageMessageInput",
+                "me.sphere.models.chat.FileMessageInput",
+                "me.sphere.models.chat.VideoMessageInput",
+                "me.sphere.models.chat.ImageMessageInput"
+            ]
+        },
+        "me.sphere.models.chat.AnimatedImageMessageInput": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "original": {
+                    "typeName": "me.sphere.models.ValidatedUrl",
+                    "optionality": "REQUIRED"
+                },
+                "thumbnail": {
+                    "typeName": "me.sphere.models.HttpsUrl?",
+                    "optionality": "REQUIRED"
+                },
+                "fileSize": {
+                    "typeName": "kotlin.Long?",
+                    "optionality": "REQUIRED"
+                },
+                "width": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "height": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "replyTo": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessagePinTarget": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "messageId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.ConversationEventFilter": {
+            "type": "me.sphere.test.TypeRecord.Enum",
+            "cases": [
+                "None",
+                "Important"
+            ]
+        },
+        "me.sphere.models.chat.MessageAttachmentInfo.AnimatedImage": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "me.sphere.models.chat.MessageAttachmentIdentifier",
+                    "optionality": "REQUIRED"
+                },
+                "filename": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "fileSize": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "width": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "height": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageReplyDigest.Text": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "body": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageReactionKey.Emoji": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                },
+                "emojiImageId": {
+                    "typeName": "me.sphere.models.EmojiImageId",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.TextContent": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "body": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "mentions": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.VideoMessageInput": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "url": {
+                    "typeName": "me.sphere.models.FileUrl",
+                    "optionality": "REQUIRED"
+                },
+                "fileSize": {
+                    "typeName": "kotlin.Long",
+                    "optionality": "REQUIRED"
+                },
+                "width": {
+                    "typeName": "kotlin.Int?",
+                    "optionality": "REQUIRED"
+                },
+                "height": {
+                    "typeName": "kotlin.Int?",
+                    "optionality": "REQUIRED"
+                },
+                "replyTo": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.models.chat.ConversationLandingTarget": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.models.chat.ConversationLandingTarget.Resume",
+                "me.sphere.models.chat.ConversationLandingTarget.FirstUnread",
+                "me.sphere.models.chat.ConversationLandingTarget.Latest",
+                "me.sphere.models.chat.ConversationLandingTarget.Teleport"
+            ]
+        },
+        "me.sphere.models.chat.MessageAttachmentInfo": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.models.chat.MessageAttachmentInfo.Image",
+                "me.sphere.models.chat.MessageAttachmentInfo.AnimatedImage",
+                "me.sphere.models.chat.MessageAttachmentInfo.Raw",
+                "me.sphere.models.chat.MessageAttachmentInfo.Video"
+            ]
+        },
+        "me.sphere.models.chat.MessageSenderInfo": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "name": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "color": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "imageId": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "attendantId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageReactionKey": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.models.chat.MessageReactionKey.Appreciation",
+                "me.sphere.models.chat.MessageReactionKey.Emoji"
+            ]
+        },
+        "me.sphere.models.chat.MessageAttachmentInfo.Video": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "me.sphere.models.chat.MessageAttachmentIdentifier",
+                    "optionality": "REQUIRED"
+                },
+                "filename": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "fileSize": {
+                    "typeName": "kotlin.Int",
+                    "optionality": "REQUIRED"
+                },
+                "width": {
+                    "typeName": "kotlin.Int?",
+                    "optionality": "REQUIRED"
+                },
+                "height": {
+                    "typeName": "kotlin.Int?",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.chat.MessageReplyDigest.Image": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "filename": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.EmojiImageId.Native": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "emoji": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "imageId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.AgentDigest": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                },
+                "name": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "color": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "imageId": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.HttpsUrl": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "value": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.FileUrl": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "value": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.models.ValidatedUrl": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.models.HttpsUrl",
+                "me.sphere.models.FileUrl"
+            ]
+        },
+        "me.sphere.models.EmojiImageId": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.models.EmojiImageId.Native",
+                "me.sphere.models.EmojiImageId.Remote"
+            ]
+        },
+        "me.sphere.sqldelight.operations.ArchiveFeedItemOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "feedItemId": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                },
+                "sphereId": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.RemoveSphereMemberOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sphereId": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                },
+                "agentId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.AddMembersToConversationOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "agentIds": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                },
+                "conversationId": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                },
+                "sphereId": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.PagingReconciliationDefinition.Output": {
+            "type": "me.sphere.test.TypeRecord.Enum",
+            "cases": [
+                "END_OF_COLLECTION",
+                "HAS_MORE"
+            ]
+        },
+        "me.sphere.sqldelight.operations.CreateAnonymousQuestionOperation.Output": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.CreateChatOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "title": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "imageName": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "sphereId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "agentIds": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                },
+                "firstMessage": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "isPrivate": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.AcceptSphereInviteOperation.Output": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sphereId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.ActionAnonymousQuestionOperation.Output": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.chat.RemindActionableMessageOperation.Input.Target": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.sqldelight.operations.chat.RemindActionableMessageOperation.Input.Target.Specific",
+                "me.sphere.sqldelight.operations.chat.RemindActionableMessageOperation.Input.Target.All"
+            ]
+        },
+        "me.sphere.sqldelight.operations.chat.FetchUpdatedConversationEventsOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "filter": {
+                    "typeName": "me.sphere.models.chat.ConversationEventFilter",
+                    "optionality": "REQUIRED"
+                },
+                "rangeToInspect": {
+                    "typeName": "ClosedRange",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.chat.FetchConversationEventsOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "direction": {
+                    "typeName": "me.sphere.models.chat.PaginationDirection",
+                    "optionality": "REQUIRED"
+                },
+                "filter": {
+                    "typeName": "me.sphere.models.chat.ConversationEventFilter",
+                    "optionality": "REQUIRED"
+                },
+                "anchor": {
+                    "typeName": "me.sphere.models.chat.ConversationEventIndex",
+                    "optionality": "REQUIRED"
+                },
+                "expectedMessageCount": {
+                    "typeName": "kotlin.Long?",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.chat.FetchUpdatedConversationEventsOperation.Output": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "newMark": {
+                    "typeName": "Instant",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.chat.RemindActionableMessageOperation.Input.Target.All": {
+            "type": "me.sphere.test.TypeRecord.Object"
+        },
+        "me.sphere.sqldelight.operations.chat.PinUnpinMessageOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "action": {
+                    "typeName": "me.sphere.sqldelight.operations.chat.PinUnpinMessageOperation.Action",
+                    "optionality": "REQUIRED"
+                },
+                "path": {
+                    "typeName": "me.sphere.sqldelight.operations.chat.MessagePath",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.chat.SelectAnchorConversationEventOperation.Output": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "anchor": {
+                    "typeName": "me.sphere.models.chat.ConversationEventIndex?",
+                    "optionality": "REQUIRED"
+                },
+                "lastSeenMessageId": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "rationale": {
+                    "typeName": "me.sphere.models.chat.ConversationAnchorRationale",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.chat.MessagePath": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "messageId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.chat.PinUnpinMessageOperation.Action": {
+            "type": "me.sphere.test.TypeRecord.Enum",
+            "cases": [
+                "Pin",
+                "Unpin"
+            ]
+        },
+        "me.sphere.sqldelight.operations.chat.RemindActionableMessageOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "path": {
+                    "typeName": "me.sphere.sqldelight.operations.chat.MessagePath",
+                    "optionality": "REQUIRED"
+                },
+                "target": {
+                    "typeName": "me.sphere.sqldelight.operations.chat.RemindActionableMessageOperation.Input.Target",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.chat.FetchConversationEventsOperation.Output": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "nextPage": {
+                    "typeName": "ClosedRange?",
+                    "optionality": "REQUIRED"
+                },
+                "endOfCollection": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.chat.SelectAnchorConversationEventOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "conversationId": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                },
+                "landingTarget": {
+                    "typeName": "me.sphere.models.chat.ConversationLandingTarget",
+                    "optionality": "REQUIRED"
+                },
+                "filter": {
+                    "typeName": "me.sphere.models.chat.ConversationEventFilter",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.chat.ReactToMessageOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "messageId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "key": {
+                    "typeName": "me.sphere.models.chat.MessageReactionKey",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.chat.RemindActionableMessageOperation.Input.Target.Specific": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "attendantId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.FetchConversationOperation.Input.ConversationId": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.CreateSphereOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "title": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "description": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "imageFilename": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "isPublic": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.EditChatOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "title": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "description": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "imageFilename": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.UpdateAgentOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "name": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "about": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "imageFileName": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.ChangeMemberAdminStatusOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sphereId": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                },
+                "agentId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "isAdmin": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.FetchConversationOperation.Output": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "chatCardId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.JoinConversationOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.FetchConversationOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.sqldelight.operations.FetchConversationOperation.Input.CardId",
+                "me.sphere.sqldelight.operations.FetchConversationOperation.Input.ConversationId"
+            ]
+        },
+        "me.sphere.sqldelight.operations.AcceptSphereInviteOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "inviteId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.PagingReconciliationDefinition.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "collectionId": {
+                    "typeName": "kotlin.Long",
+                    "optionality": "REQUIRED"
+                },
+                "start": {
+                    "typeName": "kotlin.Long",
+                    "optionality": "REQUIRED"
+                },
+                "pageSize": {
+                    "typeName": "kotlin.Long",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.GetDMConversationOperation.Input.AgentInput": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sphereId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "agentId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.LeaveSphereOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sphereId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.GetDMConversationOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.sqldelight.operations.GetDMConversationOperation.Input.AttendantInput",
+                "me.sphere.sqldelight.operations.GetDMConversationOperation.Input.AgentInput"
+            ]
+        },
+        "me.sphere.sqldelight.operations.CreateChatOperation.Output": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "chatCardId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.GetDMConversationOperation.Input.AttendantInput": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sphereId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "attendantId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.appreciations.CreateAppreciationOperation.Context.ConversationId": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.appreciations.DeleteAppreciationOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sphereId": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                },
+                "appreciationId": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.appreciations.CreateAppreciationOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "context": {
+                    "typeName": "me.sphere.sqldelight.operations.appreciations.CreateAppreciationOperation.Context",
+                    "optionality": "REQUIRED"
+                },
+                "name": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "emojiId": {
+                    "typeName": "TaggedString",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.appreciations.CreateAppreciationOperation.Context": {
+            "type": "me.sphere.test.TypeRecord.Sealed",
+            "subtypes": [
+                "me.sphere.sqldelight.operations.appreciations.CreateAppreciationOperation.Context.ConversationId",
+                "me.sphere.sqldelight.operations.appreciations.CreateAppreciationOperation.Context.SphereId"
+            ]
+        },
+        "me.sphere.sqldelight.operations.appreciations.CreateAppreciationOperation.Context.SphereId": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "id": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.MarkAsReadOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.MuteUnmuteOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "isMuted": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                },
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.GetDMConversationOperation.Output": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "chatCardId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.EditSphereOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sphereId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "title": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "description": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "imageFilename": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "REQUIRED"
+                },
+                "isPublic": {
+                    "typeName": "kotlin.Boolean?",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.OperationErrorCode": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "rawValue": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.EmptyInput": {
+            "type": "me.sphere.test.TypeRecord.Object"
+        },
+        "me.sphere.sqldelight.operations.FollowUnfollowOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "isFollowing": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                },
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.CreateAnonymousQuestionOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sphereId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "questionTitle": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "questionContent": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "isPrivate": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                },
+                "invitedAgentIds": {
+                    "typeName": "kotlin.collections.ArrayList",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.CreateSphereOperation.Output": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sphereId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.ActionAnonymousQuestionOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "questionId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "isApproved": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.event.FetchSphereEventsOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sphereId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.event.CreateSphereEventOperation.Output": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "eventId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.event.EditSphereEventOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "eventId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "name": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "displayImageId": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                },
+                "description": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                },
+                "location": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                },
+                "link": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                },
+                "startDate": {
+                    "typeName": "Instant",
+                    "optionality": "REQUIRED"
+                },
+                "endDate": {
+                    "typeName": "Instant?",
+                    "optionality": "OPTIONAL"
+                },
+                "notify": {
+                    "typeName": "kotlin.Boolean",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.event.RemindInviteesToRSVPOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "eventId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "rsvp": {
+                    "typeName": "me.sphere.sqldelight.operations.event.RemindInviteesRSVPFilter",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.event.CreateSphereEventOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "sphereId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "name": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "displayImageId": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                },
+                "description": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                },
+                "location": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                },
+                "link": {
+                    "typeName": "kotlin.String?",
+                    "optionality": "OPTIONAL"
+                },
+                "startDate": {
+                    "typeName": "Instant",
+                    "optionality": "REQUIRED"
+                },
+                "endDate": {
+                    "typeName": "Instant?",
+                    "optionality": "OPTIONAL"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.event.SphereEventRSVPOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "eventId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "rsvp": {
+                    "typeName": "me.sphere.models.event.SphereEventRSVP",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.event.RemindInviteeToRSVPOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "eventId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                },
+                "inviteeId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.event.DeleteSphereEventOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "eventId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.FetchConversationOperation.Input.CardId": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "chatCardId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        },
+        "me.sphere.sqldelight.operations.EndChatOperation.Input": {
+            "type": "me.sphere.test.TypeRecord.Class",
+            "fields": {
+                "conversationId": {
+                    "typeName": "kotlin.String",
+                    "optionality": "REQUIRED"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,57 @@
+import kotlinx.datetime.Instant;
+import me.sphere.models.operations.OperationStatus;
+import me.sphere.sqldelight.StoreClientType;
+
+CREATE TABLE ManagedOperation (
+    id INTEGER PRIMARY KEY NOT NULL,
+    status TEXT AS OperationStatus NOT NULL DEFAULT "Idle",
+    uniqueKey TEXT NOT NULL,
+    clientType TEXT AS StoreClientType NOT NULL,
+    operationType TEXT NOT NULL,
+    input TEXT NOT NULL DEFAULT "",
+    output TEXT, -- Holds output payload when status is Success; error message when status is Failure.
+    lastUpdated BLOB AS Instant NOT NULL,
+
+    UNIQUE(clientType, operationType, uniqueKey)
+);
+
+enqueue:
+INSERT INTO ManagedOperation (operationType, clientType, uniqueKey, input, output, lastUpdated)
+VALUES (:operationType, :clientType, :uniqueKey, :input, NULL, :lastUpdated)
+ON CONFLICT (clientType, operationType, uniqueKey) DO UPDATE
+SET status = "Idle", input = :input, output = NULL, lastUpdated = :lastUpdated
+WHERE status IN ("Failure", "Success", "Suspended");
+
+operationIdForUniqueKey:
+SELECT id FROM ManagedOperation WHERE clientType = ? AND operationType = ? AND uniqueKey = ?;
+
+getOperationsAwaitingActorPickup:
+SELECT id, operationType, lastUpdated FROM ManagedOperation WHERE status = "Idle" AND clientType = ?;
+
+getOperationById:
+SELECT * FROM ManagedOperation WHERE id = ?;
+
+actorSetSuccess:
+UPDATE ManagedOperation SET status = "Success", lastUpdated = ?, output = ? WHERE id = ?;
+
+actorSetFailure:
+UPDATE ManagedOperation SET status = "Failure", lastUpdated = ?, output = :errorDigest WHERE id = ?;
+
+actorSetStarted:
+UPDATE ManagedOperation SET status = "Started", lastUpdated = ? WHERE id = ?;
+
+actorSetSuspended:
+UPDATE ManagedOperation SET status = "Suspended", lastUpdated = ? WHERE id = ?;
+
+restartSuspended:
+UPDATE ManagedOperation SET status = "Idle", lastUpdated = ? WHERE status = "Suspended" AND clientType = ?;
+
+-- Garbage collection that should happen whenever the app process reconnects to the database.
+collectGarbage {
+    -- Started operations at this point are orphaned, because DB reconnection generally means the
+    -- process was killed earlier. Move them back to Idle to restart them.
+    UPDATE ManagedOperation SET status = "Idle" WHERE status = "Started" AND clientType = :clientType;
+
+    -- Clear all success/failure operations.
+    DELETE FROM ManagedOperation WHERE status IN ("Success", "Failure") AND clientType = :clientType;
+}
