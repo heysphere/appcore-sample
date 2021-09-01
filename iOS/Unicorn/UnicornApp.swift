@@ -4,7 +4,14 @@ import SwiftUI
 struct UnicornApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+          TabView {
+            NavigationView {
+              NotificationList()
+            }
+            .tabItem {
+              Label("Notifications", systemImage: "sparkles")
+            }
+          }
         }
     }
 }
