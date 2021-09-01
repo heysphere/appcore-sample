@@ -13,7 +13,7 @@ object BuildEnvironment {
     val isXcodeBuildingForRelease: Boolean
         get() = (System.getenv("CONFIGURATION") ?: "") == "Release"
 
-    const val iosBinaryName = "SphereAppCoreObjC"
+    const val iosBinaryName = "AppCoreObjC"
     const val kotlinLanguageVersion = "1.5"
     const val jvmTarget = "1.8"
 }
