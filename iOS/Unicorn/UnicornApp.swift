@@ -5,7 +5,12 @@ struct UnicornApp: App {
     var body: some Scene {
         WindowGroup {
           TabView {
-            NotificationList()
+            NavigationView {
+              NotificationList()
+            }
+            .tabItem {
+              Label("Notifications", systemImage: "sparkles")
+            }
           }
         }
     }

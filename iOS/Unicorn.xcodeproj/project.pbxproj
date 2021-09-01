@@ -20,6 +20,8 @@
 		9AFD426C26DFB75A006380F9 /* KotlinThrowable+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFD426B26DFB75A006380F9 /* KotlinThrowable+Error.swift */; };
 		9AFD426E26DFBA06006380F9 /* DataSourceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFD426D26DFBA06006380F9 /* DataSourceState.swift */; };
 		9AFD427026DFC514006380F9 /* NotificationRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFD426F26DFC514006380F9 /* NotificationRow.swift */; };
+		9AFD427226DFC852006380F9 /* NotificationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFD427126DFC852006380F9 /* NotificationInfo.swift */; };
+		9AFD427526DFCC31006380F9 /* NavigationSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFD427426DFCC30006380F9 /* NavigationSupport.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +86,8 @@
 		9AFD426B26DFB75A006380F9 /* KotlinThrowable+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KotlinThrowable+Error.swift"; sourceTree = "<group>"; };
 		9AFD426D26DFBA06006380F9 /* DataSourceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceState.swift; sourceTree = "<group>"; };
 		9AFD426F26DFC514006380F9 /* NotificationRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRow.swift; sourceTree = "<group>"; };
+		9AFD427126DFC852006380F9 /* NotificationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationInfo.swift; sourceTree = "<group>"; };
+		9AFD427426DFCC30006380F9 /* NavigationSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSupport.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,9 +134,11 @@
 		9AFD423326DFB040006380F9 /* Unicorn */ = {
 			isa = PBXGroup;
 			children = (
+				9AFD427326DFCC21006380F9 /* SwiftUI */,
 				9AFD426826DFB2E9006380F9 /* Unicorn.entitlements */,
 				9AFD423426DFB040006380F9 /* UnicornApp.swift */,
 				9AFD423626DFB040006380F9 /* NotificationList.swift */,
+				9AFD427126DFC852006380F9 /* NotificationInfo.swift */,
 				9AFD426F26DFC514006380F9 /* NotificationRow.swift */,
 				9AFD423826DFB042006380F9 /* Assets.xcassets */,
 				9AFD423D26DFB042006380F9 /* Info.plist */,
@@ -165,6 +171,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9AFD427326DFCC21006380F9 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				9AFD427426DFCC30006380F9 /* NavigationSupport.swift */,
+			);
+			path = SwiftUI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,6 +317,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AFD427226DFC852006380F9 /* NotificationInfo.swift in Sources */,
+				9AFD427526DFCC31006380F9 /* NavigationSupport.swift in Sources */,
 				9AFD427026DFC514006380F9 /* NotificationRow.swift in Sources */,
 				9AFD423726DFB040006380F9 /* NotificationList.swift in Sources */,
 				9AFD423526DFB040006380F9 /* UnicornApp.swift in Sources */,
