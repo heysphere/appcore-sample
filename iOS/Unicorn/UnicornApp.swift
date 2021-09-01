@@ -4,7 +4,9 @@ import SwiftUI
 struct UnicornApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+          TabView {
+            NotificationList()
+          }
         }
     }
 }
