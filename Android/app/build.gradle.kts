@@ -81,8 +81,8 @@ dependencies {
     debugImplementation(Libs.AndroidX.Compose.uiTestManifest)
 
     // AppCore
-    implementation(Libs.AppCore.api)
-    implementation(Libs.AppCore.apiModels)
+    implementation(project(Libs.AppCore.api))
+    implementation(project(Libs.AppCore.apiModels))
 
     androidTestImplementation(Libs.AndroidX.Test.core)
     androidTestImplementation(Libs.AndroidX.Test.runner)

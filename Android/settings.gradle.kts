@@ -1,7 +1,7 @@
 rootProject.name = "SphereUnicorn"
 include(":app")
 
-val appCore = listOf(
+val appCoreModules = listOf(
     "appcore-actors-backend0",
     "appcore-actors-graphql",
     "appcore-api-models",
@@ -18,10 +18,7 @@ val appCore = listOf(
     "appcore-utils",
 )
 
-includeBuild("../AppCore") {
-    dependencySubstitution {
-        appCore.forEach { module ->
-            substitute(module("me.sphere:$module")).using(project(":$module"))
-        }
-    }
+appCoreModules.forEach { module ->
+    include(":$module")
+    project(":$module").projectDir = file("../AppCore/$module")
 }

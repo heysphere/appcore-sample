@@ -14,6 +14,13 @@ object Libs {
         const val insets = "com.google.accompanist:accompanist-insets:$version"
     }
 
+    object AppCorePlugins {
+        const val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:1.5.21"
+        const val apollo = "com.apollographql.apollo:apollo-gradle-plugin:2.5.6"
+        const val atomicfu = "org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.16.2"
+        const val sqldelight = "com.squareup.sqldelight:gradle-plugin:1.5.0"
+    }
+
     object Kotlin {
         private const val version = "1.5.21"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
@@ -75,8 +82,8 @@ object Libs {
     }
 
     object AppCore {
-        const val api = "me.sphere:appcore-api:*"
-        const val apiModels = "me.sphere:appcore-api-models:*"
+        const val api = ":appcore-api"
+        const val apiModels = ":appcore-api-models"
     }
 
     object Coil {
