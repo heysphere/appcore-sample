@@ -1,9 +1,5 @@
 package me.sphere.unicorn.buildsrc
 
-object Versions {
-    const val ktLint = "0.41.0"
-}
-
 object Android {
     const val compileSdkVersion = 30
     const val minSdkVersion = 23
@@ -12,7 +8,6 @@ object Android {
 
 object Libs {
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0"
-    const val ktLint = "com.pinterest:ktlint:${Versions.ktLint}"
 
     object Accompanist {
         const val version = "0.16.0"
@@ -77,6 +72,11 @@ object Libs {
         const val android = "com.google.dagger:hilt-android:$version"
         const val compiler = "com.google.dagger:hilt-compiler:$version"
         const val testing = "com.google.dagger:hilt-android-testing:$version"
+    }
+
+    object AppCore {
+        const val api = "me.sphere:appcore-api:*"
+        const val apiModels = "me.sphere:appcore-api-models:*"
     }
 
     object Coil {
