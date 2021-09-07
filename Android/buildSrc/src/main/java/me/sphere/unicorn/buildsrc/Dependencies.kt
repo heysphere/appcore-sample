@@ -14,11 +14,6 @@ object Libs {
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0"
     const val ktLint = "com.pinterest:ktlint:${Versions.ktLint}"
 
-    object GoogleMaps {
-        const val maps = "com.google.android.libraries.maps:maps:3.1.0-beta"
-        const val mapsKtx = "com.google.maps.android:maps-v3-ktx:2.2.0"
-    }
-
     object Accompanist {
         const val version = "0.16.0"
         const val insets = "com.google.accompanist:accompanist-insets:$version"
@@ -28,7 +23,6 @@ object Libs {
         private const val version = "1.5.21"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
-        const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
 
         object Coroutines {
             private const val version = "1.5.0"
@@ -46,7 +40,6 @@ object Libs {
         const val material = "com.google.android.material:material:1.3.0"
 
         object Compose {
-            const val snapshot = ""
             const val version = "1.0.1"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
@@ -56,7 +49,6 @@ object Libs {
             const val layout = "androidx.compose.foundation:foundation-layout:$version"
             const val tooling = "androidx.compose.ui:ui-tooling:$version"
             const val animation = "androidx.compose.animation:animation:$version"
-            const val uiTest = "androidx.compose.ui:ui-test-junit4:$version"
             const val uiTestManifest = "androidx.compose.ui:ui-test-manifest:$version"
         }
 
@@ -75,7 +67,6 @@ object Libs {
                 private const val version = "1.1.2"
                 const val junit = "androidx.test.ext:junit-ktx:$version"
             }
-            const val espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
         }
     }
 
@@ -86,11 +77,6 @@ object Libs {
         const val android = "com.google.dagger:hilt-android:$version"
         const val compiler = "com.google.dagger:hilt-compiler:$version"
         const val testing = "com.google.dagger:hilt-android-testing:$version"
-    }
-
-    object JUnit {
-        private const val version = "4.13"
-        const val junit = "junit:junit:$version"
     }
 
     object Coil {
