@@ -9,14 +9,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import me.sphere.unicorn.ui.theme.MyTheme
-import me.sphere.appcore.SphereStoreBuilder
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SphereStoreBuilder(
-
-        )
         setContent {
             MyTheme {
                 MyApp()
