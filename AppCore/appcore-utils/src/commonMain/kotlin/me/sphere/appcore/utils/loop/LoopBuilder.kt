@@ -25,6 +25,10 @@ class LoopBuilder<State, Event> {
         items.addAll(builder.make())
     }
 
+    fun custom(effect: LoopEffect<State, Event>) {
+        items.add { snapshots -> effect(snapshots) }
+    }
+
     /**
      * Run the given effect when the loop has emitted its initial state.
      */

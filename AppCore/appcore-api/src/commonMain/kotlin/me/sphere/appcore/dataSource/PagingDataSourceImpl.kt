@@ -8,10 +8,12 @@ import kotlinx.coroutines.selects.onTimeout
 import kotlinx.coroutines.selects.select
 import me.sphere.appcore.Projection
 import me.sphere.appcore.asProjection
+import me.sphere.appcore.utils.combinePrevious
 import me.sphere.appcore.utils.loop.Loop
 import me.sphere.logging.Logger
 import me.sphere.network.ConnectivityMonitor
 import me.sphere.sqldelight.SqlDatabaseGateway
+import me.sphere.sqldelight.listenOneOrNull
 import me.sphere.sqldelight.operations.*
 import me.sphere.sqldelight.paging.PagingItemQueries
 import kotlin.jvm.JvmInline
@@ -26,6 +28,7 @@ internal fun <Row: Any, Item: Any> pagingDataSource(
     pageSize: Long,
     getItem: (String) -> Query<Row>,
     mapper: (Row) -> Item,
+    databaseUpdateTracking: DatabaseUpdateTracking<Row, *, Item, *>? = null,
     logger: Logger,
     connectivityMonitor: ConnectivityMonitor,
     autoRetryInterval: Duration = Duration.seconds(15)
@@ -51,9 +54,23 @@ internal fun <Row: Any, Item: Any> pagingDataSource(
         database.pagingItemQueries,
         operationUtils,
         pageSize = pageSize,
+        databaseUpdateTracking = databaseUpdateTracking,
         logger = logger,
         connectivityMonitor = connectivityMonitor,
         autoRetryInterval = autoRetryInterval
+    )
+}
+
+internal class DatabaseUpdateTracking<Row: Any, Timestamp: Comparable<Timestamp>, Item: Any, ItemId: Any>(
+    val getUpdateHead: Query<Timestamp>,
+    val getUpdatedRows: (RowQueryParams<Timestamp>) -> Query<Row>,
+    val getItemIdentifier: (Item) -> ItemId,
+) {
+    /** [startExclusive] < item.timestamp <= [endInclusive] */
+    data class RowQueryParams<Timestamp>(
+        /** null first */
+        val startExclusive: Timestamp?,
+        val endInclusive: Timestamp
     )
 }
 
@@ -111,6 +128,7 @@ private class PagingDataSourceImpl<Row: Any, Item: Any>(
     indexQueries: PagingItemQueries,
     operationUtils: OperationUtils,
     pageSize: Long,
+    databaseUpdateTracking: DatabaseUpdateTracking<Row, *, Item, *>?,
     logger: Logger,
     connectivityMonitor: ConnectivityMonitor,
     autoRetryInterval: Duration
@@ -250,6 +268,25 @@ private class PagingDataSourceImpl<Row: Any, Item: Any>(
                         current
                     }
                 }
+
+                is Event.DbUpdateHeadDidChange -> {
+                    if (databaseUpdateTracking == null)
+                        return@Loop current
+
+                    current.copy(dbUpdateHead = event.head)
+                }
+
+                is Event.DidDiscoverUpdatedItems -> {
+                    if (databaseUpdateTracking == null)
+                        return@Loop current
+
+                    val getId = databaseUpdateTracking.getItemIdentifier
+
+                    current.copy(
+                        provisionalItems = current.provisionalItems.map { event.itemsById[getId(it)] ?: it },
+                        reconciledItems = current.reconciledItems.map { event.itemsById[getId(it)] ?: it }
+                    )
+                }
             }
         }
     ) {
@@ -313,6 +350,33 @@ private class PagingDataSourceImpl<Row: Any, Item: Any>(
                 }
             }
         }
+
+        if (databaseUpdateTracking != null) {
+            whenInitialized {
+                databaseUpdateTracking.getUpdateHead.listenOneOrNull()
+                    .map { Event.DbUpdateHeadDidChange(it) }
+            }
+
+            custom { snapshots ->
+                snapshots
+                    .map { it.state.dbUpdateHead }
+                    .distinctUntilChanged()
+                    .conflate()
+                    .combinePrevious(null)
+                    .map { (startExclusive, endInclusive) ->
+                        checkNotNull(endInclusive)
+                        val params = DatabaseUpdateTracking.RowQueryParams(startExclusive, endInclusive)
+                        @Suppress("UNCHECKED_CAST")
+                        val query = databaseUpdateTracking.getUpdatedRows as (DatabaseUpdateTracking.RowQueryParams<Comparable<Nothing>>) -> Query<Row>
+
+                        val items = query(params).executeAsList()
+                            .map(mapper)
+                            .associateBy(databaseUpdateTracking.getItemIdentifier)
+
+                        Event.DidDiscoverUpdatedItems(items)
+                    }
+            }
+        }
     }
 
     private data class State<Item: Any>(
@@ -327,7 +391,9 @@ private class PagingDataSourceImpl<Row: Any, Item: Any>(
          * For now this is constant zero. But this can be non-zero once we start doing compaction to keep a minimal
          * memory footprint.
          */
-        val start: DbPosition = DbPosition(0)
+        val start: DbPosition = DbPosition(0),
+
+        val dbUpdateHead: Comparable<*>? = null,
     )
 
     private sealed class ReconciliationStatus {
@@ -353,6 +419,9 @@ private class PagingDataSourceImpl<Row: Any, Item: Any>(
             val hasMore: Boolean
         ): Event<Item>()
         object DidFailToReconcile: Event<Nothing>()
+
+        class DbUpdateHeadDidChange(val head: Comparable<*>?): Event<Nothing>()
+        class DidDiscoverUpdatedItems<Item: Any>(val itemsById: Map<Any, Item>): Event<Item>()
     }
 
     override fun next() {
