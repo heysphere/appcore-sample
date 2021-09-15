@@ -18,9 +18,10 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":appcore-database"))
+                implementation(project(":appcore-api-models"))
+                api(project(":appcore-spi-network"))
                 api(BuildDependency.Kotlin.Coroutines.core)
                 implementation(BuildDependency.Kotlin.Serialization.runtime)
-                implementation(project(":appcore-api-models"))
             }
         }
         val commonTest by getting {
