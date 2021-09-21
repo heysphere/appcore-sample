@@ -1,7 +1,7 @@
 package me.sphere.unicorn.buildsrc
 
 object Android {
-    const val compileSdkVersion = 30
+    const val compileSdkVersion = 31
     const val minSdkVersion = 23
     const val targetSdkVersion = 30
 }
@@ -52,6 +52,7 @@ object Libs {
             const val tooling = "androidx.compose.ui:ui-tooling:$version"
             const val animation = "androidx.compose.animation:animation:$version"
             const val uiTestManifest = "androidx.compose.ui:ui-test-manifest:$version"
+            const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha08"
         }
 
         object Lifecycle {
@@ -79,6 +80,7 @@ object Libs {
         const val android = "com.google.dagger:hilt-android:$version"
         const val compiler = "com.google.dagger:hilt-compiler:$version"
         const val testing = "com.google.dagger:hilt-android-testing:$version"
+        const val navigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha03"
     }
 
     object AppCore {
