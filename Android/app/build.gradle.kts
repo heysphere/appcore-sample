@@ -71,6 +71,8 @@ dependencies {
     implementation(Libs.AndroidX.Compose.animation)
     implementation(Libs.AndroidX.Compose.tooling)
     implementation(Libs.AndroidX.Lifecycle.viewModelCompose)
+    implementation(Libs.AndroidX.Compose.navigation)
+    implementation(Libs.Hilt.navigationCompose)
 
     implementation(Libs.AndroidX.Lifecycle.viewModelKtx)
     implementation(Libs.Hilt.android)
