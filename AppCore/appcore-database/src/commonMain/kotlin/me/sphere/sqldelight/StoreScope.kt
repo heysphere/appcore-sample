@@ -4,7 +4,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import me.sphere.appcore.utils.*
 import me.sphere.logging.Logger
-import me.sphere.models.AgentId
 import me.sphere.models.BackendEnvironmentType
 import me.sphere.sqldelight.operations.OperationDefinition
 import me.sphere.sqldelight.operations.OperationStoreActorBase
@@ -12,7 +11,8 @@ import me.sphere.sqldelight.operations.SubscribeOperationActor
 import me.sphere.sqldelight.operations.SubscribeOperationDefinition
 
 class StoreScope(
-    val agentId: AgentId,
+    val gitHubUserName: String,
+    val gitHubAccessToken: String,
     val clientType: StoreClientType,
     val environmentType: BackendEnvironmentType,
     operationQueries: ManagedOperationQueries,
