@@ -41,7 +41,9 @@ private fun NavGraphBuilder.addNotifications(
     composable(
         route = Route.NotificationDetails.route
     ) {
-        NotificationDetails()
+        NotificationDetails {
+            navHostController.navigateUp()
+        }
     }
 }
 
@@ -49,7 +51,7 @@ sealed class Route(val route: String) {
 
     object NotificationList : Route("notificationList")
 
-    object NotificationDetails : Route("notificationDetails/$NOTIFICATION_ID_KEY") {
+    object NotificationDetails : Route("notificationDetails/{$NOTIFICATION_ID_KEY}") {
         fun createRoute(notificationId: String): String {
             return "notificationDetails/$notificationId"
         }
