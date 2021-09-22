@@ -11,7 +11,6 @@ import me.sphere.sqldelight.operations.SubscribeOperationActor
 import me.sphere.sqldelight.operations.SubscribeOperationDefinition
 
 class StoreScope(
-    val gitHubUserName: String,
     val gitHubAccessToken: String,
     val clientType: StoreClientType,
     val environmentType: BackendEnvironmentType,

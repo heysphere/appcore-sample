@@ -17,12 +17,12 @@ data class SphereStoreBuilder(
 )
 
 fun SphereStoreBuilder.makeStore(
-    agentId: AgentId
+    gitHubAccessToken: String,
 ): SphereStore {
     return object : ClientBase(
         StoreClientType.App,
         environmentType,
-        agentId,
+        gitHubAccessToken,
         storeActorBuilders,
         sqlDatabaseProvider,
         logger

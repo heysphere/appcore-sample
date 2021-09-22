@@ -16,11 +16,11 @@ data class ShareClientBuilder(
     val logger: Logger
 )
 
-fun ShareClientBuilder.makeClient(agentId: AgentId): ShareClient {
+fun ShareClientBuilder.makeClient(gitHubAccessToken: String): ShareClient {
     return object : ClientBase(
         StoreClientType.Share,
         environmentType,
-        agentId,
+        gitHubAccessToken,
         storeActorBuilders,
         sqlDatabaseProvider,
         logger
