@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Sphere Unicorn</string>
+    <string name="notification_list_title">Notifications</string>
+    <string name="notification_details_title">Notification Details</string>
+    <string name="notification_details_info_reason">Reason</string>
+    <string name="notification_details_info_repository">Repository</string>
+    <string name="notification_details_info_pull_request_id">Pull Request ID</string>
+    <string name="notification_details_info_pull_request_title">Pull Request</string>
+    <string name="navigate_up">Navigate up</string>
+
 </resources>

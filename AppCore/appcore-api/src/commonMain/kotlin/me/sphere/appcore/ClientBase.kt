@@ -10,7 +10,7 @@ import me.sphere.sqldelight.operations.OperationUtils
 abstract class ClientBase(
     clientType: StoreClientType,
     environmentType: BackendEnvironmentType,
-    agentId: AgentId,
+    gitHubAccessToken: String,
     storeActorBuilders: List<StoreActorBuilder>,
     sqlDatabaseProvider: SqlDatabaseProvider,
     logger: Logger
@@ -21,7 +21,7 @@ abstract class ClientBase(
     protected val database: SqlDatabaseGateway
     protected val operationUtils: OperationUtils
     protected val storeScope: StoreScope
-    protected val databaseName = agentId.rawValue
+    protected val databaseName = SQLCORE_SCHEMA_HASH
 
     private val superviserJob = SupervisorJob()
 
@@ -29,7 +29,7 @@ abstract class ClientBase(
         val (database, handle) = sqlDatabaseProvider.loadOrCreate(databaseName, clientType)
         this.database = database
         this.storeScope = StoreScope(
-            agentId,
+            gitHubAccessToken,
             clientType,
             environmentType,
             database.managedOperationQueries,
