@@ -37,9 +37,24 @@ internal class NotificationReconciliationActor(
             responseSerializationStrategy = ListSerializer(APINotification.serializer())
         )
 
-        val ids = result.map { ID(it.id) }
-        // TODO Save to db
+        database.transaction {
+            result.forEach {
 
+                val subjectId = it.subject.url.split('/').last()
+
+                database.notificationQueries.upsert(
+                    id = it.id,
+                    unread = it.unread,
+                    reason = it.reason,
+                    title = it.subject.title,
+                    url = it.subject.url,
+                    repositoryFullName = it.repository.full_name,
+                    subjectId = subjectId
+                )
+            }
+        }
+
+        val ids = result.map { ID(it.id) }
         return FetchResult.Success(ids)
     }
 }
