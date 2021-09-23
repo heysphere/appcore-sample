@@ -21,4 +21,4 @@ INSERT OR REPLACE INTO Notification (
     url,
     repositoryFullName,
     subjectId
-) VALUES (?, ?, ?,?,?,?,?);
+) VALUES (?, ?, ?, ?, ?, ?, ?);
