@@ -34,6 +34,7 @@ buildscript {
         classpath(me.sphere.unicorn.buildsrc.Libs.AppCorePlugins.apollo)
         classpath(me.sphere.unicorn.buildsrc.Libs.AppCorePlugins.atomicfu)
         classpath(me.sphere.unicorn.buildsrc.Libs.AppCorePlugins.sqldelight)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
     }
 }
 

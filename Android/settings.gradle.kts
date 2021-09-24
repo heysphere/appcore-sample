@@ -1,5 +1,7 @@
 rootProject.name = "SphereUnicorn"
+
 include(":app")
+include(":appcore-android")
 
 val appCoreModules = listOf(
     "appcore-actors-backend0",
