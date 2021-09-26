@@ -1,0 +1,24 @@
+
+CREATE TABLE Notification (
+    "id" TEXT PRIMARY KEY NOT NULL,
+    "unread" INTEGER AS Boolean NOT NULL,
+    "reason" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+    "repositoryFullName" TEXT NOT NULL,
+    "subjectId" TEXT NOT NULL
+);
+
+get:
+SELECT * FROM Notification WHERE id = ?;
+
+upsert:
+INSERT OR REPLACE INTO Notification (
+    id,
+    unread,
+    reason,
+    title,
+    url,
+    repositoryFullName,
+    subjectId
+) VALUES (?, ?, ?, ?, ?, ?, ?);

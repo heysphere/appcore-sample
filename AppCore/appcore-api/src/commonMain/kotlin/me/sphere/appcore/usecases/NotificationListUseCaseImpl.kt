@@ -1,7 +1,5 @@
 package me.sphere.appcore.usecases
 
-import com.squareup.sqldelight.Query
-import com.squareup.sqldelight.db.SqlCursor
 import me.sphere.appcore.dataSource.PagingDataSource
 import me.sphere.appcore.dataSource.pagingDataSource
 import me.sphere.logging.Logger
@@ -25,19 +23,19 @@ internal fun createNotificationListUseCase(
         database = database,
         pageSize = 40,
         operationUtils = operationUtils,
-        getItem = {
-            StubQuery()
+        getItem = { id ->
+            database.notificationQueries.get(id)
         },
-        mapper = {
-            Notification("", false, "", "", "")
+        mapper = { notification ->
+            Notification(
+                notification.id,
+                notification.unread,
+                notification.title,
+                notification.repositoryFullName,
+                notification.subjectId
+            )
         },
         logger = logger,
         connectivityMonitor = connectivityMonitor
     )
-}
-
-private class StubQuery : Query<String>(mutableListOf(), {""}) {
-    override fun <R> execute(mapper: (SqlCursor) -> R): R {
-        TODO("FIX that with the real db implementation")
-    }
 }
