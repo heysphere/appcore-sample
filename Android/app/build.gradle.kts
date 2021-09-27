@@ -82,6 +82,8 @@ dependencies {
 
     debugImplementation(Libs.AndroidX.Compose.uiTestManifest)
 
+    implementation(project(Libs.FlowRedux))
+
     // AppCore
     implementation(project(Libs.AppCore.api))
     implementation(project(Libs.AppCore.apiModels))
