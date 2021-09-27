@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationDetailsViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+     savedStateHandle: SavedStateHandle
 ) : StoreViewModel<NotificationDetailsState, NotificationDetailsAction>() {
 
     private val arg = savedStateHandle.toNotificationDetailsArg()

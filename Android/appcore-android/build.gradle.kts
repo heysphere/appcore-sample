@@ -36,6 +36,8 @@ dependencies {
     implementation(Libs.Square.okhttp)
 
     // AppCore
+    implementation(project(Libs.AppCore.api))
+    implementation(project(Libs.AppCore.database))
     implementation(project(Libs.AppCore.spiDatabase))
     implementation(project(Libs.AppCore.spiNetwork))
     implementation(project(Libs.AppCore.spiLogging))

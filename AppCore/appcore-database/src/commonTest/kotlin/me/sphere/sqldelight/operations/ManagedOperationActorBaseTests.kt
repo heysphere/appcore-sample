@@ -11,7 +11,6 @@ import kotlinx.serialization.json.Json
 import me.sphere.appcore.utils.freeze
 import me.sphere.logging.Logger
 import me.sphere.models.AgentId
-import me.sphere.models.BackendEnvironmentType
 import me.sphere.models.operations.OperationStatus
 import me.sphere.sqldelight.*
 import me.sphere.test.DbTests

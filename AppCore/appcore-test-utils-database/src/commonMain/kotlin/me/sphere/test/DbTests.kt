@@ -3,7 +3,6 @@ package me.sphere.test
 import kotlinx.coroutines.CoroutineDispatcher
 import me.sphere.appcore.utils.uuid
 import me.sphere.models.AgentId
-import me.sphere.models.BackendEnvironmentType
 import me.sphere.sqldelight.*
 import me.sphere.sqldelight.operations.OperationUtils
 import me.sphere.test.support.InMemorySqlDatabaseProvider

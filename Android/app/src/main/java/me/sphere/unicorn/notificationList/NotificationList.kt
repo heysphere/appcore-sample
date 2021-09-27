@@ -19,6 +19,10 @@ import me.sphere.unicorn.ui.components.InsetAwareTopAppBar
 fun NotificationList(
     openNotificationDetails: (String) -> Unit
 ) {
+
+//    val notificationListViewModel = hiltViewModel<NotificationListViewModel>()
+//    val state by notificationListViewModel.stateFlow.collectAsState()
+
     Scaffold(topBar = {
         InsetAwareTopAppBar(
             titleRes = R.string.notification_list_title,
