@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -25,9 +26,9 @@ import me.sphere.unicorn.ui.theme.MyTheme
 @Composable
 fun NotificationDetails(onNavigateBack: () -> Unit) {
     val notificationDetailsViewModel = hiltViewModel<NotificationDetailsViewModel>()
-    val state by notificationDetailsViewModel.state.observeAsState()
+    val state by notificationDetailsViewModel.stateFlow.collectAsState()
 
-    NotificationDetails(state = state!!, onNavigateBack = onNavigateBack)
+    NotificationDetails(state = state, onNavigateBack = onNavigateBack)
 }
 
 @Composable

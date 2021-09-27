@@ -1,5 +1,5 @@
 rootProject.name = "SphereUnicorn"
-include(":app")
+include(":app", ":flowredux")
 
 val appCoreModules = listOf(
     "appcore-actors-backend0",
