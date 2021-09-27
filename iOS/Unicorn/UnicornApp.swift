@@ -19,7 +19,6 @@ struct UnicornApp: App {
             taskRunner: UIApplication.shared
         )
         let builder = AppCore.SphereStoreBuilder(
-            environmentType: .production,
             storeActorBuilders: [
                 Backend0StoreActorsBuilder(
                     httpClient: httpClient,
