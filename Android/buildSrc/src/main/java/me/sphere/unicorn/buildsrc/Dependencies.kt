@@ -46,6 +46,8 @@ object Libs {
         }
 
         const val appcompat = "androidx.appcompat:appcompat:1.3.0"
+        const val annotation = "androidx.annotation:annotation:1.2.0"
+        const val datastore = "androidx.datastore:datastore-preferences:1.0.0"
         const val material = "com.google.android.material:material:1.3.0"
 
         object Compose {
@@ -95,9 +97,21 @@ object Libs {
     object AppCore {
         const val api = ":appcore-api"
         const val apiModels = ":appcore-api-models"
+
+        const val spiDatabase = ":appcore-spi-database"
+        const val spiNetwork = ":appcore-spi-network"
+        const val spiLogging = ":appcore-spi-logging"
     }
 
     object Coil {
         const val coilCompose = "io.coil-kt:coil-compose:1.3.0"
+    }
+
+    object Square {
+        const val okhttp = "com.squareup.okhttp3:okhttp:4.9.1"
+    }
+
+    object Utils {
+        const val timber = "com.jakewharton.timber:timber:4.7.1"
     }
 }
