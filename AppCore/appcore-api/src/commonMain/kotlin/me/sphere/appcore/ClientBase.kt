@@ -2,14 +2,11 @@ package me.sphere.appcore
 
 import kotlinx.coroutines.SupervisorJob
 import me.sphere.logging.Logger
-import me.sphere.models.AgentId
-import me.sphere.models.BackendEnvironmentType
 import me.sphere.sqldelight.*
 import me.sphere.sqldelight.operations.OperationUtils
 
 abstract class ClientBase(
     clientType: StoreClientType,
-    environmentType: BackendEnvironmentType,
     gitHubAccessToken: String,
     storeActorBuilders: List<StoreActorBuilder>,
     sqlDatabaseProvider: SqlDatabaseProvider,
@@ -31,7 +28,6 @@ abstract class ClientBase(
         this.storeScope = StoreScope(
             gitHubAccessToken,
             clientType,
-            environmentType,
             database.managedOperationQueries,
             logger
         )

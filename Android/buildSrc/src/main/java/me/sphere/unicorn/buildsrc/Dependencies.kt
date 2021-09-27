@@ -98,6 +98,7 @@ object Libs {
         const val api = ":appcore-api"
         const val apiModels = ":appcore-api-models"
 
+        const val database = ":appcore-database"
         const val spiDatabase = ":appcore-spi-database"
         const val spiNetwork = ":appcore-spi-network"
         const val spiLogging = ":appcore-spi-logging"
