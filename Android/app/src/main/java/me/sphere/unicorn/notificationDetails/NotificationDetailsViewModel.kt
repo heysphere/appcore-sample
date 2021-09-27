@@ -1,14 +1,16 @@
 package me.sphere.unicorn.notificationDetails
 
-import android.util.Log
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.*
+import me.sphere.flowredux.Effect.Companion.withEffect
+import me.sphere.flowredux.Effect.Companion.withoutEffect
+import me.sphere.flowredux.Reducer
+import me.sphere.flowredux.Result
+import me.sphere.flowredux.Store
+import me.sphere.flowredux.android.StoreViewModel
 import me.sphere.unicorn.ui.theme.RouteArgument.NotificationDetailsArg.Companion.toNotificationDetailsArg
 import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
@@ -16,31 +18,31 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
-) : ViewModel() {
+) : StoreViewModel<NotificationDetailsState, NotificationDetailsAction>() {
 
     private val arg = savedStateHandle.toNotificationDetailsArg()
-    private val _state = MutableLiveData<NotificationDetailsState>(
-        NotificationDetailsState(arg.notificationId, 0)
-    )
-    val state: LiveData<NotificationDetailsState> = _state
 
-    init {
-        viewModelScope.launch {
-            createInfiniteCounter()
-                .onCompletion {
-                    Log.e("antonis88", "NotificationDetailsViewModel.flow disposed")
-                }
-                .onStart {
-                    Log.e("antonis88", "NotificationDetailsViewModel.flow started")
-                }
-                .collect { int ->
-                    reduce {
-                        it.copy(counter = int)
-                    }
-                }
+    override val store: Store<NotificationDetailsState, NotificationDetailsAction> = Store(
+        initialState = NotificationDetailsState(notificationId = arg.notificationId, 0),
+        reducer = SphereInfoReducer(),
+        dispatcher = Dispatchers.Main.immediate,
+        initialAction = NotificationDetailsAction.LoadDummyTimer
+    )
+}
+
+private class SphereInfoReducer() : Reducer<NotificationDetailsState, NotificationDetailsAction> {
+
+    override fun reduce(
+        state: NotificationDetailsState,
+        action: NotificationDetailsAction
+    ): Result<NotificationDetailsState, NotificationDetailsAction> {
+        return when (action) {
+            is NotificationDetailsAction.LoadDummyTimer -> state.withEffect(loadInfiniteCounter())
+            is SideEffects.InfiniteLoaderValue -> state.copy(counter = action.count).withoutEffect()
         }
     }
 
+    private fun loadInfiniteCounter() = createInfiniteCounter().map(SideEffects::InfiniteLoaderValue)
 
     private fun createInfiniteCounter() = flow {
         val count = AtomicInteger()
@@ -49,15 +51,18 @@ class NotificationDetailsViewModel @Inject constructor(
             emit(count.getAndIncrement())
         }
     }
-
-    private fun reduce(cb: (NotificationDetailsState) -> NotificationDetailsState) {
-        val currentValue = state.value ?: return
-        val newState = cb(currentValue)
-        _state.postValue(newState)
-    }
 }
 
 data class NotificationDetailsState(
     val notificationId: String,
     val counter: Int
 )
+
+sealed class NotificationDetailsAction {
+    object LoadDummyTimer : NotificationDetailsAction()
+}
+
+private sealed class SideEffects : NotificationDetailsAction() {
+
+    data class InfiniteLoaderValue(val count: Int) : SideEffects()
+}

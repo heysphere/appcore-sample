@@ -33,6 +33,13 @@ object Libs {
         }
     }
 
+    const val FlowRedux = ":flowredux"
+
+    object Test {
+        const val junit = "junit:junit:4.13"
+        const val turbine = "app.cash.turbine:turbine:0.5.1"
+    }
+
     object AndroidX {
         object Activity {
             const val activityCompose = "androidx.activity:activity-compose:1.3.1"
@@ -61,6 +68,7 @@ object Libs {
             private const val version = "2.3.1"
             const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
+            const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:${version}"
         }
 
         object Test {
@@ -68,6 +76,7 @@ object Libs {
             const val core = "androidx.test:core:$version"
             const val runner = "androidx.test:runner:$version"
             const val rules = "androidx.test:rules:$version"
+            const val androidxArchTestCore = "androidx.arch.core:core-testing:2.1.0"
             object Ext {
                 private const val version = "1.1.2"
                 const val junit = "androidx.test.ext:junit-ktx:$version"

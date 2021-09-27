@@ -1,5 +1,7 @@
 package me.sphere.appcore
 
+import me.sphere.appcore.usecases.NotificationListUseCase
+import me.sphere.appcore.usecases.createNotificationListUseCase
 import me.sphere.appcore.utils.freeze
 import me.sphere.logging.Logger
 import me.sphere.models.AgentId
@@ -30,6 +32,15 @@ fun SphereStoreBuilder.makeStore(
         init {
             freeze()
         }
+
+        override val notificationListUseCase: NotificationListUseCase
+            get() = createNotificationListUseCase(
+                database,
+                operationUtils,
+                connectivityMonitor,
+                storeScope,
+                logger
+            )
 
         override fun destroy() {
             close()
