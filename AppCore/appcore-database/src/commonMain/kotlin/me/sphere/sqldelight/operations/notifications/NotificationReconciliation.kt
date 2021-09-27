@@ -1,4 +1,4 @@
-package me.sphere.sqldelight.operations.notificaitons
+package me.sphere.sqldelight.operations.notifications
 
 import me.sphere.sqldelight.operations.PagingReconciliationDefinition
 

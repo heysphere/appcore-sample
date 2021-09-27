@@ -7,7 +7,7 @@ import me.sphere.network.ConnectivityMonitor
 import me.sphere.sqldelight.SqlDatabaseGateway
 import me.sphere.sqldelight.StoreScope
 import me.sphere.sqldelight.operations.OperationUtils
-import me.sphere.sqldelight.operations.notificaitons.NotificationReconciliation
+import me.sphere.sqldelight.operations.notifications.NotificationReconciliation
 
 internal fun createNotificationListUseCase(
     database: SqlDatabaseGateway,
