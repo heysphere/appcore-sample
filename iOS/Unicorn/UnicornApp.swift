@@ -6,6 +6,8 @@ struct UnicornApp: App {
     let sphereStore: SphereStore
 
     init() {
+        ThrowableUtilsKt.installAppCoreUncaughtExceptionHandler()
+
         let httpClient = AppCore.AgentHTTPClientImpl(defaultHeaders: [:], delegate: nil)
 
         let logger = AppCore.Logger(
