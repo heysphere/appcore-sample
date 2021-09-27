@@ -20,7 +20,12 @@ struct UnicornApp: App {
         )
         let builder = AppCore.SphereStoreBuilder(
             environmentType: .production,
-            storeActorBuilders: [],
+            storeActorBuilders: [
+                Backend0StoreActorsBuilder(
+                    httpClient: httpClient,
+                    logger: logger
+                )
+            ],
             sqlDatabaseProvider: database,
             preferences: AppCorePreferenceStore(),
             connectivityMonitor: httpClient,
