@@ -13,9 +13,10 @@ import me.sphere.flowredux.Reducer
 import me.sphere.flowredux.Result
 import me.sphere.flowredux.Store
 import me.sphere.flowredux.android.StoreViewModel
+import javax.inject.Inject
 
-// @HiltViewModel
-class NotificationListViewModel(
+@HiltViewModel
+class NotificationListViewModel @Inject constructor(
     useCase: NotificationListUseCase
 ) : StoreViewModel<NotificationListState, NotificationListAction>() {
     override val store = Store(

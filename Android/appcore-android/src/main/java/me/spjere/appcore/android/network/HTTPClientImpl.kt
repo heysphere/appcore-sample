@@ -61,15 +61,16 @@ class HTTPClientImpl(
     }
 
     override suspend fun webSocket(request: HTTPRequest<Unit>, protocol: String): WebSocketConnection {
-        TODO("Not yet implemented")
+        TODO("Web sockets are not used in the example")
     }
 
     private fun buildOkHttpRequest(request: HTTPRequest<String>): Request {
         val httpUrl = buildUrl(request.resource, request.urlQuery)
         val mediaType = (request.headers?.get("content-type") ?: "application/json").toMediaType()
+        val httpRequestBody = request.body
         val requestBuilder = Request.Builder()
             .url(httpUrl)
-            .method(request.method.name, request.body.toRequestBody(mediaType))
+            .method(request.method.name, httpRequestBody?.toRequestBody(mediaType))
         request.headers?.forEach { header ->
             requestBuilder.addHeader(header.key, header.value)
         }

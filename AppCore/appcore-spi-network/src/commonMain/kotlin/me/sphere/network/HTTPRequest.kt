@@ -1,13 +1,13 @@
 package me.sphere.network
 
-data class HTTPRequest<Body>(
+data class HTTPRequest<Body : Any>(
     val method: Method,
     val resource: HTTPResource,
     val urlQuery: Map<String, String>? = null,
     val headers: Map<String, String>? = null,
-    val body: Body
+    val body: Body?
 ) {
-    fun <NewBody> mapBody(transform: (Body) -> NewBody)
+    fun <NewBody : Any> mapBody(transform: (Body?) -> NewBody?)
         = HTTPRequest(method, resource, urlQuery, headers, body.let(transform))
 
     fun addingHeaders(newHeaders: Map<String, String>)

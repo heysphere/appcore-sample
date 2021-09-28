@@ -1,5 +1,6 @@
 import me.sphere.unicorn.buildsrc.Android
 import me.sphere.unicorn.buildsrc.Libs
+import me.sphere.unicorn.buildsrc.propOrDefault
 
 plugins {
     id("com.android.application")
@@ -19,6 +20,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "GITHUB_TOKEN", propOrDefault("GITHUB_TOKEN", ""))
     }
 
     buildTypes {
@@ -36,7 +39,6 @@ android {
         compose = true
 
         // Disable unused AGP features
-        buildConfig = false
         aidl = false
         renderScript = false
         resValues = false
@@ -87,6 +89,9 @@ dependencies {
     // AppCore
     implementation(project(Libs.AppCore.api))
     implementation(project(Libs.AppCore.apiModels))
+    implementation(project(Libs.AppCore.database))
+    implementation(project(Libs.AppCore.backend0Actors))
+    implementation(project(Libs.AppCore.appcoreAndroid))
 
     androidTestImplementation(Libs.AndroidX.Test.core)
     androidTestImplementation(Libs.AndroidX.Test.runner)
