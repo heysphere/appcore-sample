@@ -34,6 +34,8 @@ dependencies {
     implementation(Libs.AndroidX.datastore)
     implementation(Libs.Utils.timber)
     implementation(Libs.Square.okhttp)
+    implementation(Libs.SqlDatabase.requerySqlite)
+    implementation(Libs.SqlDatabase.sqldelightDriver)
 
     // AppCore
     implementation(project(Libs.AppCore.api))

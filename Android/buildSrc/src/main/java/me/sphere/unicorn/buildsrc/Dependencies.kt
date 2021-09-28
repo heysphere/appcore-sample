@@ -97,11 +97,17 @@ object Libs {
     object AppCore {
         const val api = ":appcore-api"
         const val apiModels = ":appcore-api-models"
-
+        const val appcoreAndroid = ":appcore-android"
         const val database = ":appcore-database"
+        const val backend0Actors = ":appcore-actors-backend0"
         const val spiDatabase = ":appcore-spi-database"
         const val spiNetwork = ":appcore-spi-network"
         const val spiLogging = ":appcore-spi-logging"
+    }
+
+    object SqlDatabase {
+        const val sqldelightDriver = "com.squareup.sqldelight:android-driver:1.5.0"
+        const val requerySqlite = "com.github.requery:sqlite-android:3.36.0"
     }
 
     object Coil {
