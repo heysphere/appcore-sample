@@ -1,0 +1,74 @@
+diff --git a/Android/app/src/main/java/me/sphere/unicorn/di/AppCoreModule.kt b/Android/app/src/main/java/me/sphere/unicorn/di/AppCoreModule.kt
+new file mode 100644
+index 0000000..afc3335
+--- /dev/null
++++ b/Android/app/src/main/java/me/sphere/unicorn/di/AppCoreModule.kt
+@@ -0,0 +1,67 @@
++package me.sphere.unicorn.di
++
++import android.content.Context
++import android.os.Environment
++import dagger.Module
++import me.sphere.appcore.SphereStore
++import me.sphere.appcore.SphereStoreBuilder
++import me.sphere.appcore.SqlDatabaseProvider
++import me.sphere.appcore.makeStore
++import me.sphere.logging.Logger
++import me.sphere.models.BackendEnvironmentType
++import me.sphere.network.AgentHTTPClient
++import okhttp3.OkHttpClient
++
++@Module
++abstract class AppCoreModule {
++    fun agentHttpClient(
++        okHttpClient: OkHttpClient,
++        environment: Environment,
++        networkObserver: NetworkObserver
++    ): AgentHTTPClient =
++        AgentHTTPClientImpl(okHttpClient, networkObserver, environment.backendUrl)
++
++
++    fun graphQLStoreActorsBuilder(
++        httpClient: AgentHTTPClient,
++        firestoreGateway: ChatFirestoreGateway,
++        logger: Logger
++    ): GraphQLStoreActorsBuilder = GraphQLStoreActorsBuilder(
++        httpClient,
++        firestoreGateway,
++        logger,
++        isEventEnabled = true,
++        isAnonymousQuestionsEnabled = isFeatureEnabled(FeatureFlag.ANONYMOUS_QUESTION),
++    )
++
++    fun sqlDatabaseProvider(context: Context): SqlDatabaseProvider {
++        return SqlDatabaseProviderImpl(context)
++    }
++
++    fun preferenceStoreImpl(): PreferenceStoreImpl
++
++    fun sphereStoreOwner(
++        environmentType: BackendEnvironmentType,
++        accountStorage: AccountStorage,
++        sqlDatabaseProvider: SqlDatabaseProvider,
++        firestoreActors: FirestoreStoreActorsBuilder,
++        graphQLStoreActors: GraphQLStoreActorsBuilder,
++        preferenceStore: PreferenceStoreImpl,
++        httpClient: AgentHTTPClient,
++        logger: Logger
++    ): SphereStore {
++        val storeActorBuilders: List<StoreActorBuilder> =
++            listOf(firestoreActors, graphQLStoreActors)
++
++
++
++        return SphereStoreBuilder(
++            environmentType,
++            storeActorBuilders,
++            sqlDatabaseProvider,
++            preferenceStore,
++            httpClient,
++            logger,
++        ).makeStore("github tokenn")
++    }
++}
+\ No newline at end of file

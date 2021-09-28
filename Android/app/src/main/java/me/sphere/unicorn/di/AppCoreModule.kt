@@ -12,11 +12,11 @@ import me.sphere.appcore.SqlDatabaseProvider
 import me.sphere.appcore.makeStore
 import me.sphere.appcore.rest.Backend0StoreActorsBuilder
 import me.sphere.logging.Logger
-import me.sphere.network.AgentHTTPClient
+import me.sphere.network.HTTPClient
 import me.sphere.unicorn.BuildConfig
 import me.sphere.unicorn.environment.Environment
 import me.spjere.appcore.android.logging.AppCoreLoggingBackend
-import me.spjere.appcore.android.network.AgentHTTPClientImpl
+import me.spjere.appcore.android.network.HTTPClientImpl
 import me.spjere.appcore.android.network.NetworkObserver
 import me.spjere.appcore.android.preference.PreferenceStoreImpl
 import me.spjere.appcore.android.sql.SqlDatabaseProviderImpl
@@ -30,27 +30,26 @@ object AppCoreModule {
     @Provides
     @Singleton
     fun environment() = Environment(
-        backendUrl = BuildConfig.GITHUB_API_URL,
-        githubToken =BuildConfig.GITHUB_TOKEN
+        backendUrl = "https://api.github.com",
+        githubToken = BuildConfig.GITHUB_TOKEN
     )
 
     @Provides
     @Singleton
-    fun agentHttpClient(
+    fun httpClient(
         okHttpClient: OkHttpClient,
         environment: Environment,
         networkObserver: NetworkObserver
-    ): AgentHTTPClient =
-        AgentHTTPClientImpl(okHttpClient, networkObserver, environment.backendUrl)
+    ): HTTPClient = HTTPClientImpl(okHttpClient, networkObserver, environment.backendUrl)
 
     @Provides
     @Singleton
-    fun logger(): Logger = Logger(true, AppCoreLoggingBackend())
+    fun logger(): Logger = Logger(isErrorEnabled = true, AppCoreLoggingBackend())
 
     @Provides
     @Singleton
     fun backend0StoreActorsBuilder(
-        httpClient: AgentHTTPClient,
+        httpClient: HTTPClient,
         logger: Logger
     ): Backend0StoreActorsBuilder = Backend0StoreActorsBuilder(
         httpClient,
@@ -72,7 +71,7 @@ object AppCoreModule {
         sqlDatabaseProvider: SqlDatabaseProvider,
         backend0StoreActorsBuilder: Backend0StoreActorsBuilder,
         preferenceStore: PreferenceStoreImpl,
-        httpClient: AgentHTTPClient,
+        httpClient: HTTPClient,
         logger: Logger,
         environment: Environment
     ): SphereStore {

@@ -17,11 +17,11 @@ import java.security.cert.CertificateException
 import javax.net.ssl.SSLHandshakeException
 import kotlin.coroutines.resumeWithException
 
-class AgentHTTPClientImpl(
+class HTTPClientImpl(
     private val okHttpClient: OkHttpClient,
     private val networkObserver: NetworkObserver,
     host: String
-) : AgentHTTPClient {
+) : HTTPClient {
 
     override suspend fun request(request: HTTPRequest<String>): HTTPResponse {
         val okHttpRequest = buildOkHttpRequest(request)
@@ -61,10 +61,6 @@ class AgentHTTPClientImpl(
     }
 
     override suspend fun webSocket(request: HTTPRequest<Unit>, protocol: String): WebSocketConnection {
-        TODO("Web sockets are not used in the example")
-    }
-
-    override suspend fun agentAuthToken(): String {
         TODO("Web sockets are not used in the example")
     }
 
