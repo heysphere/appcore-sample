@@ -3,6 +3,7 @@ package me.sphere.appcore.rest.notifications
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.Json
 import me.sphere.logging.Logger
 import me.sphere.network.*
 import me.sphere.sqldelight.SqlDatabaseGateway
@@ -20,7 +21,7 @@ internal class NotificationReconciliationActor(
     override suspend fun fetch(context: FetchContext): FetchResult {
         val request = HTTPRequest(
             method = HTTPRequest.Method.GET,
-            resource = Absolute("https://api.github.com/notifications"),
+            resource = API("notifications"),
             urlQuery = mapOf(
                 "page" to context.start.toString(),
                 "per_page" to context.pageSize.toString(),
@@ -28,13 +29,13 @@ internal class NotificationReconciliationActor(
             headers = mapOf(
                 "Authorization" to "Bearer ${storeScope.gitHubAccessToken}"
             ),
-            body = ""
+            body = null
         )
-
         val result = httpClient.request(
             request,
             requestSerializationStrategy = String.serializer(),
-            responseSerializationStrategy = ListSerializer(APINotification.serializer())
+            responseSerializationStrategy = ListSerializer(APINotification.serializer()),
+            json = Json { ignoreUnknownKeys = true }
         )
 
         database.transaction {

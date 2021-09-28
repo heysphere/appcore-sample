@@ -42,5 +42,6 @@ allprojects {
         configureAppCoreRepositories()
         mavenCentral()
         google()
+        maven("https://jitpack.io")
     }
 }

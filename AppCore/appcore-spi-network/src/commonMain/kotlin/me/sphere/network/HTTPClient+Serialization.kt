@@ -3,20 +3,21 @@ package me.sphere.network
 import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
 
-suspend fun <RequestBody, ResponseBody> HTTPClient.request(
+suspend fun <RequestBody : Any, ResponseBody> HTTPClient.request(
     request: HTTPRequest<RequestBody>,
     requestSerializationStrategy: SerializationStrategy<RequestBody>,
-    responseSerializationStrategy: DeserializationStrategy<ResponseBody>
+    responseSerializationStrategy: DeserializationStrategy<ResponseBody>,
+    json: Json = Json,
 ): ResponseBody
     = request(
         request = request,
-        requestMapper = { Json.encodeToString(requestSerializationStrategy, it) },
-        responseMapper = { Json.decodeFromString(responseSerializationStrategy, it) }
+        requestMapper = { it?.let { json.encodeToString(requestSerializationStrategy, it) }},
+        responseMapper = { json.decodeFromString(responseSerializationStrategy, it) }
     )
 
-suspend fun <RequestBody, ResponseBody> HTTPClient.request(
+suspend fun <RequestBody: Any, ResponseBody> HTTPClient.request(
     request: HTTPRequest<RequestBody>,
-    requestMapper: (RequestBody) -> String,
+    requestMapper: (RequestBody?) -> String?,
     responseMapper: (String) -> ResponseBody
 ): ResponseBody {
 

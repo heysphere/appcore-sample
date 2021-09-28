@@ -4,7 +4,7 @@ import me.sphere.logging.LoggingBackend
 import me.sphere.logging.LoggingLevel
 import timber.log.Timber
 
-class AppCoreLoggingBackend() : LoggingBackend {
+class AppCoreLoggingBackend : LoggingBackend {
 
     override fun log(level: LoggingLevel, message: String) {
         when (level) {

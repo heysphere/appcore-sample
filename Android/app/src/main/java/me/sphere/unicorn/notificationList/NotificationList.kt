@@ -6,11 +6,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import me.sphere.unicorn.ui.theme.MyTheme
 import me.sphere.unicorn.R
 import me.sphere.unicorn.ui.components.InsetAwareTopAppBar
@@ -19,9 +21,8 @@ import me.sphere.unicorn.ui.components.InsetAwareTopAppBar
 fun NotificationList(
     openNotificationDetails: (String) -> Unit
 ) {
-
-//    val notificationListViewModel = hiltViewModel<NotificationListViewModel>()
-//    val state by notificationListViewModel.stateFlow.collectAsState()
+    val notificationListViewModel = hiltViewModel<NotificationListViewModel>()
+    val state = notificationListViewModel.stateFlow.collectAsState()
 
     Scaffold(topBar = {
         InsetAwareTopAppBar(

@@ -17,11 +17,11 @@ import java.security.cert.CertificateException
 import javax.net.ssl.SSLHandshakeException
 import kotlin.coroutines.resumeWithException
 
-class HTTPClientImpl(
+class AgentHTTPClientImpl(
     private val okHttpClient: OkHttpClient,
     private val networkObserver: NetworkObserver,
     host: String
-) : HTTPClient {
+) : AgentHTTPClient {
 
     override suspend fun request(request: HTTPRequest<String>): HTTPResponse {
         val okHttpRequest = buildOkHttpRequest(request)
@@ -61,15 +61,20 @@ class HTTPClientImpl(
     }
 
     override suspend fun webSocket(request: HTTPRequest<Unit>, protocol: String): WebSocketConnection {
-        TODO("Not yet implemented")
+        TODO("Web sockets are not used in the example")
+    }
+
+    override suspend fun agentAuthToken(): String {
+        TODO("Web sockets are not used in the example")
     }
 
     private fun buildOkHttpRequest(request: HTTPRequest<String>): Request {
         val httpUrl = buildUrl(request.resource, request.urlQuery)
         val mediaType = (request.headers?.get("content-type") ?: "application/json").toMediaType()
+        val httpRequestBody = request.body
         val requestBuilder = Request.Builder()
             .url(httpUrl)
-            .method(request.method.name, request.body.toRequestBody(mediaType))
+            .method(request.method.name, httpRequestBody?.toRequestBody(mediaType))
         request.headers?.forEach { header ->
             requestBuilder.addHeader(header.key, header.value)
         }
