@@ -33,16 +33,18 @@ fun NotificationList(
         LazyColumn(
             modifier = modifier
         ) {
-            for (i in 1..25) {
-                item {
+            state.value.state?.items?.forEach { notification ->
+                item(key = notification.notificationId) {
                     NotificationItem(
                         modifier = modifier,
-                        id = i.toString(),
-                        owner = "owner",
-                        repository = "repostory #$i",
-                        description = "some text goes here #$i",
+                        id = notification.notificationId,
+                        subjectId = notification.subjectId,
+                        unread = notification.unread,
+                        repository = notification.repositoryName,
+                        description = notification.title,
                         openNotificationDetails = { openNotificationDetails(it) }
                     )
+                    Divider()
                 }
             }
         }
@@ -53,7 +55,8 @@ fun NotificationList(
 private fun NotificationItem(
     modifier: Modifier,
     id: String,
-    owner: String,
+    subjectId: String,
+    unread: Boolean,
     repository: String,
     description: String,
     openNotificationDetails: (String) -> Unit
@@ -67,7 +70,8 @@ private fun NotificationItem(
         Canvas(
             modifier = Modifier.size(16.dp),
             onDraw = {
-                drawCircle(color = Color.Magenta)
+                if (unread)
+                    drawCircle(color = Color.Magenta)
             }
         )
 
@@ -77,7 +81,7 @@ private fun NotificationItem(
                 .padding(horizontal = 8.dp)
         ) {
             Text(
-                text = "$owner/$repository",
+                text = repository,
                 style = MaterialTheme.typography.caption
             )
             Text(
@@ -86,7 +90,7 @@ private fun NotificationItem(
             )
         }
         Text(
-            text = "#$id",
+            text = "#$subjectId",
             style = MaterialTheme.typography.caption,
         )
     }
