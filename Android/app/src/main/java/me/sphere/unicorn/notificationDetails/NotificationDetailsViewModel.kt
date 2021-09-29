@@ -5,6 +5,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import me.sphere.appcore.dataSource.DataSource
+import me.sphere.appcore.usecases.NotificationInfo
+import me.sphere.appcore.usecases.NotificationInfoUseCase
 import me.sphere.flowredux.Effect.Companion.withEffect
 import me.sphere.flowredux.Effect.Companion.withoutEffect
 import me.sphere.flowredux.Reducer
@@ -17,52 +20,48 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationDetailsViewModel @Inject constructor(
-     savedStateHandle: SavedStateHandle
+     savedStateHandle: SavedStateHandle,
+     notificationInfoUseCase: NotificationInfoUseCase
 ) : StoreViewModel<NotificationDetailsState, NotificationDetailsAction>() {
 
     private val arg = savedStateHandle.toNotificationDetailsArg()
 
     override val store: Store<NotificationDetailsState, NotificationDetailsAction> = Store(
-        initialState = NotificationDetailsState(notificationId = arg.notificationId, 0),
-        reducer = SphereInfoReducer(),
+        initialState = NotificationDetailsState(),
+        reducer = SphereInfoReducer(notificationInfoUseCase.info(arg.notificationId)),
         dispatcher = Dispatchers.Main.immediate,
-        initialAction = NotificationDetailsAction.LoadDummyTimer
+        initialAction = NotificationDetailsAction.LoadNotificationInfo
     )
 }
 
-private class SphereInfoReducer() : Reducer<NotificationDetailsState, NotificationDetailsAction> {
+private class SphereInfoReducer(
+    private val notificationInfoDataSource: DataSource<NotificationInfo>
+) : Reducer<NotificationDetailsState, NotificationDetailsAction> {
 
     override fun reduce(
         state: NotificationDetailsState,
         action: NotificationDetailsAction
     ): Result<NotificationDetailsState, NotificationDetailsAction> {
         return when (action) {
-            is NotificationDetailsAction.LoadDummyTimer -> state.withEffect(loadInfiniteCounter())
-            is SideEffects.InfiniteLoaderValue -> state.copy(counter = action.count).withoutEffect()
+            is NotificationDetailsAction.LoadNotificationInfo -> state.withEffect(loadNotificationInfo())
+            is SideEffects.NotificationInfoLoaded -> state.copy(info = action.info).withoutEffect()
         }
     }
 
-    private fun loadInfiniteCounter() = createInfiniteCounter().map(SideEffects::InfiniteLoaderValue)
-
-    private fun createInfiniteCounter() = flow {
-        val count = AtomicInteger()
-        while (true) {
-            delay(1000)
-            emit(count.getAndIncrement())
-        }
+    private fun loadNotificationInfo() = notificationInfoDataSource.state.map {
+        SideEffects.NotificationInfoLoaded(it)
     }
 }
 
 data class NotificationDetailsState(
-    val notificationId: String,
-    val counter: Int
+    val info : DataSource.State<NotificationInfo>? = null
 )
 
 sealed class NotificationDetailsAction {
-    object LoadDummyTimer : NotificationDetailsAction()
+    object LoadNotificationInfo : NotificationDetailsAction()
 }
 
 private sealed class SideEffects : NotificationDetailsAction() {
 
-    data class InfiniteLoaderValue(val count: Int) : SideEffects()
+    data class NotificationInfoLoaded(val info : DataSource.State<NotificationInfo>) : SideEffects()
 }
