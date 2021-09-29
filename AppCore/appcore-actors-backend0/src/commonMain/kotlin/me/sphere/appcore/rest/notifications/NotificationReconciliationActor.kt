@@ -9,7 +9,7 @@ import me.sphere.network.*
 import me.sphere.sqldelight.SqlDatabaseGateway
 import me.sphere.sqldelight.StoreScope
 import me.sphere.sqldelight.operations.PagingReconciliationActor
-import me.sphere.sqldelight.operations.notificaitons.NotificationReconciliation
+import me.sphere.sqldelight.operations.notifications.NotificationReconciliation
 
 internal class NotificationReconciliationActor(
     private val httpClient: HTTPClient,
