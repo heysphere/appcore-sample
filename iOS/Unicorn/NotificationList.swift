@@ -2,7 +2,7 @@ import SwiftUI
 import AppCore
 import Combine
 
-final class NotificationListViewModel {
+final class NotificationListViewModel: ObservableObject {
   typealias State = PagingState<AppCoreObjC.Notification>
   @Published var notificationState = State(items: [], status: .loading)
 
@@ -25,7 +25,7 @@ final class NotificationListViewModel {
 
 struct NotificationList: View {
   @State private var activeDetail: AppCoreObjC.Notification?
-  private let viewModel: NotificationListViewModel
+  @ObservedObject private var viewModel: NotificationListViewModel
 
   init(viewModel: NotificationListViewModel) {
     self.viewModel = viewModel
@@ -36,7 +36,9 @@ struct NotificationList: View {
     case .loading, .hasMore, .failed:
       ProgressView()
         .progressViewStyle(CircularProgressViewStyle())
-    default:
+    case .endOfCollection where viewModel.notificationState.items.isEmpty:
+      Text("No notifications")
+    case .endOfCollection:
       List {
         ForEach(viewModel.notificationState.items) { notification in
           Button {
@@ -62,6 +64,8 @@ struct NotificationList: View {
         NotificationInfo()
       }
       .navigationTitle(Text("Notifications"))
+    default:
+      Text("Unknown")
     }
   }
 
