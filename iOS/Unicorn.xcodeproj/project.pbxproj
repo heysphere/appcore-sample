@@ -10,6 +10,7 @@
 		842AC4F426FB7ABB0051CA87 /* AppCorePreferenceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842AC4F326FB7ABB0051CA87 /* AppCorePreferenceStore.swift */; };
 		842AC4F626FB7B7A0051CA87 /* AppCoreLoggingBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842AC4F526FB7B7A0051CA87 /* AppCoreLoggingBackend.swift */; };
 		842AC4F826FB7BE10051CA87 /* UIApplication+BackgroundTaskRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842AC4F726FB7BE10051CA87 /* UIApplication+BackgroundTaskRunner.swift */; };
+		842AC4FA270482570051CA87 /* EmptyBackgroundTaskRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842AC4F9270482570051CA87 /* EmptyBackgroundTaskRunner.swift */; };
 		9AFD423526DFB040006380F9 /* UnicornApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFD423426DFB040006380F9 /* UnicornApp.swift */; };
 		9AFD423726DFB040006380F9 /* NotificationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFD423626DFB040006380F9 /* NotificationList.swift */; };
 		9AFD423926DFB042006380F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AFD423826DFB042006380F9 /* Assets.xcassets */; };
@@ -78,6 +79,7 @@
 		842AC4F326FB7ABB0051CA87 /* AppCorePreferenceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCorePreferenceStore.swift; sourceTree = "<group>"; };
 		842AC4F526FB7B7A0051CA87 /* AppCoreLoggingBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoreLoggingBackend.swift; sourceTree = "<group>"; };
 		842AC4F726FB7BE10051CA87 /* UIApplication+BackgroundTaskRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+BackgroundTaskRunner.swift"; sourceTree = "<group>"; };
+		842AC4F9270482570051CA87 /* EmptyBackgroundTaskRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBackgroundTaskRunner.swift; sourceTree = "<group>"; };
 		9AFD423126DFB040006380F9 /* Unicorn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unicorn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AFD423426DFB040006380F9 /* UnicornApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnicornApp.swift; sourceTree = "<group>"; };
 		9AFD423626DFB040006380F9 /* NotificationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationList.swift; sourceTree = "<group>"; };
@@ -141,12 +143,12 @@
 			isa = PBXGroup;
 			children = (
 				9AFD427326DFCC21006380F9 /* SwiftUI */,
-				9AFD426826DFB2E9006380F9 /* Unicorn.entitlements */,
 				9AFD423426DFB040006380F9 /* UnicornApp.swift */,
 				9AFD423626DFB040006380F9 /* NotificationList.swift */,
 				9AFD427126DFC852006380F9 /* NotificationInfo.swift */,
 				9AFD426F26DFC514006380F9 /* NotificationRow.swift */,
 				9AFD423826DFB042006380F9 /* Assets.xcassets */,
+				9AFD426826DFB2E9006380F9 /* Unicorn.entitlements */,
 				9AFD423D26DFB042006380F9 /* Info.plist */,
 				9AFD423A26DFB042006380F9 /* Preview Content */,
 			);
@@ -165,11 +167,12 @@
 			isa = PBXGroup;
 			children = (
 				9AFD425C26DFB285006380F9 /* AppCore.swift */,
-				9AFD426D26DFBA06006380F9 /* DataSourceState.swift */,
-				9AFD426926DFB354006380F9 /* CombineBridging.swift */,
-				9AFD426B26DFB75A006380F9 /* KotlinThrowable+Error.swift */,
-				842AC4F326FB7ABB0051CA87 /* AppCorePreferenceStore.swift */,
 				842AC4F526FB7B7A0051CA87 /* AppCoreLoggingBackend.swift */,
+				842AC4F326FB7ABB0051CA87 /* AppCorePreferenceStore.swift */,
+				9AFD426926DFB354006380F9 /* CombineBridging.swift */,
+				9AFD426D26DFBA06006380F9 /* DataSourceState.swift */,
+				842AC4F9270482570051CA87 /* EmptyBackgroundTaskRunner.swift */,
+				9AFD426B26DFB75A006380F9 /* KotlinThrowable+Error.swift */,
 				842AC4F726FB7BE10051CA87 /* UIApplication+BackgroundTaskRunner.swift */,
 			);
 			path = AppCore;
@@ -344,6 +347,7 @@
 				9AFD426A26DFB354006380F9 /* CombineBridging.swift in Sources */,
 				842AC4F826FB7BE10051CA87 /* UIApplication+BackgroundTaskRunner.swift in Sources */,
 				842AC4F426FB7ABB0051CA87 /* AppCorePreferenceStore.swift in Sources */,
+				842AC4FA270482570051CA87 /* EmptyBackgroundTaskRunner.swift in Sources */,
 				842AC4F626FB7B7A0051CA87 /* AppCoreLoggingBackend.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -27,7 +27,7 @@ struct UnicornApp: App {
         )
         let database = DefaultSqlDatabaseProvider(
             logger: logger,
-            taskRunner: UIApplication.shared
+            taskRunner: EmptyBackgroundTaskRunner()
         )
         let builder = AppCore.SphereStoreBuilder(
             storeActorBuilders: [
