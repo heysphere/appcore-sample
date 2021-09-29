@@ -30,7 +30,10 @@ struct UnicornApp: App {
             connectivityMonitor: httpClient,
             logger: logger
         )
-        self.sphereStore = builder.makeStore(gitHubAccessToken: "123") // TODO
+        guard let token = ProcessInfo.processInfo.environment["gitHubAccessToken"] else {
+            fatalError("GitHub Access token is not set in the environment")
+        }
+        self.sphereStore = builder.makeStore(gitHubAccessToken: token)
     }
 
     var body: some Scene {
