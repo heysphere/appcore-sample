@@ -17,10 +17,10 @@ internal class FetchNotificationInfoOperationActor(
     private val storeScope: StoreScope,
     database: SqlDatabaseGateway,
     logger: Logger
-) : OperationStoreActorBase<FetchNotificationInfoOperation.Input, FetchNotificationInfoOperation.Output>(database, logger, storeScope) {
+) : OperationStoreActorBase<FetchNotificationInfoOperation.Input, Unit>(database, logger, storeScope) {
     override val definition = FetchNotificationInfoOperation
 
-    override suspend fun perform(input: FetchNotificationInfoOperation.Input): FetchNotificationInfoOperation.Output {
+    override suspend fun perform(input: FetchNotificationInfoOperation.Input) {
         val request = HTTPRequest(
             method = HTTPRequest.Method.GET,
             resource = API("threads/${input.notificationId}"),
@@ -50,7 +50,5 @@ internal class FetchNotificationInfoOperationActor(
                 subjectId = subjectId
             )
         }
-
-        return FetchNotificationInfoOperation.Output(result.id)
     }
 }
