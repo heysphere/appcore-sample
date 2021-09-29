@@ -37,7 +37,19 @@ internal class FetchNotificationInfoOperationActor(
             json = Json { ignoreUnknownKeys = true }
         )
 
-        // TODO save to db
+        database.transaction {
+            val subjectId = result.subject.url.split('/').last()
+
+            database.notificationInfoQueries.upsert(
+                id = result.id,
+                unread = result.unread,
+                reason = result.reason,
+                title = result.subject.title,
+                url = result.subject.url,
+                repositoryFullName = result.repository.full_name,
+                subjectId = subjectId
+            )
+        }
 
         return FetchNotificationInfoOperation.Output(result.id)
     }

@@ -23,7 +23,7 @@ internal fun createNotificationInfoUseCase(
             notificationId = id
         ),
         query = { id ->
-            // TODO
+            database.notificationInfoQueries.get(id)
         },
         mapper = { notification ->
             NotificationInfo(
