@@ -41,10 +41,7 @@ fun SphereStoreBuilder.makeStore(
 
         override val notificationInfoUseCase: NotificationInfoUseCase = createNotificationInfoUseCase(
             database,
-            operationUtils,
-            connectivityMonitor,
-            storeScope,
-            logger
+            operationUtils
         )
 
         override fun destroy() {

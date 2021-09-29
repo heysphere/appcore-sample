@@ -40,7 +40,7 @@ internal class FetchNotificationInfoOperationActor(
         database.transaction {
             val subjectId = result.subject.url.split('/').last()
 
-            database.notificationInfoQueries.upsert(
+            database.notificationQueries.upsert(
                 id = result.id,
                 unread = result.unread,
                 reason = result.reason,

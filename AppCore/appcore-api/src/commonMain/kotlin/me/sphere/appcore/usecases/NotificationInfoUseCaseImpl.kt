@@ -19,7 +19,7 @@ internal fun createNotificationInfoUseCase(
         input = FetchNotificationInfoOperation.Input(
             notificationId = id
         ),
-        query = database.notificationInfoQueries.get(id),
+        query = database.notificationQueries.get(id),
         mapper = { notification ->
             NotificationInfo(
                 notification.id,
