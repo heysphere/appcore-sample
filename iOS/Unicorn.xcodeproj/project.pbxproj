@@ -11,6 +11,7 @@
 		842AC4F626FB7B7A0051CA87 /* AppCoreLoggingBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842AC4F526FB7B7A0051CA87 /* AppCoreLoggingBackend.swift */; };
 		842AC4F826FB7BE10051CA87 /* UIApplication+BackgroundTaskRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842AC4F726FB7BE10051CA87 /* UIApplication+BackgroundTaskRunner.swift */; };
 		842AC4FA270482570051CA87 /* EmptyBackgroundTaskRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842AC4F9270482570051CA87 /* EmptyBackgroundTaskRunner.swift */; };
+		84E5FAEA2705DDB7007A1CA6 /* SphereStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E5FAE92705DDB7007A1CA6 /* SphereStore.swift */; };
 		9AFD423526DFB040006380F9 /* UnicornApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFD423426DFB040006380F9 /* UnicornApp.swift */; };
 		9AFD423726DFB040006380F9 /* NotificationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFD423626DFB040006380F9 /* NotificationList.swift */; };
 		9AFD423926DFB042006380F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AFD423826DFB042006380F9 /* Assets.xcassets */; };
@@ -80,6 +81,7 @@
 		842AC4F526FB7B7A0051CA87 /* AppCoreLoggingBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoreLoggingBackend.swift; sourceTree = "<group>"; };
 		842AC4F726FB7BE10051CA87 /* UIApplication+BackgroundTaskRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+BackgroundTaskRunner.swift"; sourceTree = "<group>"; };
 		842AC4F9270482570051CA87 /* EmptyBackgroundTaskRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBackgroundTaskRunner.swift; sourceTree = "<group>"; };
+		84E5FAE92705DDB7007A1CA6 /* SphereStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SphereStore.swift; sourceTree = "<group>"; };
 		9AFD423126DFB040006380F9 /* Unicorn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unicorn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AFD423426DFB040006380F9 /* UnicornApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnicornApp.swift; sourceTree = "<group>"; };
 		9AFD423626DFB040006380F9 /* NotificationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationList.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 			children = (
 				9AFD427326DFCC21006380F9 /* SwiftUI */,
 				9AFD423426DFB040006380F9 /* UnicornApp.swift */,
+				84E5FAE92705DDB7007A1CA6 /* SphereStore.swift */,
 				9AFD423626DFB040006380F9 /* NotificationList.swift */,
 				9AFD427126DFC852006380F9 /* NotificationInfo.swift */,
 				9AFD426F26DFC514006380F9 /* NotificationRow.swift */,
@@ -333,6 +336,7 @@
 				9AFD427526DFCC31006380F9 /* NavigationSupport.swift in Sources */,
 				9AFD427026DFC514006380F9 /* NotificationRow.swift in Sources */,
 				9AFD423726DFB040006380F9 /* NotificationList.swift in Sources */,
+				84E5FAEA2705DDB7007A1CA6 /* SphereStore.swift in Sources */,
 				9AFD423526DFB040006380F9 /* UnicornApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
