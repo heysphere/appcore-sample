@@ -1,5 +1,6 @@
 package me.sphere.unicorn.notificationList
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
@@ -36,6 +37,7 @@ private class NotifiactionListReducer(
         NotificationListAction.LoadNotifications -> state.withEffect(loadNotifications())
         is SideEffects.NotificationsLoaded -> state.copy(state = action.pagingState).withoutEffect()
         NotificationListAction.LoadNextPage -> {
+            Log.i("PagingReconciliationActor", " VM -> LoadNextPage")
             notificationDataSource.next()
             state.withoutEffect()
         }

@@ -19,11 +19,13 @@ internal class NotificationReconciliationActor(
 ) : PagingReconciliationActor(database, logger, storeScope) {
     override val definition = NotificationReconciliation
     override suspend fun fetch(context: FetchContext): FetchResult {
+        println("PagingReconciliationActor: ${context.start}")
+
         val request = HTTPRequest(
             method = HTTPRequest.Method.GET,
             resource = API("notifications"),
             urlQuery = mapOf(
-                "page" to context.start.toString(),
+                "page" to (context.start / context.pageSize).toString(),
                 "per_page" to context.pageSize.toString(),
             ),
             headers = mapOf(

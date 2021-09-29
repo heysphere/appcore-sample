@@ -19,7 +19,7 @@ import me.sphere.sqldelight.paging.PagingItemQueries
 import kotlin.jvm.JvmInline
 import kotlin.time.Duration
 
-internal fun <Row: Any, Item: Any> pagingDataSource(
+internal fun <Row : Any, Item : Any> pagingDataSource(
     collectionKey: String,
     scope: CoroutineScope,
     reconciliationOp: PagingReconciliationDefinition,
@@ -61,7 +61,7 @@ internal fun <Row: Any, Item: Any> pagingDataSource(
     )
 }
 
-internal class DatabaseUpdateTracking<Row: Any, Timestamp: Comparable<Timestamp>, Item: Any, ItemId: Any>(
+internal class DatabaseUpdateTracking<Row : Any, Timestamp : Comparable<Timestamp>, Item : Any, ItemId : Any>(
     val getUpdateHead: Query<Timestamp>,
     val getUpdatedRows: (RowQueryParams<Timestamp>) -> Query<Row>,
     val getItemIdentifier: (Item) -> ItemId,
@@ -119,7 +119,7 @@ internal class DatabaseUpdateTracking<Row: Any, Timestamp: Comparable<Timestamp>
  * 2. Database live updates — Keep the in-memory working set always up-to-date against the latest database state.
  * 3. Garbage collection — Maintenance tasks to collect orphaned entries.
  */
-private class PagingDataSourceImpl<Row: Any, Item: Any>(
+private class PagingDataSourceImpl<Row : Any, Item : Any>(
     scope: CoroutineScope,
     reconciliationOp: PagingReconciliationDefinition,
     getItem: (String) -> Query<Row>,
@@ -132,7 +132,7 @@ private class PagingDataSourceImpl<Row: Any, Item: Any>(
     logger: Logger,
     connectivityMonitor: ConnectivityMonitor,
     autoRetryInterval: Duration
-): PagingDataSource<Item>() {
+) : PagingDataSource<Item>() {
     override val state: Projection<PagingState<Item>>
         get() = loop.state
             .map { state ->
@@ -165,6 +165,7 @@ private class PagingDataSourceImpl<Row: Any, Item: Any>(
                 is Event.Reload -> State()
 
                 is Event.PrefetchNext -> {
+                    println("PagingReconciliationActor: loop event = $event lookupStatus = ${current.cacheLookupStatus}")
                     // Reconciliation has reached the remote end-of-collection. Logically speaking there is no more
                     // cached items we can load from the database, so we can gracefully ignore this PrefetchNext event.
                     if (current.reconciliationStatus is ReconciliationStatus.EndOfCollection)
@@ -365,9 +366,12 @@ private class PagingDataSourceImpl<Row: Any, Item: Any>(
                     .combinePrevious(null)
                     .map { (startExclusive, endInclusive) ->
                         checkNotNull(endInclusive)
-                        val params = DatabaseUpdateTracking.RowQueryParams(startExclusive, endInclusive)
+                        val params =
+                            DatabaseUpdateTracking.RowQueryParams(startExclusive, endInclusive)
+
                         @Suppress("UNCHECKED_CAST")
-                        val query = databaseUpdateTracking.getUpdatedRows as (DatabaseUpdateTracking.RowQueryParams<Comparable<Nothing>>) -> Query<Row>
+                        val query =
+                            databaseUpdateTracking.getUpdatedRows as (DatabaseUpdateTracking.RowQueryParams<Comparable<Nothing>>) -> Query<Row>
 
                         val items = query(params).executeAsList()
                             .map(mapper)
@@ -379,7 +383,7 @@ private class PagingDataSourceImpl<Row: Any, Item: Any>(
         }
     }
 
-    private data class State<Item: Any>(
+    private data class State<Item : Any>(
         val reconciledItems: List<Item> = emptyList(),
         val provisionalItems: List<Item> = emptyList(),
         val reconciliationStatus: ReconciliationStatus = ReconciliationStatus.Idle,
@@ -397,31 +401,32 @@ private class PagingDataSourceImpl<Row: Any, Item: Any>(
     )
 
     private sealed class ReconciliationStatus {
-        object Idle: ReconciliationStatus()
-        object Failed: ReconciliationStatus()
-        object EndOfCollection: ReconciliationStatus()
-        data class Reconcile(val start: ViewIndex): ReconciliationStatus()
+        object Idle : ReconciliationStatus()
+        object Failed : ReconciliationStatus()
+        object EndOfCollection : ReconciliationStatus()
+        data class Reconcile(val start: ViewIndex) : ReconciliationStatus()
     }
 
     private sealed class CacheLookupStatus {
-        object Idle: CacheLookupStatus()
-        object Exhausted: CacheLookupStatus()
-        data class Lookup(val start: ViewIndex): CacheLookupStatus()
+        object Idle : CacheLookupStatus()
+        object Exhausted : CacheLookupStatus()
+        data class Lookup(val start: ViewIndex) : CacheLookupStatus()
     }
 
-    sealed class Event<out Item: Any> {
-        object PrefetchNext: Event<Nothing>()
-        object Reload: Event<Nothing>()
+    sealed class Event<out Item : Any> {
+        object PrefetchNext : Event<Nothing>()
+        object Reload : Event<Nothing>()
 
-        class AppendProvisionalItems<Item: Any>(val provisionalItems: List<Item>): Event<Item>()
-        class DidReconcileWithRemote<Item: Any>(
+        class AppendProvisionalItems<Item : Any>(val provisionalItems: List<Item>) : Event<Item>()
+        class DidReconcileWithRemote<Item : Any>(
             val freshItems: List<Item>,
             val hasMore: Boolean
-        ): Event<Item>()
-        object DidFailToReconcile: Event<Nothing>()
+        ) : Event<Item>()
 
-        class DbUpdateHeadDidChange(val head: Comparable<*>?): Event<Nothing>()
-        class DidDiscoverUpdatedItems<Item: Any>(val itemsById: Map<Any, Item>): Event<Item>()
+        object DidFailToReconcile : Event<Nothing>()
+
+        class DbUpdateHeadDidChange(val head: Comparable<*>?) : Event<Nothing>()
+        class DidDiscoverUpdatedItems<Item : Any>(val itemsById: Map<Any, Item>) : Event<Item>()
     }
 
     override fun next() {
