@@ -13,13 +13,16 @@ final class NotificationListViewModel: ObservableObject {
     self.useCase = useCase
 
     publisher(for: useCase.notifications().state)
+      .receive(on: DispatchQueue.main)
       .eraseToAnyPublisher()
       .assign(to: \.notificationState, on: self)
       .store(in: &subscriptions)
   }
 
   func next() {
-    useCase.notifications().next()
+    DispatchQueue.main.async {
+      self.useCase.notifications().next()
+    }
   }
 }
 
