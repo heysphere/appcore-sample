@@ -8,7 +8,18 @@ struct UnicornApp: App {
     init() {
         ThrowableUtilsKt.installAppCoreUncaughtExceptionHandler()
 
+        guard let token = ProcessInfo.processInfo.environment["gitHubAccessToken"] else {
+            fatalError("GitHub Access token is not set in the environment")
+        }
+
         let httpClient = AppCore.AgentHTTPClientImpl(defaultHeaders: [:], delegate: nil)
+        httpClient.setEnvironment(
+            environment: AppEnvironment(
+                apiBaseUrl: "https://api.github.com",
+                apiGqlWebSocketUrl: ""
+            )
+        )
+        httpClient.setAuthToken(authToken: token)
 
         let logger = AppCore.Logger(
             isErrorEnabled: true,
@@ -30,9 +41,7 @@ struct UnicornApp: App {
             connectivityMonitor: httpClient,
             logger: logger
         )
-        guard let token = ProcessInfo.processInfo.environment["gitHubAccessToken"] else {
-            fatalError("GitHub Access token is not set in the environment")
-        }
+
         self.sphereStore = builder.makeStore(gitHubAccessToken: token)
     }
 
