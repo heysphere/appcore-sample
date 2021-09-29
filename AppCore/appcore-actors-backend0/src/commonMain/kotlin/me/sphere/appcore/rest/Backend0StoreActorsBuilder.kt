@@ -1,5 +1,6 @@
 package me.sphere.appcore.rest
 
+import me.sphere.appcore.rest.notifications.FetchNotificationInfoOperationActor
 import me.sphere.appcore.rest.notifications.NotificationReconciliationActor
 import me.sphere.logging.Logger
 import me.sphere.network.HTTPClient
@@ -13,6 +14,7 @@ class Backend0StoreActorsBuilder(
     private val logger: Logger,
 ): StoreActorBuilder {
     override fun build(database: SqlDatabaseGateway, storeScope: StoreScope): List<StoreActor> = listOfNotNull(
-        NotificationReconciliationActor(httpClient, storeScope, database, logger)
+        NotificationReconciliationActor(httpClient, storeScope, database, logger),
+        FetchNotificationInfoOperationActor(httpClient, storeScope, database, logger),
     )
 }
