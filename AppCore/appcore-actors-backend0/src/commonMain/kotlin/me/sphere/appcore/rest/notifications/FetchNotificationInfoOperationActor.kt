@@ -17,7 +17,7 @@ internal class FetchNotificationInfoOperationActor(
     private val storeScope: StoreScope,
     database: SqlDatabaseGateway,
     logger: Logger
-) : OperationStoreActorBase<FetchNotificationInfoOperation.Input, Unit>(database, logger, storeScope) {
+): OperationStoreActorBase<FetchNotificationInfoOperation.Input, Unit>(database, logger, storeScope) {
     override val definition = FetchNotificationInfoOperation
 
     override suspend fun perform(input: FetchNotificationInfoOperation.Input) {

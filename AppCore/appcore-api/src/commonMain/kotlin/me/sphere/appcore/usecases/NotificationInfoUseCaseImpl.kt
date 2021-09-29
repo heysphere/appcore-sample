@@ -12,10 +12,7 @@ import me.sphere.sqldelight.operations.notifications.FetchNotificationInfoOperat
 internal fun createNotificationInfoUseCase(
     database: SqlDatabaseGateway,
     operationUtils: OperationUtils,
-    connectivityMonitor: ConnectivityMonitor,
-    storeScope: StoreScope,
-    logger: Logger,
-) = object : NotificationInfoUseCase {
+) = object: NotificationInfoUseCase {
     override fun info(id: String): DataSource<NotificationInfo> = singleDataSource(
         operationUtils = operationUtils,
         operation = FetchNotificationInfoOperation,
