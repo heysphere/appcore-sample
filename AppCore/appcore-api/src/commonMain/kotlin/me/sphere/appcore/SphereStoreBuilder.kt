@@ -1,6 +1,8 @@
 package me.sphere.appcore
 
+import me.sphere.appcore.usecases.NotificationInfoUseCase
 import me.sphere.appcore.usecases.NotificationListUseCase
+import me.sphere.appcore.usecases.createNotificationInfoUseCase
 import me.sphere.appcore.usecases.createNotificationListUseCase
 import me.sphere.appcore.utils.freeze
 import me.sphere.logging.Logger
@@ -29,14 +31,21 @@ fun SphereStoreBuilder.makeStore(
             freeze()
         }
 
-        override val notificationListUseCase: NotificationListUseCase
-            get() = createNotificationListUseCase(
-                database,
-                operationUtils,
-                connectivityMonitor,
-                storeScope,
-                logger
-            )
+        override val notificationListUseCase: NotificationListUseCase = createNotificationListUseCase(
+            database,
+            operationUtils,
+            connectivityMonitor,
+            storeScope,
+            logger
+        )
+
+        override val notificationInfoUseCase: NotificationInfoUseCase = createNotificationInfoUseCase(
+            database,
+            operationUtils,
+            connectivityMonitor,
+            storeScope,
+            logger
+        )
 
         override fun destroy() {
             close()
@@ -44,4 +53,3 @@ fun SphereStoreBuilder.makeStore(
         }
     }
 }
-
