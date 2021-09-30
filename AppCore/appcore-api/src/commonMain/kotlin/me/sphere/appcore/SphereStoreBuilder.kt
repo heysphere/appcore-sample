@@ -27,10 +27,6 @@ fun SphereStoreBuilder.makeStore(
         sqlDatabaseProvider,
         logger
     ), SphereStore {
-        init {
-            freeze()
-        }
-
         override val notificationListUseCase: NotificationListUseCase = createNotificationListUseCase(
             database,
             operationUtils,
@@ -47,6 +43,10 @@ fun SphereStoreBuilder.makeStore(
         override fun destroy() {
             close()
             sqlDatabaseProvider.destroy(databaseName)
+        }
+
+        init {
+            freeze()
         }
     }
 }
