@@ -6,13 +6,13 @@ final class NotificationListViewModel: ObservableObject {
   typealias State = PagingState<AppCoreObjC.Notification>
   @Published var notificationState = State(items: [], status: .loading)
 
-  private let useCase: NotificationListUseCase
+  private let dataSource: PagingDataSource<AppCoreObjC.Notification>
   private var subscriptions = Set<AnyCancellable>()
 
   init(useCase: NotificationListUseCase) {
-    self.useCase = useCase
+    self.dataSource = useCase.notifications()
 
-    publisher(for: useCase.notifications().state)
+    publisher(for: dataSource.state)
       .receive(on: DispatchQueue.main)
       .eraseToAnyPublisher()
       .assign(to: \.notificationState, on: self)
@@ -21,7 +21,7 @@ final class NotificationListViewModel: ObservableObject {
 
   func next() {
     DispatchQueue.main.async {
-      self.useCase.notifications().next()
+      self.dataSource.next()
     }
   }
 }
@@ -80,7 +80,7 @@ struct NotificationList: View {
 struct NotificationList_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-        // TODO
+      // TODO
 //        NotificationList(
 //            viewModel: .init(
 //                useCase:
