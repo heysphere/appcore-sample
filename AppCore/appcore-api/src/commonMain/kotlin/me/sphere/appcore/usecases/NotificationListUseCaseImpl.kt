@@ -29,13 +29,18 @@ internal fun createNotificationListUseCase(
         mapper = { notification ->
             Notification(
                 notification.id,
-                notification.unread,
+                unread = if (notification.optimisticRead) false else notification.unread,
                 notification.title,
                 notification.repositoryFullName,
                 notification.subjectId
             )
         },
         logger = logger,
-        connectivityMonitor = connectivityMonitor
+        connectivityMonitor = connectivityMonitor,
+//        databaseUpdateTracking = DatabaseUpdateTracking(
+//            getUpdateHead = TODO("Not sure what should this query do 🤔"),
+//            getUpdatedRows = { database.notificationQueries.getNotificationMarkedOptimistically() },
+//            getItemIdentifier = { item -> item.notificationId }
+//        )
     )
 }

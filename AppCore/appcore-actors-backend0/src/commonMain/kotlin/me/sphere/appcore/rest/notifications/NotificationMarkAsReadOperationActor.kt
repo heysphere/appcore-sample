@@ -33,9 +33,8 @@ class NotificationMarkAsReadOperationActor(
                     input.notificationId
                 )
             }
-
             runAsync {
-                val request = HTTPRequest(
+                val request = HTTPRequest<Unit>(
                     method = HTTPRequest.Method.PATCH,
                     resource = API("notifications/threads/${input.notificationId}"),
                     urlQuery = null,
@@ -44,17 +43,11 @@ class NotificationMarkAsReadOperationActor(
                     ),
                     body = null
                 )
-
-                httpClient.request(
-                    request,
-                    requestSerializationStrategy = String.serializer(),
-                    responseSerializationStrategy = Unit.serializer(),
-                    json = Json { ignoreUnknownKeys = true }
-                )
+                httpClient.request(request)
             }
 
             onSuccess {
-                database.notificationQueries.deleteNotification(input.notificationId)
+                database.notificationQueries.markAsRead(isUnRead = false, input.notificationId)
             }
 
             onFailure {

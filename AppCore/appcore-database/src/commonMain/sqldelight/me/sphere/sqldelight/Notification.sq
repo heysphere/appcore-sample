@@ -24,8 +24,11 @@ INSERT OR REPLACE INTO Notification (
     subjectId
 ) VALUES (?, ?, ?, ?, ?, ?, ?);
 
+markAsRead:
+UPDATE Notification SET optimisticRead = FALSE, unread = :isUnRead  WHERE id = ?;
+
 markAsReadOptimistically:
 UPDATE Notification SET optimisticRead = :isRead WHERE id = ?;
 
-deleteNotification:
-DELETE FROM Notification WHERE id = ?;
+getNotificationMarkedOptimistically:
+SELECT * FROM Notification WHERE optimisticRead IS TRUE;

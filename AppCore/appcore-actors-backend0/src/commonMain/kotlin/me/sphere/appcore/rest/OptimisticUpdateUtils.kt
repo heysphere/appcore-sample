@@ -1,11 +1,6 @@
 package me.sphere.appcore.rest
 
-import me.sphere.models.chat.ActionableMessagePropsOwner
-import me.sphere.models.chat.MessageActionLocalStatus
 import me.sphere.sqldelight.SqlDatabaseGateway
-import me.sphere.sqldelight.operations.NeedsSuspensionException
-import me.sphere.sqldelight.operations.isConnectivityError
-import me.sphere.sqldelight.operations.chat.MessagePath
 import kotlin.experimental.ExperimentalTypeInference
 
 /**
