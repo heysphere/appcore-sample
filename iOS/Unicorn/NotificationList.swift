@@ -6,11 +6,13 @@ final class NotificationListViewModel: ObservableObject {
   typealias State = PagingState<AppCoreObjC.Notification>
   @Published var notificationState = State(items: [], status: .loading)
 
+  let sphereStore: SphereStore
   private let dataSource: PagingDataSource<AppCoreObjC.Notification>
   private var subscriptions = Set<AnyCancellable>()
 
-  init(useCase: NotificationListUseCase) {
-    self.dataSource = useCase.notifications()
+  init(sphereStore: SphereStore) {
+    self.sphereStore = sphereStore
+    self.dataSource = sphereStore.notificationListUseCase.notifications()
 
     publisher(for: dataSource.state)
       .receive(on: DispatchQueue.main)
@@ -36,9 +38,11 @@ struct NotificationList: View {
 
   var body: some View {
     switch viewModel.notificationState.status {
-    case .loading, .hasMore, .failed:
+    case .loading, .hasMore:
       ProgressView()
         .progressViewStyle(CircularProgressViewStyle())
+    case .failed:
+      Text("Failed to fetch details")
     case .endOfCollection where viewModel.notificationState.items.isEmpty:
       Text("No notifications")
     case .endOfCollection:
@@ -50,21 +54,26 @@ struct NotificationList: View {
             NotificationRow(
               caption: notification.repositoryName,
               title: notification.title,
-              trailingLabel: notification.subjectId
+              trailingLabel: "#\(notification.subjectId)"
             )
           }
         }
         Button(action: loadMore) {
           Text("")
-        }
+        }.hidden()
         .onAppear {
           DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime(uptimeNanoseconds: 10)) {
             self.loadMore()
           }
         }
       }
-      .navigation($activeDetail) { _ in
-        NotificationInfo()
+      .navigation($activeDetail) { info in
+        NotificationInfo(
+          viewModel: .init(
+            sphereStore: viewModel.sphereStore,
+            notificationId: info.notificationId
+          )
+        )
       }
       .navigationTitle(Text("Notifications"))
     default:

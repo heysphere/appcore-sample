@@ -37,7 +37,7 @@ struct NotificationRow_Previews: PreviewProvider {
         title: "This is a very long title",
         trailingLabel: "#1234"
       )
-        .padding()
+      .padding()
     }
 
   }
