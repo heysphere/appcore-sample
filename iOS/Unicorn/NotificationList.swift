@@ -1,26 +1,93 @@
 import SwiftUI
 import AppCore
+import Combine
+
+final class NotificationListViewModel: ObservableObject {
+  typealias State = PagingState<AppCoreObjC.Notification>
+  @Published var notificationState = State(items: [], status: .loading)
+
+  private let dataSource: PagingDataSource<AppCoreObjC.Notification>
+  private var subscriptions = Set<AnyCancellable>()
+
+  init(useCase: NotificationListUseCase) {
+    self.dataSource = useCase.notifications()
+
+    publisher(for: dataSource.state)
+      .receive(on: DispatchQueue.main)
+      .eraseToAnyPublisher()
+      .assign(to: \.notificationState, on: self)
+      .store(in: &subscriptions)
+  }
+
+  func next() {
+    DispatchQueue.main.async {
+      self.dataSource.next()
+    }
+  }
+}
 
 struct NotificationList: View {
-  @State var activeDetail: Int?
+  @State private var activeDetail: AppCoreObjC.Notification?
+  @ObservedObject private var viewModel: NotificationListViewModel
+
+  init(viewModel: NotificationListViewModel) {
+    self.viewModel = viewModel
+  }
 
   var body: some View {
-    List(0 ..< 1024) { item in
-      Button { activeDetail = item } label: {
-        NotificationRow()
+    switch viewModel.notificationState.status {
+    case .loading, .hasMore, .failed:
+      ProgressView()
+        .progressViewStyle(CircularProgressViewStyle())
+    case .endOfCollection where viewModel.notificationState.items.isEmpty:
+      Text("No notifications")
+    case .endOfCollection:
+      List {
+        ForEach(viewModel.notificationState.items) { notification in
+          Button {
+            activeDetail = notification
+          } label: {
+            NotificationRow(
+              caption: notification.repositoryName,
+              title: notification.title,
+              trailingLabel: notification.subjectId
+            )
+          }
+        }
+        Button(action: loadMore) {
+          Text("")
+        }
+        .onAppear {
+          DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime(uptimeNanoseconds: 10)) {
+            self.loadMore()
+          }
+        }
       }
+      .navigation($activeDetail) { _ in
+        NotificationInfo()
+      }
+      .navigationTitle(Text("Notifications"))
+    default:
+      Text("Unknown")
     }
-    .navigation($activeDetail) { _ in
-      NotificationInfo()
-    }
-    .navigationTitle(Text("Notifications"))
+  }
+
+  private func loadMore() {
+    viewModel.next()
   }
 }
 
 struct NotificationList_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      NotificationList()
+      // TODO
+//        NotificationList(
+//            viewModel: .init(
+//                useCase:
+//            )
+//        )
     }
   }
 }
+
+extension AppCoreObjC.Notification: Identifiable {}

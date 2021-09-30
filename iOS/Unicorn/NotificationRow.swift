@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct NotificationRow: View {
+  let caption: String
+  let title: String
+  let trailingLabel: String
+
   var body: some View {
     HStack {
       Circle()
@@ -8,16 +12,16 @@ struct NotificationRow: View {
         .frame(width: 16, height: 16)
 
       VStack(alignment: .leading) {
-        Text("owner/repository")
+        Text(caption)
           .font(.caption)
 
-        Text("This is a very long title")
+        Text(title)
           .font(.body)
       }
 
       Spacer()
 
-      Text("#1234")
+      Text(trailingLabel)
         .font(.caption)
     }
     .padding(.vertical, 8)
@@ -28,7 +32,11 @@ struct NotificationRow: View {
 struct NotificationRow_Previews: PreviewProvider {
   static var previews: some View {
     ScrollView {
-      NotificationRow()
+      NotificationRow(
+        caption: "owner/repository",
+        title: "This is a very long title",
+        trailingLabel: "#1234"
+      )
         .padding()
     }
 

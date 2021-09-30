@@ -21,7 +21,7 @@ internal class NotificationReconciliationActor(
     override suspend fun fetch(context: FetchContext): FetchResult {
         val request = HTTPRequest(
             method = HTTPRequest.Method.GET,
-            resource = API("notifications"),
+            resource = API("/notifications"),
             urlQuery = mapOf(
                 "page" to context.start.toString(),
                 "per_page" to context.pageSize.toString(),
