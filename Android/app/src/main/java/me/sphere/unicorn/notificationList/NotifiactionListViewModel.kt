@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.map
 import me.sphere.appcore.dataSource.PagingDataSource
 import me.sphere.appcore.dataSource.PagingState
 import me.sphere.appcore.usecases.Notification
+import me.sphere.appcore.usecases.NotificationActionUseCase
 import me.sphere.appcore.usecases.NotificationListUseCase
 import me.sphere.flowredux.Effect.Companion.withEffect
 import me.sphere.flowredux.Effect.Companion.withoutEffect
@@ -17,18 +18,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationListViewModel @Inject constructor(
-    useCase: NotificationListUseCase
+    useCase: NotificationListUseCase,
+    notificationActionUseCase: NotificationActionUseCase
 ) : StoreViewModel<NotificationListState, NotificationListAction>() {
     override val store = Store(
         initialState = NotificationListState(),
-        reducer = NotifiactionListReducer(useCase.notifications()),
+        reducer = NotifiactionListReducer(useCase.notifications(), notificationActionUseCase),
         initialAction = NotificationListAction.LoadNotifications,
         dispatcher = Dispatchers.Main.immediate,
     )
 }
 
 private class NotifiactionListReducer(
-    private val notificationDataSource: PagingDataSource<Notification>
+    private val notificationDataSource: PagingDataSource<Notification>,
+    private val notificationActionUseCase: NotificationActionUseCase
 ) : Reducer<NotificationListState, NotificationListAction> {
     override fun reduce(
         state: NotificationListState, action: NotificationListAction
@@ -41,6 +44,10 @@ private class NotifiactionListReducer(
         }
         NotificationListAction.Retry -> {
             notificationDataSource.reload()
+            state.withoutEffect()
+        }
+        is NotificationListAction.MarkAsRead -> {
+            notificationActionUseCase.markAsRead(action.id)
             state.withoutEffect()
         }
     }
@@ -58,6 +65,7 @@ sealed class NotificationListAction {
     object LoadNotifications : NotificationListAction()
     object LoadNextPage : NotificationListAction()
     object Retry : NotificationListAction()
+    data class MarkAsRead(val id: String) : NotificationListAction()
 }
 
 private sealed class SideEffects : NotificationListAction() {
