@@ -7,12 +7,14 @@ final class NotificationListViewModel: ObservableObject {
   @Published var notificationState = State(items: [], status: .loading)
 
   let sphereStore: SphereStore
+  private let dataSource: PagingDataSource<AppCoreObjC.Notification>
   private var subscriptions = Set<AnyCancellable>()
 
   init(sphereStore: SphereStore) {
     self.sphereStore = sphereStore
+    self.dataSource = sphereStore.notificationListUseCase.notifications()
 
-    publisher(for: sphereStore.notificationListUseCase.notifications().state)
+    publisher(for: dataSource.state)
       .receive(on: DispatchQueue.main)
       .eraseToAnyPublisher()
       .assign(to: \.notificationState, on: self)
@@ -21,7 +23,7 @@ final class NotificationListViewModel: ObservableObject {
 
   func next() {
     DispatchQueue.main.async {
-      self.sphereStore.notificationListUseCase.notifications().next()
+      self.dataSource.next()
     }
   }
 }
