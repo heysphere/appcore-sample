@@ -66,7 +66,8 @@ object Libs {
 
         object Lifecycle {
             private const val version = "2.3.1"
-            const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
+            const val viewModelCompose =
+                "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
             const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:${version}"
         }
@@ -77,6 +78,7 @@ object Libs {
             const val runner = "androidx.test:runner:$version"
             const val rules = "androidx.test:rules:$version"
             const val androidxArchTestCore = "androidx.arch.core:core-testing:2.1.0"
+
             object Ext {
                 private const val version = "1.1.2"
                 const val junit = "androidx.test.ext:junit-ktx:$version"
@@ -115,7 +117,9 @@ object Libs {
     }
 
     object Square {
-        const val okhttp = "com.squareup.okhttp3:okhttp:4.9.1"
+        private const val okHttpVersion = "4.9.1"
+        const val okHttp = "com.squareup.okhttp3:okhttp:$okHttpVersion"
+        const val okHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     }
 
     object Utils {

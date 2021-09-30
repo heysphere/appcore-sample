@@ -33,7 +33,7 @@ dependencies {
     implementation(Libs.AndroidX.annotation)
     implementation(Libs.AndroidX.datastore)
     implementation(Libs.Utils.timber)
-    implementation(Libs.Square.okhttp)
+    implementation(Libs.Square.okHttp)
     implementation(Libs.SqlDatabase.requerySqlite)
     implementation(Libs.SqlDatabase.sqldelightDriver)
 

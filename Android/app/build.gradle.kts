@@ -84,6 +84,7 @@ dependencies {
 
     debugImplementation(Libs.AndroidX.Compose.uiTestManifest)
 
+    implementation(Libs.Square.okHttpLoggingInterceptor)
     implementation(project(Libs.FlowRedux))
 
     // AppCore
