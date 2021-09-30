@@ -21,10 +21,9 @@ struct UnicornApp: App {
         NavigationView {
           NotificationList(
             viewModel: .init(
-              useCase: sphereStore.notificationListUseCase
+              sphereStore: sphereStore
             )
           )
-          .environment(\.sphereStore, sphereStore)
         }
         .tabItem {
           Label("Notifications", systemImage: "sparkles")

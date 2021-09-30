@@ -6,13 +6,13 @@ final class NotificationListViewModel: ObservableObject {
   typealias State = PagingState<AppCoreObjC.Notification>
   @Published var notificationState = State(items: [], status: .loading)
 
-  private let useCase: NotificationListUseCase
+  let sphereStore: SphereStore
   private var subscriptions = Set<AnyCancellable>()
 
-  init(useCase: NotificationListUseCase) {
-    self.useCase = useCase
+  init(sphereStore: SphereStore) {
+    self.sphereStore = sphereStore
 
-    publisher(for: useCase.notifications().state)
+    publisher(for: sphereStore.notificationListUseCase.notifications().state)
       .receive(on: DispatchQueue.main)
       .eraseToAnyPublisher()
       .assign(to: \.notificationState, on: self)
@@ -21,7 +21,7 @@ final class NotificationListViewModel: ObservableObject {
 
   func next() {
     DispatchQueue.main.async {
-      self.useCase.notifications().next()
+      self.sphereStore.notificationListUseCase.notifications().next()
     }
   }
 }
@@ -58,15 +58,20 @@ struct NotificationList: View {
         }
         Button(action: loadMore) {
           Text("")
-        }
+        }.hidden()
         .onAppear {
           DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime(uptimeNanoseconds: 10)) {
             self.loadMore()
           }
         }
       }
-      .navigation($activeDetail) { _ in
-        NotificationInfo()
+      .navigation($activeDetail) { info in
+        NotificationInfo(
+          viewModel: .init(
+            sphereStore: viewModel.sphereStore,
+            notificationId: info.notificationId
+          )
+        )
       }
       .navigationTitle(Text("Notifications"))
     default:

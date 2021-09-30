@@ -1,17 +1,6 @@
 import SwiftUI
 import AppCore
 
-struct SphereStoreKey: EnvironmentKey {
-  static var defaultValue: SphereStore? = nil
-}
-
-extension EnvironmentValues {
-  var sphereStore: SphereStore? {
-    get { self[SphereStoreKey.self] }
-    set { self[SphereStoreKey.self] = newValue }
-  }
-}
-
 enum SphereStoreBuilder {
   static func makeStore(gitHubAccessToken token: String) -> SphereStore {
     let httpClient = AppCore.AgentHTTPClientImpl(defaultHeaders: [:], delegate: nil)
