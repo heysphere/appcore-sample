@@ -36,9 +36,11 @@ struct NotificationList: View {
 
   var body: some View {
     switch viewModel.notificationState.status {
-    case .loading, .hasMore, .failed:
+    case .loading, .hasMore:
       ProgressView()
         .progressViewStyle(CircularProgressViewStyle())
+    case .failed:
+      Text("Failed to fetch details")
     case .endOfCollection where viewModel.notificationState.items.isEmpty:
       Text("No notifications")
     case .endOfCollection:
@@ -50,7 +52,7 @@ struct NotificationList: View {
             NotificationRow(
               caption: notification.repositoryName,
               title: notification.title,
-              trailingLabel: notification.subjectId
+              trailingLabel: "#\(notification.subjectId)"
             )
           }
         }
@@ -80,7 +82,7 @@ struct NotificationList: View {
 struct NotificationList_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-        // TODO
+      // TODO
 //        NotificationList(
 //            viewModel: .init(
 //                useCase:
