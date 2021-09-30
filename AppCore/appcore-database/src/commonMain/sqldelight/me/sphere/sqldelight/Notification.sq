@@ -6,7 +6,8 @@ CREATE TABLE Notification (
     "title" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "repositoryFullName" TEXT NOT NULL,
-    "subjectId" TEXT NOT NULL
+    "subjectId" TEXT NOT NULL,
+    "optimisticRead" INTEGER AS Boolean NOT NULL DEFAULT FALSE
 );
 
 get:
@@ -22,3 +23,9 @@ INSERT OR REPLACE INTO Notification (
     repositoryFullName,
     subjectId
 ) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+markAsReadOptimistically:
+UPDATE Notification SET optimisticRead = :isRead WHERE id = ?;
+
+deleteNotification:
+DELETE FROM Notification WHERE id = ?;
