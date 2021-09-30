@@ -1,13 +1,13 @@
 import AppCoreObjC
 
-internal typealias DataSourceStateObjC = AppCoreObjC.DataSourceState
+public typealias DataSourceStateObjC = AppCoreObjC.DataSourceState
 
 public enum DataSourceState<Value> {
   case loading
   case value(Value)
   case failure(Error)
 
-  internal init(_ state: DataSourceStateObjC<Value>) where Value: AnyObject {
+  public init(_ state: DataSourceStateObjC<Value>) where Value: AnyObject {
     switch state {
     case let state as DataSourceStateValue<Value>:
       self = .value(state.value)
