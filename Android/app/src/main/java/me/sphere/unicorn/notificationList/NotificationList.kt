@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.runtime.getValue
 import me.sphere.unicorn.ui.theme.MyTheme
 import me.sphere.unicorn.R
 import me.sphere.unicorn.ui.components.InsetAwareTopAppBar
@@ -22,7 +23,7 @@ fun NotificationList(
     openNotificationDetails: (String) -> Unit
 ) {
     val notificationListViewModel = hiltViewModel<NotificationListViewModel>()
-    val state = notificationListViewModel.stateFlow.collectAsState()
+    val state by notificationListViewModel.stateFlow.collectAsState()
 
     Scaffold(topBar = {
         InsetAwareTopAppBar(
@@ -33,7 +34,7 @@ fun NotificationList(
         LazyColumn(
             modifier = modifier
         ) {
-            state.value.state?.items?.forEach { notification ->
+            state.state?.items?.forEach { notification ->
                 item(key = notification.notificationId) {
                     NotificationItem(
                         modifier = modifier,
