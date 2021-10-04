@@ -22,13 +22,13 @@ class NotificationListViewModel @Inject constructor(
 ) : StoreViewModel<NotificationListState, NotificationListAction>() {
     override val store = Store(
         initialState = NotificationListState(),
-        reducer = NotifiactionListReducer(useCase.notifications()),
+        reducer = NotificationListReducer(useCase.notifications()),
         initialAction = NotificationListAction.LoadNotifications,
         dispatcher = Dispatchers.Main.immediate,
     )
 }
 
-private class NotifiactionListReducer(
+private class NotificationListReducer(
     private val notificationDataSource: PagingDataSource<Notification>
 ) : Reducer<NotificationListState, NotificationListAction> {
     override fun reduce(

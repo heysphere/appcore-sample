@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.placeholder.placeholder
 import me.sphere.appcore.dataSource.PagingStatus
+import androidx.compose.runtime.getValue
 import me.sphere.unicorn.ui.theme.MyTheme
 import me.sphere.unicorn.R
 import me.sphere.unicorn.ui.components.InsetAwareTopAppBar
@@ -24,7 +25,8 @@ fun NotificationList(
     openNotificationDetails: (String) -> Unit
 ) {
     val notificationListViewModel = hiltViewModel<NotificationListViewModel>()
-    val state = notificationListViewModel.stateFlow.collectAsState()
+    val state by notificationListViewModel.stateFlow.collectAsState()
+
     Scaffold(topBar = {
         InsetAwareTopAppBar(
             titleRes = R.string.notification_list_title,
@@ -32,8 +34,8 @@ fun NotificationList(
     }) { innerPadding ->
         val modifier = Modifier.padding(innerPadding)
         val scrollState = rememberLazyListState()
-        val items = state.value.state?.items
-        when (state.value.state?.status) {
+        val items = state.state?.items
+        when (state.state?.status) {
             PagingStatus.LOADING, null ->
                 LazyColumn(
                     modifier = modifier,
@@ -67,7 +69,7 @@ fun NotificationList(
                             Divider()
                         }
                     }
-                    if (state.value.state?.status == PagingStatus.HAS_MORE) {
+                    if (state.state?.status == PagingStatus.HAS_MORE) {
                         item {
                             NotificationItemPlaceholder(
                                 modifier
@@ -83,21 +85,6 @@ fun NotificationList(
                 LaunchedEffect(shouldLoadNextPage) {
                     if (shouldLoadNextPage) {
                         notificationListViewModel.sendAction(NotificationListAction.LoadNextPage)
-                    }
-                }
-            }
-            PagingStatus.FAILED -> {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text("Failed to load notifications")
-                    Button(onClick = {
-                        notificationListViewModel.sendAction(
-                            NotificationListAction.Retry
-                        )
-                    }) {
-                        Text("Retry")
                     }
                 }
             }
