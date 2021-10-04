@@ -88,6 +88,7 @@ fun NotificationList(
                     }
                 }
             }
+            PagingStatus.FAILED -> TODO()
         }
     }
 }
