@@ -165,7 +165,6 @@ private class PagingDataSourceImpl<Row : Any, Item : Any>(
                 is Event.Reload -> State()
 
                 is Event.PrefetchNext -> {
-                    println("PagingReconciliationActor: loop event = $event lookupStatus = ${current.cacheLookupStatus}")
                     // Reconciliation has reached the remote end-of-collection. Logically speaking there is no more
                     // cached items we can load from the database, so we can gracefully ignore this PrefetchNext event.
                     if (current.reconciliationStatus is ReconciliationStatus.EndOfCollection)
