@@ -82,6 +82,7 @@ dependencies {
     kapt(Libs.Hilt.compiler)
 
     implementation(Libs.Coil.coilCompose)
+    implementation(Libs.Utils.timber)
 
     debugImplementation(Libs.AndroidX.Compose.uiTestManifest)
 

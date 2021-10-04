@@ -37,7 +37,6 @@ private class NotifiactionListReducer(
         NotificationListAction.LoadNotifications -> state.withEffect(loadNotifications())
         is SideEffects.NotificationsLoaded -> state.copy(state = action.pagingState).withoutEffect()
         NotificationListAction.LoadNextPage -> {
-            Log.i("PagingReconciliationActor", " VM -> LoadNextPage")
             notificationDataSource.next()
             state.withoutEffect()
         }
