@@ -1,8 +1,6 @@
 package me.sphere.sqldelight.operations
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
 
 abstract class PagingReconciliationDefinition: OperationDefinition<PagingReconciliationDefinition.Input, PagingReconciliationDefinition.Output> {
     final override val inputSerializer = Input.serializer()

@@ -40,15 +40,14 @@ internal class NotificationReconciliationActor(
 
         database.transaction {
             result.forEach {
-
-                val subjectId = it.subject.url.split('/').last()
+                val subjectId = it.subject.url?.split('/')?.last() ?: "0"
 
                 database.notificationQueries.upsert(
                     id = it.id,
                     unread = it.unread,
                     reason = it.reason,
                     title = it.subject.title,
-                    url = it.subject.url,
+                    url = it.subject.url ?: "",
                     repositoryFullName = it.repository.full_name,
                     subjectId = subjectId
                 )
@@ -77,5 +76,5 @@ data class Repository(
 @Serializable
 internal data class NotificationSubject(
     val title: String,
-    val url: String
+    val url: String?
 )
