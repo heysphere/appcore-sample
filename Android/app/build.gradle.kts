@@ -63,6 +63,7 @@ dependencies {
     implementation(Libs.AndroidX.material)
 
     implementation(Libs.Accompanist.insets)
+    implementation(Libs.Accompanist.placeholder)
     implementation(Libs.AndroidX.Activity.activityCompose)
     implementation(Libs.AndroidX.appcompat)
     implementation(Libs.AndroidX.Compose.runtime)
@@ -81,6 +82,7 @@ dependencies {
     kapt(Libs.Hilt.compiler)
 
     implementation(Libs.Coil.coilCompose)
+    implementation(Libs.Utils.timber)
 
     debugImplementation(Libs.AndroidX.Compose.uiTestManifest)
 

@@ -1,5 +1,6 @@
 package me.sphere.unicorn.notificationList
 
+import android.util.Log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map

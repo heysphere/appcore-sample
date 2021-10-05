@@ -4,15 +4,17 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.placeholder.placeholder
+import me.sphere.appcore.dataSource.PagingStatus
 import androidx.compose.runtime.getValue
 import me.sphere.unicorn.ui.theme.MyTheme
 import me.sphere.unicorn.R
@@ -31,23 +33,62 @@ fun NotificationList(
         )
     }) { innerPadding ->
         val modifier = Modifier.padding(innerPadding)
-        LazyColumn(
-            modifier = modifier
-        ) {
-            state.state?.items?.forEach { notification ->
-                item(key = notification.notificationId) {
-                    NotificationItem(
-                        modifier = modifier,
-                        id = notification.notificationId,
-                        subjectId = notification.subjectId,
-                        unread = notification.unread,
-                        repository = notification.repositoryName,
-                        description = notification.title,
-                        openNotificationDetails = { openNotificationDetails(it) }
-                    )
-                    Divider()
+        val scrollState = rememberLazyListState()
+        val items = state.state?.items
+        when (state.state?.status) {
+            PagingStatus.LOADING, null ->
+                LazyColumn(
+                    modifier = modifier,
+                    state = scrollState
+                ) {
+                    repeat((0..20).count()) {
+                        item {
+                            NotificationItemPlaceholder(
+                                modifier
+                            )
+                        }
+                    }
+                }
+            PagingStatus.HAS_MORE,
+            PagingStatus.END_OF_COLLECTION -> {
+                LazyColumn(
+                    modifier = modifier,
+                    state = scrollState
+                ) {
+                    items?.forEach { notification ->
+                        item(key = notification.notificationId) {
+                            NotificationItem(
+                                modifier = modifier,
+                                id = notification.notificationId,
+                                subjectId = notification.subjectId,
+                                unread = notification.unread,
+                                repository = notification.repositoryName,
+                                description = notification.title,
+                                openNotificationDetails = { openNotificationDetails(it) }
+                            )
+                            Divider()
+                        }
+                    }
+                    if (state.state?.status == PagingStatus.HAS_MORE) {
+                        item {
+                            NotificationItemPlaceholder(
+                                modifier
+                            )
+                        }
+                    }
+                }
+                val shouldLoadNextPage by remember {
+                    derivedStateOf {
+                        scrollState.layoutInfo.totalItemsCount > 0 && scrollState.firstVisibleItemIndex >= (scrollState.layoutInfo.totalItemsCount - 10)
+                    }
+                }
+                LaunchedEffect(shouldLoadNextPage) {
+                    if (shouldLoadNextPage) {
+                        notificationListViewModel.sendAction(NotificationListAction.LoadNextPage)
+                    }
                 }
             }
+            PagingStatus.FAILED -> TODO()
         }
     }
 }
@@ -60,7 +101,8 @@ private fun NotificationItem(
     unread: Boolean,
     repository: String,
     description: String,
-    openNotificationDetails: (String) -> Unit
+    openNotificationDetails: (String) -> Unit,
+    textModifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
@@ -75,7 +117,6 @@ private fun NotificationItem(
                     drawCircle(color = Color.Magenta)
             }
         )
-
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -83,18 +124,39 @@ private fun NotificationItem(
         ) {
             Text(
                 text = repository,
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.caption,
+                modifier = textModifier
             )
             Text(
                 text = description,
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.body1,
+                modifier = textModifier
             )
         }
         Text(
             text = "#$subjectId",
             style = MaterialTheme.typography.caption,
+            modifier = textModifier
         )
     }
+}
+
+@Composable
+private fun NotificationItemPlaceholder(
+    modifier: Modifier,
+) {
+    NotificationItem(
+        modifier = modifier,
+        id = "?",
+        subjectId = "",
+        unread = false,
+        repository = "some repo",
+        description = "Test description",
+        openNotificationDetails = {},
+        textModifier = Modifier
+            .padding(bottom = 4.dp)
+            .placeholder(visible = true, color = Color.LightGray),
+    )
 }
 
 @Preview("Light Theme", widthDp = 360, heightDp = 640)

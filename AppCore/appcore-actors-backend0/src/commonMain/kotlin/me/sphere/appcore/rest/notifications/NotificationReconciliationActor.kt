@@ -23,7 +23,7 @@ internal class NotificationReconciliationActor(
             method = HTTPRequest.Method.GET,
             resource = API("/notifications"),
             urlQuery = mapOf(
-                "page" to context.start.toString(),
+                "page" to (context.start / context.pageSize).toString(),
                 "per_page" to context.pageSize.toString(),
             ),
             headers = mapOf(
