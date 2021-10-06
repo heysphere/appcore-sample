@@ -12,6 +12,7 @@ object Libs {
     object Accompanist {
         const val version = "0.16.0"
         const val insets = "com.google.accompanist:accompanist-insets:$version"
+        const val placeholder = "com.google.accompanist:accompanist-placeholder:$version"
     }
 
     object AppCorePlugins {

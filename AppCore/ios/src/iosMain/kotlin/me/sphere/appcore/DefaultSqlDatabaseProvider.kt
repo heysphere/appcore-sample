@@ -112,8 +112,9 @@ class DefaultSqlDatabaseProvider(private val logger: Logger, private val taskRun
         get() = NSUserDefaults.standardUserDefaults.boolForKey("appcore.debug.clearDb")
 
     private fun appContainerDbDir(): NSURL = NSFileManager.defaultManager.run {
-        val appGroupId = NSBundle.mainBundle.objectForInfoDictionaryKey("SphereAppGroupId") as String
-        val url = containerURLForSecurityApplicationGroupIdentifier(appGroupId)!!
+        val appSupportURLs = this.URLsForDirectory(NSApplicationSupportDirectory, NSUserDomainMask) as List<NSURL>
+        val url = appSupportURLs.first()
+            .URLByAppendingPathComponent("me.sphere.sphere.Unicorn", true)!!
             .URLByAppendingPathComponent("database", true)!!
 
         if (debugAlwaysClearDatabase && hasClearedOnceForDebugFlag.compareAndSet(false, true)) {

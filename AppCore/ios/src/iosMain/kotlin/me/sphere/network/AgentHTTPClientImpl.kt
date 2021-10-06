@@ -71,8 +71,12 @@ class AgentHTTPClientImpl(defaultHeaders: Map<Any?, Any>, delegate: NSURLSession
     override suspend fun request(request: HTTPRequest<String>): HTTPResponse {
         return authToken
             .combine(environment) { token, environment ->
-                if (token == null || environment == null) {
-                    throw HTTPServerError.Unauthorized(request)
+                if (token == null) {
+                    throw HTTPClientError.Other("authToken is not set up", request)
+                }
+
+                if (environment == null) {
+                    throw HTTPClientError.Other("environment is not set up", request)
                 }
 
                 makeURLRequest(request, token, environment)

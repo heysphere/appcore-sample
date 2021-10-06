@@ -41,13 +41,13 @@ fun SphereStoreBuilder.makeStore(
         override val notificationActionUseCase: NotificationActionUseCase =
             createNotificationActionUseCase(operationUtils)
 
-        init {
-            freeze()
-        }
-
         override fun destroy() {
             close()
             sqlDatabaseProvider.destroy(databaseName)
+        }
+
+        init {
+            freeze()
         }
     }
 }
