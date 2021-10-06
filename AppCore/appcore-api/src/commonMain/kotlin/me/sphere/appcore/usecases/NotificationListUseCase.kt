@@ -3,7 +3,7 @@ package me.sphere.appcore.usecases
 import me.sphere.appcore.dataSource.PagingDataSource
 
 interface NotificationListUseCase {
-    fun notifications(): PagingDataSource<Notification>
+    fun notifications(shouldShowAll: Boolean): PagingDataSource<Notification>
 }
 
 data class Notification(

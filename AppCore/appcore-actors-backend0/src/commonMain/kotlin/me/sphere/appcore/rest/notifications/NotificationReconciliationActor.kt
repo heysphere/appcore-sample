@@ -10,21 +10,24 @@ import me.sphere.sqldelight.SqlDatabaseGateway
 import me.sphere.sqldelight.StoreScope
 import me.sphere.sqldelight.operations.PagingReconciliationActor
 import me.sphere.sqldelight.operations.notifications.NotificationReconciliation
+import me.sphere.sqldelight.operations.notifications.NotificationRequest
 
 internal class NotificationReconciliationActor(
     private val httpClient: HTTPClient,
     private val storeScope: StoreScope,
     database: SqlDatabaseGateway,
     logger: Logger,
-) : PagingReconciliationActor(database, logger, storeScope) {
+): PagingReconciliationActor<NotificationRequest>(database, logger, storeScope) {
     override val definition = NotificationReconciliation
-    override suspend fun fetch(context: FetchContext): FetchResult {
+
+    override suspend fun <NotificationRequest> fetch(context: FetchContext<NotificationRequest>): FetchResult {
         val request = HTTPRequest(
             method = HTTPRequest.Method.GET,
             resource = API("/notifications"),
             urlQuery = mapOf(
                 "page" to (context.start / context.pageSize).toString(),
                 "per_page" to context.pageSize.toString(),
+                "all" to context.payload.toString() // TODO
             ),
             headers = mapOf(
                 "Authorization" to "Bearer ${storeScope.gitHubAccessToken}"
