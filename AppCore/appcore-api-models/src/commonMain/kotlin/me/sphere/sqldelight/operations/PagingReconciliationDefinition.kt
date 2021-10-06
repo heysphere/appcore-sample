@@ -8,7 +8,6 @@ abstract class PagingReconciliationDefinition<Payload>: OperationDefinition<Pagi
 
     final override val inputSerializer: KSerializer<Input<Payload>>
         get() = Input.serializer(payloadSerializer)
-
     final override val outputSerializer = Output.serializer()
 
     @Serializable

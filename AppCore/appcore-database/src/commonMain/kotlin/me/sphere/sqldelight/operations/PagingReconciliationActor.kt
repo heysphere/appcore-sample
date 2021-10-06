@@ -18,7 +18,7 @@ abstract class PagingReconciliationActor<Payload>(
     @JvmInline
     value class ID(val value: String)
 
-    class FetchContext(val start: Long, val after: ID?, val pageSize: Long)
+    class FetchContext<Payload>(val start: Long, val after: ID?, val pageSize: Long, val payload: Payload)
     sealed class FetchResult {
         class Success(val page: List<ID>): FetchResult()
     }
@@ -27,7 +27,7 @@ abstract class PagingReconciliationActor<Payload>(
     //region Subclass contract
     abstract override val definition: PagingReconciliationDefinition<Payload>
 
-    abstract suspend fun <Payload> fetch(context: FetchContext, payload: Payload): FetchResult
+    abstract suspend fun <Payload> fetch(context: FetchContext<Payload>): FetchResult
     //endregion
 
     override suspend fun perform(input: PagingReconciliationDefinition.Input<Payload>): PagingReconciliationDefinition.Output {
@@ -42,9 +42,9 @@ abstract class PagingReconciliationActor<Payload>(
             false -> null
         }
 
-        val context = FetchContext(input.start, idBeforeStart?.let(::ID), input.pageSize)
+        val context = FetchContext(input.start, idBeforeStart?.let(::ID), input.pageSize, input.payload)
 
-        return when (val result = fetch(context, input.payload)) {
+        return when (val result = fetch(context)) {
             is FetchResult.Success -> {
                 // By default, assume end of collection when the resulting page is smaller than the page size.
                 // Could make this customizable when needed in the future.

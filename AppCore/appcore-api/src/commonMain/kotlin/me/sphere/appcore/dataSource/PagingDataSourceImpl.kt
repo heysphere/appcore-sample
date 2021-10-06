@@ -7,7 +7,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.selects.onTimeout
 import kotlinx.coroutines.selects.select
-import kotlinx.serialization.Serializable
 import me.sphere.appcore.Projection
 import me.sphere.appcore.asProjection
 import me.sphere.appcore.utils.combinePrevious
