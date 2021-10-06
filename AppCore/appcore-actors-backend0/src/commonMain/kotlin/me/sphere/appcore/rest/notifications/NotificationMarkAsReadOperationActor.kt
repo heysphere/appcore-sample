@@ -1,7 +1,6 @@
 package me.sphere.appcore.rest.notifications
 
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.Json
+import kotlinx.datetime.Clock
 import me.sphere.appcore.rest.optimisticAction
 import me.sphere.logging.Logger
 import me.sphere.network.API
@@ -30,7 +29,8 @@ class NotificationMarkAsReadOperationActor(
             optimisticallyApply {
                 database.notificationQueries.markAsReadOptimistically(
                     isRead = true,
-                    input.notificationId
+                    id = input.notificationId,
+                    updatedAt = Clock.System.now()
                 )
             }
             runAsync {
@@ -47,13 +47,18 @@ class NotificationMarkAsReadOperationActor(
             }
 
             onSuccess {
-                database.notificationQueries.markAsRead(isUnRead = false, input.notificationId)
+                database.notificationQueries.markAsRead(
+                    isUnRead = false,
+                    id = input.notificationId,
+                    updatedAt = Clock.System.now()
+                )
             }
 
             onFailure {
                 database.notificationQueries.markAsReadOptimistically(
                     isRead = false,
-                    input.notificationId
+                    id = input.notificationId,
+                    updatedAt = Clock.System.now()
                 )
             }
         }

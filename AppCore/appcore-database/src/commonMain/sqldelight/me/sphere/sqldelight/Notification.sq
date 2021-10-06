@@ -1,3 +1,4 @@
+import kotlinx.datetime.Instant;
 
 CREATE TABLE Notification (
     "id" TEXT PRIMARY KEY NOT NULL,
@@ -7,7 +8,8 @@ CREATE TABLE Notification (
     "url" TEXT NOT NULL,
     "repositoryFullName" TEXT NOT NULL,
     "subjectId" TEXT NOT NULL,
-    "optimisticRead" INTEGER AS Boolean NOT NULL DEFAULT FALSE
+    "optimisticRead" INTEGER AS Boolean NOT NULL DEFAULT FALSE,
+    "updatedAt" BLOB AS Instant NOT NULL
 );
 
 get:
@@ -21,14 +23,18 @@ INSERT OR REPLACE INTO Notification (
     title,
     url,
     repositoryFullName,
-    subjectId
-) VALUES (?, ?, ?, ?, ?, ?, ?);
+    subjectId,
+    updatedAt
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 
 markAsRead:
-UPDATE Notification SET optimisticRead = FALSE, unread = :isUnRead  WHERE id = ?;
+UPDATE Notification SET optimisticRead = FALSE, unread = :isUnRead, updatedAt = :updatedAt  WHERE id = ?;
 
 markAsReadOptimistically:
-UPDATE Notification SET optimisticRead = :isRead WHERE id = ?;
+UPDATE Notification SET optimisticRead = :isRead, updatedAt = :updatedAt WHERE id = ?;
 
 getNotificationMarkedOptimistically:
 SELECT * FROM Notification WHERE optimisticRead IS TRUE;
+
+getNotificationUpdateHead:
+SELECT MAX(updatedAt) FROM Notification;

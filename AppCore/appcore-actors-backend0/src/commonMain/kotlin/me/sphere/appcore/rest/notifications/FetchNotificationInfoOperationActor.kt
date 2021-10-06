@@ -1,5 +1,6 @@
 package me.sphere.appcore.rest.notifications
 
+import kotlinx.datetime.Clock
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import me.sphere.logging.Logger
@@ -17,7 +18,11 @@ internal class FetchNotificationInfoOperationActor(
     private val storeScope: StoreScope,
     database: SqlDatabaseGateway,
     logger: Logger
-): OperationStoreActorBase<FetchNotificationInfoOperation.Input, Unit>(database, logger, storeScope) {
+) : OperationStoreActorBase<FetchNotificationInfoOperation.Input, Unit>(
+    database,
+    logger,
+    storeScope
+) {
     override val definition = FetchNotificationInfoOperation
 
     override suspend fun perform(input: FetchNotificationInfoOperation.Input) {
@@ -47,7 +52,8 @@ internal class FetchNotificationInfoOperationActor(
                 title = result.subject.title,
                 url = result.subject.url,
                 repositoryFullName = result.repository.full_name,
-                subjectId = subjectId
+                subjectId = subjectId,
+                updatedAt = Clock.System.now()
             )
         }
     }

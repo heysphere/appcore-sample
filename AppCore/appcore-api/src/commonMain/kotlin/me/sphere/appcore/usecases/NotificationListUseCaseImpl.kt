@@ -1,13 +1,16 @@
 package me.sphere.appcore.usecases
 
+import me.sphere.appcore.dataSource.DatabaseUpdateTracking
 import me.sphere.appcore.dataSource.PagingDataSource
 import me.sphere.appcore.dataSource.pagingDataSource
 import me.sphere.logging.Logger
+import me.sphere.models.InstantColumnAdapter
 import me.sphere.network.ConnectivityMonitor
 import me.sphere.sqldelight.SqlDatabaseGateway
 import me.sphere.sqldelight.StoreScope
 import me.sphere.sqldelight.operations.OperationUtils
 import me.sphere.sqldelight.operations.notifications.NotificationReconciliation
+import kotlinx.datetime.Instant
 
 internal fun createNotificationListUseCase(
     database: SqlDatabaseGateway,
@@ -37,10 +40,12 @@ internal fun createNotificationListUseCase(
         },
         logger = logger,
         connectivityMonitor = connectivityMonitor,
-//        databaseUpdateTracking = DatabaseUpdateTracking(
-//            getUpdateHead = TODO("Not sure what should this query do 🤔"),
-//            getUpdatedRows = { database.notificationQueries.getNotificationMarkedOptimistically() },
-//            getItemIdentifier = { item -> item.notificationId }
-//        )
+        databaseUpdateTracking = DatabaseUpdateTracking(
+            getUpdateHead = database.notificationQueries.getNotificationUpdateHead { it ->
+                it?.let { InstantColumnAdapter.decode(it) } ?: Instant.DISTANT_PAST
+            },
+            getUpdatedRows = { database.notificationQueries.getNotificationMarkedOptimistically() },
+            getItemIdentifier = { item -> item.notificationId }
+        )
     )
 }
