@@ -1,18 +1,19 @@
 package me.sphere.sqldelight.operations
 
 import kotlinx.datetime.Clock
+import kotlinx.serialization.Serializable
 import me.sphere.logging.Logger
 import me.sphere.sqldelight.StoreScope
 import me.sphere.sqldelight.SqlDatabaseGateway
 import me.sphere.sqldelight.paging.PagingItem
 import kotlin.jvm.JvmInline
 
-abstract class PagingReconciliationActor(
+abstract class PagingReconciliationActor<Payload>(
     database: SqlDatabaseGateway,
     logger: Logger,
     storeScope: StoreScope,
     protected val clock: Clock = Clock.System
-): OperationStoreActorBase<PagingReconciliationDefinition.Input, PagingReconciliationDefinition.Output>(database, logger, storeScope) {
+): OperationStoreActorBase<PagingReconciliationDefinition.Input<Payload>, PagingReconciliationDefinition.Output>(database, logger, storeScope) {
     //region Data types
     @JvmInline
     value class ID(val value: String)
@@ -24,12 +25,12 @@ abstract class PagingReconciliationActor(
     //endregion
 
     //region Subclass contract
-    abstract override val definition: PagingReconciliationDefinition
+    abstract override val definition: PagingReconciliationDefinition<Payload>
 
-    abstract suspend fun fetch(context: FetchContext): FetchResult
+    abstract suspend fun <Payload> fetch(context: FetchContext, payload: Payload): FetchResult
     //endregion
 
-    override suspend fun perform(input: PagingReconciliationDefinition.Input): PagingReconciliationDefinition.Output {
+    override suspend fun perform(input: PagingReconciliationDefinition.Input<Payload>): PagingReconciliationDefinition.Output {
         require(input.start >= 0) { "`start` cannot be negative." }
 
         val idBeforeStart = when (input.start > 0) {
@@ -43,7 +44,7 @@ abstract class PagingReconciliationActor(
 
         val context = FetchContext(input.start, idBeforeStart?.let(::ID), input.pageSize)
 
-        return when (val result = fetch(context)) {
+        return when (val result = fetch(context, input.payload)) {
             is FetchResult.Success -> {
                 // By default, assume end of collection when the resulting page is smaller than the page size.
                 // Could make this customizable when needed in the future.

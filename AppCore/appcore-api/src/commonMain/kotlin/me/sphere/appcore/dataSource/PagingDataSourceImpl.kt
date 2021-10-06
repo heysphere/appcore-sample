@@ -1,3 +1,4 @@
+@file:OptIn(ExperimentalTime::class)
 package me.sphere.appcore.dataSource
 
 import com.squareup.sqldelight.Query
@@ -6,6 +7,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.selects.onTimeout
 import kotlinx.coroutines.selects.select
+import kotlinx.serialization.Serializable
 import me.sphere.appcore.Projection
 import me.sphere.appcore.asProjection
 import me.sphere.appcore.utils.combinePrevious
@@ -18,14 +20,16 @@ import me.sphere.sqldelight.operations.*
 import me.sphere.sqldelight.paging.PagingItemQueries
 import kotlin.jvm.JvmInline
 import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
-internal fun <Row : Any, Item : Any> pagingDataSource(
+internal fun <Row: Any, Item: Any, Payload> pagingDataSource(
     collectionKey: String,
     scope: CoroutineScope,
-    reconciliationOp: PagingReconciliationDefinition,
+    reconciliationOp: PagingReconciliationDefinition<Payload>,
     database: SqlDatabaseGateway,
     operationUtils: OperationUtils,
     pageSize: Long,
+    payload: Payload,
     getItem: (String) -> Query<Row>,
     mapper: (Row) -> Item,
     databaseUpdateTracking: DatabaseUpdateTracking<Row, *, Item, *>? = null,
@@ -54,6 +58,7 @@ internal fun <Row : Any, Item : Any> pagingDataSource(
         database.pagingItemQueries,
         operationUtils,
         pageSize = pageSize,
+        payload = payload,
         databaseUpdateTracking = databaseUpdateTracking,
         logger = logger,
         connectivityMonitor = connectivityMonitor,
@@ -119,15 +124,16 @@ internal class DatabaseUpdateTracking<Row : Any, Timestamp : Comparable<Timestam
  * 2. Database live updates — Keep the in-memory working set always up-to-date against the latest database state.
  * 3. Garbage collection — Maintenance tasks to collect orphaned entries.
  */
-private class PagingDataSourceImpl<Row : Any, Item : Any>(
+private class PagingDataSourceImpl<Row: Any, Item: Any, Payload> constructor(
     scope: CoroutineScope,
-    reconciliationOp: PagingReconciliationDefinition,
+    reconciliationOp: PagingReconciliationDefinition<Payload>,
     getItem: (String) -> Query<Row>,
     mapper: (Row) -> Item,
     collectionId: Long,
     indexQueries: PagingItemQueries,
     operationUtils: OperationUtils,
     pageSize: Long,
+    payload: Payload,
     databaseUpdateTracking: DatabaseUpdateTracking<Row, *, Item, *>?,
     logger: Logger,
     connectivityMonitor: ConnectivityMonitor,
@@ -156,7 +162,7 @@ private class PagingDataSourceImpl<Row : Any, Item : Any>(
             }
             .asProjection()
 
-    @OptIn(ExperimentalStdlibApi::class, kotlinx.coroutines.FlowPreview::class)
+    @OptIn(ExperimentalStdlibApi::class, kotlinx.coroutines.FlowPreview::class, ExperimentalTime::class)
     private val loop = Loop<State<Item>, Event<Item>>(
         parent = scope,
         initial = State(),
@@ -309,7 +315,8 @@ private class PagingDataSourceImpl<Row : Any, Item : Any>(
                             PagingReconciliationDefinition.Input(
                                 collectionId = collectionId,
                                 start = input.start.index.toLong(),
-                                pageSize = pageSize
+                                pageSize = pageSize,
+                                payload = payload
                             )
                         )
                         .first()
