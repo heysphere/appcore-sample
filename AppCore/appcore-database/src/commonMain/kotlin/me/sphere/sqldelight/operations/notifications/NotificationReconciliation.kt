@@ -13,5 +13,5 @@ object NotificationReconciliation: PagingReconciliationDefinition<NotificationRe
 
 @Serializable
 data class NotificationRequest(
-    val all: Boolean,
+    val all: Boolean
 )

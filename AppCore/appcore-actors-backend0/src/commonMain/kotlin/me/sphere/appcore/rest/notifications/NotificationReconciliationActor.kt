@@ -20,14 +20,16 @@ internal class NotificationReconciliationActor(
 ): PagingReconciliationActor<NotificationRequest>(database, logger, storeScope) {
     override val definition = NotificationReconciliation
 
-    override suspend fun <NotificationRequest> fetch(context: FetchContext<NotificationRequest>): FetchResult {
+    override suspend fun <Payload> fetch(context: FetchContext<Payload>): FetchResult {
+        val payload = context.payload as NotificationRequest
+
         val request = HTTPRequest(
             method = HTTPRequest.Method.GET,
             resource = API("/notifications"),
             urlQuery = mapOf(
                 "page" to (context.start / context.pageSize).toString(),
                 "per_page" to context.pageSize.toString(),
-                "all" to context.payload.toString() // TODO
+                "all" to payload.all.toString()
             ),
             headers = mapOf(
                 "Authorization" to "Bearer ${storeScope.gitHubAccessToken}"
