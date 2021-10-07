@@ -8,8 +8,8 @@ struct UnicornApp: App {
   init() {
     ThrowableUtilsKt.installAppCoreUncaughtExceptionHandler()
 
-    guard let token = ProcessInfo.processInfo.environment["gitHubAccessToken"] else {
-      fatalError("GitHub Access token is not set in the environment")
+    guard let token = Bundle.main.object(forInfoDictionaryKey: "GITHUB_ACCESS_TOKEN") as? String else {
+      fatalError("GitHub Access token is not set in `Info.plist`")
     }
 
     self.sphereStore = SphereStoreBuilder.makeStore(gitHubAccessToken: token)
