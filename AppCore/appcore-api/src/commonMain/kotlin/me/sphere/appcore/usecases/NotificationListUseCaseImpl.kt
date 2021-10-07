@@ -26,7 +26,11 @@ internal fun createNotificationListUseCase(
         payload = NotificationRequest(shouldShowAll),
         operationUtils = operationUtils,
         getItem = { id ->
-            database.notificationQueries.get(id)
+            if (shouldShowAll) {
+                database.notificationQueries.get(id)
+            } else {
+                database.notificationQueries.getUnread(id)
+            }
         },
         mapper = { notification ->
             Notification(
