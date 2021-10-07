@@ -23,7 +23,7 @@ internal class FetchNotificationInfoOperationActor(
     override suspend fun perform(input: FetchNotificationInfoOperation.Input) {
         val request = HTTPRequest(
             method = HTTPRequest.Method.GET,
-            resource = API("notifications/threads/${input.notificationId}"),
+            resource = API("/notifications/threads/${input.notificationId}"),
             urlQuery = null,
             headers = mapOf(
                 "Authorization" to "Bearer ${storeScope.gitHubAccessToken}"
