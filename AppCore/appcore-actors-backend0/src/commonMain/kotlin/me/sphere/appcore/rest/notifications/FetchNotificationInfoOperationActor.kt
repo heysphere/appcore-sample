@@ -23,7 +23,7 @@ internal class FetchNotificationInfoOperationActor(
     override suspend fun perform(input: FetchNotificationInfoOperation.Input) {
         val request = HTTPRequest(
             method = HTTPRequest.Method.GET,
-            resource = API("notifications/threads/${input.notificationId}"),
+            resource = API("/notifications/threads/${input.notificationId}"),
             urlQuery = null,
             headers = mapOf(
                 "Authorization" to "Bearer ${storeScope.gitHubAccessToken}"
@@ -38,14 +38,14 @@ internal class FetchNotificationInfoOperationActor(
         )
 
         database.transaction {
-            val subjectId = result.subject.url.split('/').last()
+            val subjectId = result.subject.url?.split('/')?.last() ?: "0"
 
             database.notificationQueries.upsert(
                 id = result.id,
                 unread = result.unread,
                 reason = result.reason,
                 title = result.subject.title,
-                url = result.subject.url,
+                url = result.subject.url ?: "",
                 repositoryFullName = result.repository.full_name,
                 subjectId = subjectId
             )
