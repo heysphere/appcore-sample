@@ -61,6 +61,10 @@ struct NotificationList: View {
       Text("Failed to fetch details")
     case .endOfCollection where viewModel.notificationState.items.isEmpty:
       Text("No notifications")
+        .navigationBarItems(
+          trailing: FilterToggle(isShowingRead: $isShowingRead)
+        )
+        .navigationBarTitle("Notifications")
     case .endOfCollection:
       List {
         ForEach(viewModel.notificationState.items) { notification in
@@ -94,7 +98,7 @@ struct NotificationList: View {
       .navigationBarItems(
         trailing: FilterToggle(isShowingRead: $isShowingRead)
       )
-      .navigationTitle(Text("Notifications"))
+      .navigationBarTitle("Notifications")
     default:
       Text("Unknown")
     }
@@ -105,7 +109,7 @@ struct NotificationList: View {
   }
 }
 
-struct FilterToggle: View {
+private struct FilterToggle: View {
   @Binding var isShowingRead: Bool
 
   var body: some View {
