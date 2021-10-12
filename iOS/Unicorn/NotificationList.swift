@@ -17,7 +17,9 @@ final class NotificationListViewModel: ObservableObject {
     publisher(for: dataSource.state)
       .receive(on: DispatchQueue.main)
       .eraseToAnyPublisher()
-      .assign(to: \.notificationState, on: self)
+      .sink { [weak self] state in
+        self?.notificationState = state
+      }
       .store(in: &subscriptions)
   }
 
