@@ -6,13 +6,20 @@ final class NotificationListViewModel: ObservableObject {
   typealias State = PagingState<AppCoreObjC.Notification>
   @Published var notificationState = State(items: [], status: .loading)
 
+  var shouldShowAll: Bool = false {
+    didSet {
+      reload()
+    }
+  }
+
   let sphereStore: SphereStore
   private let dataSource: PagingDataSource<AppCoreObjC.Notification>
   private var subscriptions = Set<AnyCancellable>()
 
   init(sphereStore: SphereStore) {
     self.sphereStore = sphereStore
-    self.dataSource = sphereStore.notificationListUseCase.notifications()
+    self.dataSource = sphereStore.notificationListUseCase
+      .notifications(shouldShowAll: shouldShowAll)
 
     publisher(for: dataSource.state)
       .receive(on: DispatchQueue.main)
@@ -28,10 +35,17 @@ final class NotificationListViewModel: ObservableObject {
       self.dataSource.next()
     }
   }
+
+  func reload() {
+    DispatchQueue.main.async {
+      self.dataSource.reload()
+    }
+  }
 }
 
 struct NotificationList: View {
   @State private var activeDetail: AppCoreObjC.Notification?
+  @State private var isShowingRead: Bool = false
   @ObservedObject private var viewModel: NotificationListViewModel
 
   init(viewModel: NotificationListViewModel) {
@@ -77,6 +91,9 @@ struct NotificationList: View {
           )
         )
       }
+      .navigationBarItems(
+        trailing: FilterToggle(isShowingRead: $isShowingRead)
+      )
       .navigationTitle(Text("Notifications"))
     default:
       Text("Unknown")
@@ -85,6 +102,14 @@ struct NotificationList: View {
 
   private func loadMore() {
     viewModel.next()
+  }
+}
+
+struct FilterToggle: View {
+  @Binding var isShowingRead: Bool
+
+  var body: some View {
+    Toggle("Show read", isOn: _isShowingRead)
   }
 }
 
