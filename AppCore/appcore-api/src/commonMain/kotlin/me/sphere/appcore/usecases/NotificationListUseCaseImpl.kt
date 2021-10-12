@@ -18,7 +18,7 @@ internal fun createNotificationListUseCase(
     logger: Logger,
 ) = object : NotificationListUseCase {
     override fun notifications(shouldShowAll: Boolean): PagingDataSource<Notification> = pagingDataSource(
-        collectionKey = "notification",
+        collectionKey = "notification+showall=${shouldShowAll}",
         reconciliationOp = NotificationReconciliation,
         scope = storeScope.MainScope,
         database = database,
