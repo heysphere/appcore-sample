@@ -49,18 +49,40 @@ struct NotificationList: View {
   }
 
   var body: some View {
+    VStack {
+      Picker("", selection: $viewModel.shouldShowAll) {
+        Text("All").tag(true)
+        Text("Unread").tag(false)
+      }
+      .pickerStyle(SegmentedPickerStyle())
+
+      ContentView(viewModel: viewModel, activeDetail: $activeDetail)
+    }
+    .navigationBarTitle("Notifications")
+  }
+}
+
+private struct ContentView: View {
+  @Binding private var activeDetail: AppCoreObjC.Notification?
+  @ObservedObject private var viewModel: NotificationListViewModel
+
+  init(viewModel: NotificationListViewModel, activeDetail: Binding<AppCoreObjC.Notification?>) {
+    self.viewModel = viewModel
+    self._activeDetail = activeDetail
+  }
+
+  var body: some View {
     switch viewModel.notificationState.status {
     case .loading, .hasMore:
       ProgressView()
         .progressViewStyle(CircularProgressViewStyle())
+        .frame(maxHeight: .infinity)
     case .failed:
       Text("Failed to fetch details")
+        .frame(maxHeight: .infinity)
     case .endOfCollection where viewModel.notificationState.items.isEmpty:
       Text("No notifications")
-        .navigationBarItems(
-          trailing: FilterToggle(isShowingRead: $viewModel.shouldShowAll)
-        )
-        .navigationBarTitle("Notifications")
+        .frame(maxHeight: .infinity)
     case .endOfCollection:
       List {
         ForEach(viewModel.notificationState.items) { notification in
@@ -91,10 +113,6 @@ struct NotificationList: View {
           )
         )
       }
-      .navigationBarItems(
-        trailing: FilterToggle(isShowingRead: $viewModel.shouldShowAll)
-      )
-      .navigationBarTitle("Notifications")
     default:
       Text("Unknown")
     }
@@ -102,14 +120,6 @@ struct NotificationList: View {
 
   private func loadMore() {
     viewModel.next()
-  }
-}
-
-private struct FilterToggle: View {
-  @Binding var isShowingRead: Bool
-
-  var body: some View {
-    Toggle("Show read", isOn: _isShowingRead)
   }
 }
 
