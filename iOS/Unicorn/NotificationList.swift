@@ -6,28 +6,19 @@ final class NotificationListViewModel: ObservableObject {
   typealias State = PagingState<AppCoreObjC.Notification>
   @Published var notificationState = State(items: [], status: .loading)
 
-  var shouldShowAll: Bool = false {
+  var shouldShowAll = false {
     didSet {
       reload()
     }
   }
 
   let sphereStore: SphereStore
-  private let dataSource: PagingDataSource<AppCoreObjC.Notification>
+  private var dataSource: PagingDataSource<AppCoreObjC.Notification>!
   private var subscriptions = Set<AnyCancellable>()
 
   init(sphereStore: SphereStore) {
     self.sphereStore = sphereStore
-    self.dataSource = sphereStore.notificationListUseCase
-      .notifications(shouldShowAll: shouldShowAll)
-
-    publisher(for: dataSource.state)
-      .receive(on: DispatchQueue.main)
-      .eraseToAnyPublisher()
-      .sink { [weak self] state in
-        self?.notificationState = state
-      }
-      .store(in: &subscriptions)
+    reload()
   }
 
   func next() {
@@ -37,15 +28,20 @@ final class NotificationListViewModel: ObservableObject {
   }
 
   func reload() {
-    DispatchQueue.main.async {
-      self.dataSource.reload()
-    }
+    self.dataSource = sphereStore.notificationListUseCase
+      .notifications(shouldShowAll: shouldShowAll)
+    publisher(for: dataSource.state)
+      .receive(on: DispatchQueue.main)
+      .eraseToAnyPublisher()
+      .sink { [weak self] state in
+        self?.notificationState = state
+      }
+      .store(in: &subscriptions)
   }
 }
 
 struct NotificationList: View {
   @State private var activeDetail: AppCoreObjC.Notification?
-  @State private var isShowingRead: Bool = false
   @ObservedObject private var viewModel: NotificationListViewModel
 
   init(viewModel: NotificationListViewModel) {
@@ -62,7 +58,7 @@ struct NotificationList: View {
     case .endOfCollection where viewModel.notificationState.items.isEmpty:
       Text("No notifications")
         .navigationBarItems(
-          trailing: FilterToggle(isShowingRead: $isShowingRead)
+          trailing: FilterToggle(isShowingRead: $viewModel.shouldShowAll)
         )
         .navigationBarTitle("Notifications")
     case .endOfCollection:
@@ -96,7 +92,7 @@ struct NotificationList: View {
         )
       }
       .navigationBarItems(
-        trailing: FilterToggle(isShowingRead: $isShowingRead)
+        trailing: FilterToggle(isShowingRead: $viewModel.shouldShowAll)
       )
       .navigationBarTitle("Notifications")
     default:
