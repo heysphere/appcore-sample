@@ -17,17 +17,12 @@ struct UnicornApp: App {
 
   var body: some Scene {
     WindowGroup {
-      TabView {
-        NavigationView {
-          NotificationList(
-            viewModel: .init(
-              sphereStore: sphereStore
-            )
+      NavigationView {
+        NotificationList(
+          viewModel: .init(
+            sphereStore: sphereStore
           )
-        }
-        .tabItem {
-          Label("Notifications", systemImage: "sparkles")
-        }
+        )
       }
     }
   }
