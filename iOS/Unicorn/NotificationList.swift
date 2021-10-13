@@ -55,6 +55,7 @@ struct NotificationList: View {
         Text("Unread").tag(false)
       }
       .pickerStyle(SegmentedPickerStyle())
+      .padding(.horizontal, 16)
 
       ContentView(viewModel: viewModel, activeDetail: $activeDetail)
     }
@@ -84,21 +85,24 @@ private struct ContentView: View {
       Text("No notifications")
         .frame(maxHeight: .infinity)
     case .endOfCollection:
-      List {
-        ForEach(viewModel.notificationState.items) { notification in
-          Button {
-            activeDetail = notification
-          } label: {
-            NotificationRow(
-              caption: notification.repositoryName,
-              title: notification.title,
-              trailingLabel: "#\(notification.subjectId)"
-            )
+      VStack {
+        List {
+          ForEach(viewModel.notificationState.items) { notification in
+            Button {
+              activeDetail = notification
+            } label: {
+              NotificationRow(
+                caption: notification.repositoryName,
+                title: notification.title,
+                trailingLabel: "#\(notification.subjectId)"
+              )
+            }
           }
         }
         Button(action: loadMore) {
           Text("")
-        }.hidden()
+        }
+        .hidden()
         .onAppear {
           DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime(uptimeNanoseconds: 10)) {
             self.loadMore()
