@@ -1,7 +1,8 @@
 package me.sphere.unicorn.notificationList
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -64,7 +65,14 @@ fun NotificationList(
                                 unread = notification.unread,
                                 repository = notification.repositoryName,
                                 description = notification.title,
-                                openNotificationDetails = { openNotificationDetails(it) }
+                                openNotificationDetails = { openNotificationDetails(it) },
+                                markAsRead = { id ->
+                                    notificationListViewModel.sendAction(
+                                        NotificationListAction.MarkAsRead(
+                                            id
+                                        )
+                                    )
+                                }
                             )
                             Divider()
                         }
@@ -93,6 +101,7 @@ fun NotificationList(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun NotificationItem(
     modifier: Modifier,
@@ -102,11 +111,15 @@ private fun NotificationItem(
     repository: String,
     description: String,
     openNotificationDetails: (String) -> Unit,
-    textModifier: Modifier = Modifier
+    textModifier: Modifier = Modifier,
+    markAsRead: (String) -> Unit
 ) {
     Row(
         modifier = modifier
-            .clickable { openNotificationDetails(id) }
+            .combinedClickable(
+                onClick = { openNotificationDetails(id) },
+                onLongClick = { markAsRead(id) }
+            )
             .padding(horizontal = 8.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -156,6 +169,7 @@ private fun NotificationItemPlaceholder(
         textModifier = Modifier
             .padding(bottom = 4.dp)
             .placeholder(visible = true, color = Color.LightGray),
+        markAsRead = {}
     )
 }
 

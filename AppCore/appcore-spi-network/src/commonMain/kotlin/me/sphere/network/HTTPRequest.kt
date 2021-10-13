@@ -17,6 +17,6 @@ data class HTTPRequest<Body : Any>(
         = this.copy(urlQuery = (urlQuery ?: emptyMap()) + newQueries)
 
     enum class Method {
-        GET, POST
+        GET, POST, PATCH
     }
 }

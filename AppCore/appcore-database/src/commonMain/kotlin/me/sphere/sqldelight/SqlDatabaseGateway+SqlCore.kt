@@ -32,9 +32,14 @@ private fun makeQueryInterface(driver: SqlDriver): SqlDatabaseGateway {
         driver = driver,
         PagingItemAdapter = pagingIndexAdapter(),
         EmojiAdapter = emojiAdapter(),
-        ManagedOperationAdapter = managedOperationAdapter()
+        ManagedOperationAdapter = managedOperationAdapter(),
+        NotificationAdapter = notificationAdapter()
     )
 }
+
+private fun notificationAdapter() = Notification.Adapter(
+    InstantColumnAdapter
+)
 
 private fun pagingIndexAdapter() = PagingItem.Adapter(
     lastInSyncAdapter = InstantColumnAdapter

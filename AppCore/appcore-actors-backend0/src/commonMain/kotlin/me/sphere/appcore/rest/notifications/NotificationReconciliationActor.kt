@@ -1,5 +1,6 @@
 package me.sphere.appcore.rest.notifications
 
+import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -54,7 +55,8 @@ internal class NotificationReconciliationActor(
                     title = it.subject.title,
                     url = it.subject.url ?: "",
                     repositoryFullName = it.repository.full_name,
-                    subjectId = subjectId
+                    subjectId = subjectId,
+                    updatedAt = Clock.System.now()
                 )
             }
         }
