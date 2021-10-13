@@ -11,22 +11,26 @@ import me.sphere.sqldelight.SqlDatabaseGateway
 import me.sphere.sqldelight.StoreScope
 import me.sphere.sqldelight.operations.PagingReconciliationActor
 import me.sphere.sqldelight.operations.notifications.NotificationReconciliation
+import me.sphere.sqldelight.operations.notifications.NotificationRequest
 
 internal class NotificationReconciliationActor(
     private val httpClient: HTTPClient,
     private val storeScope: StoreScope,
     database: SqlDatabaseGateway,
     logger: Logger,
-) : PagingReconciliationActor(database, logger, storeScope) {
+): PagingReconciliationActor<NotificationRequest>(database, logger, storeScope) {
     override val definition = NotificationReconciliation
-    override suspend fun fetch(context: FetchContext): FetchResult {
+
+    override suspend fun <Payload> fetch(context: FetchContext<Payload>): FetchResult {
+        val payload = context.payload as NotificationRequest
+
         val request = HTTPRequest(
             method = HTTPRequest.Method.GET,
             resource = API("/notifications"),
             urlQuery = mapOf(
                 "page" to (context.start / context.pageSize).toString(),
                 "per_page" to context.pageSize.toString(),
-                "all" to "true"
+                "all" to payload.all.toString()
             ),
             headers = mapOf(
                 "Authorization" to "Bearer ${storeScope.gitHubAccessToken}"
@@ -42,15 +46,14 @@ internal class NotificationReconciliationActor(
 
         database.transaction {
             result.forEach {
-
-                val subjectId = it.subject.url.split('/').last()
+                val subjectId = it.subject.url?.split('/')?.last() ?: "0"
 
                 database.notificationQueries.upsert(
                     id = it.id,
                     unread = it.unread,
                     reason = it.reason,
                     title = it.subject.title,
-                    url = it.subject.url,
+                    url = it.subject.url ?: "",
                     repositoryFullName = it.repository.full_name,
                     subjectId = subjectId,
                     updatedAt = Clock.System.now()
@@ -80,5 +83,5 @@ data class Repository(
 @Serializable
 internal data class NotificationSubject(
     val title: String,
-    val url: String
+    val url: String?
 )

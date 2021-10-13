@@ -15,6 +15,9 @@ CREATE TABLE Notification (
 get:
 SELECT * FROM Notification WHERE id = ?;
 
+getUnread:
+SELECT * FROM Notification WHERE (id = ? AND unread = 1);
+
 upsert:
 INSERT OR REPLACE INTO Notification (
     id,

@@ -11,6 +11,7 @@ import me.sphere.sqldelight.StoreScope
 import me.sphere.sqldelight.operations.OperationUtils
 import me.sphere.sqldelight.operations.notifications.NotificationReconciliation
 import kotlinx.datetime.Instant
+import me.sphere.sqldelight.operations.notifications.NotificationRequest
 
 internal fun createNotificationListUseCase(
     database: SqlDatabaseGateway,
@@ -19,15 +20,20 @@ internal fun createNotificationListUseCase(
     storeScope: StoreScope,
     logger: Logger,
 ) = object : NotificationListUseCase {
-    override fun notifications(): PagingDataSource<Notification> = pagingDataSource(
+    override fun notifications(shouldShowAll: Boolean): PagingDataSource<Notification> = pagingDataSource(
         collectionKey = "notification",
         reconciliationOp = NotificationReconciliation,
         scope = storeScope.MainScope,
         database = database,
         pageSize = 40,
+        payload = NotificationRequest(shouldShowAll),
         operationUtils = operationUtils,
         getItem = { id ->
-            database.notificationQueries.get(id)
+            if (shouldShowAll) {
+                database.notificationQueries.get(id)
+            } else {
+                database.notificationQueries.getUnread(id)
+            }
         },
         mapper = { notification ->
             Notification(
