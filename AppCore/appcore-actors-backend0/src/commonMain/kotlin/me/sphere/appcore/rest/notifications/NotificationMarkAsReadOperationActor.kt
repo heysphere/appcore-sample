@@ -36,7 +36,7 @@ class NotificationMarkAsReadOperationActor(
             runAsync {
                 val request = HTTPRequest<Unit>(
                     method = HTTPRequest.Method.PATCH,
-                    resource = API("notifications/threads/${input.notificationId}"),
+                    resource = API("/notifications/threads/${input.notificationId}"),
                     urlQuery = null,
                     headers = mapOf(
                         "Authorization" to "Bearer ${storeScope.gitHubAccessToken}"
