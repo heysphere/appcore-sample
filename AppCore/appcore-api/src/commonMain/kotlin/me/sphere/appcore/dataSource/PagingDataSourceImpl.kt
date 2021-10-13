@@ -1,4 +1,5 @@
 @file:OptIn(ExperimentalTime::class)
+
 package me.sphere.appcore.dataSource
 
 import com.squareup.sqldelight.Query
@@ -21,7 +22,7 @@ import kotlin.jvm.JvmInline
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
-internal fun <Row: Any, Item: Any, Payload> pagingDataSource(
+internal fun <Row : Any, Item : Any, Payload> pagingDataSource(
     collectionKey: String,
     scope: CoroutineScope,
     reconciliationOp: PagingReconciliationDefinition<Payload>,
@@ -123,7 +124,7 @@ internal class DatabaseUpdateTracking<Row : Any, Timestamp : Comparable<Timestam
  * 2. Database live updates — Keep the in-memory working set always up-to-date against the latest database state.
  * 3. Garbage collection — Maintenance tasks to collect orphaned entries.
  */
-private class PagingDataSourceImpl<Row: Any, Item: Any, Payload> constructor(
+private class PagingDataSourceImpl<Row : Any, Item : Any, Payload> constructor(
     scope: CoroutineScope,
     reconciliationOp: PagingReconciliationDefinition<Payload>,
     getItem: (String) -> Query<Row>,
@@ -161,7 +162,11 @@ private class PagingDataSourceImpl<Row: Any, Item: Any, Payload> constructor(
             }
             .asProjection()
 
-    @OptIn(ExperimentalStdlibApi::class, kotlinx.coroutines.FlowPreview::class, ExperimentalTime::class)
+    @OptIn(
+        ExperimentalStdlibApi::class,
+        kotlinx.coroutines.FlowPreview::class,
+        ExperimentalTime::class
+    )
     private val loop = Loop<State<Item>, Event<Item>>(
         parent = scope,
         initial = State(),
@@ -245,8 +250,9 @@ private class PagingDataSourceImpl<Row: Any, Item: Any, Payload> constructor(
 
                 is Event.DidFailToReconcile -> {
                     if (current.reconciliationStatus is ReconciliationStatus.Reconcile) {
-                        val canSkipReconciliation = current.cacheLookupStatus is CacheLookupStatus.Exhausted
-                            && pageSize <= current.provisionalItems.size
+                        val canSkipReconciliation =
+                            current.cacheLookupStatus is CacheLookupStatus.Exhausted
+                                && pageSize <= current.provisionalItems.size
 
                         /**
                          * Reconciliation of the page is gracefully skipped in response to a failure, and we will
@@ -256,13 +262,18 @@ private class PagingDataSourceImpl<Row: Any, Item: Any, Payload> constructor(
                          * level.
                          * */
                         if (canSkipReconciliation) {
-                            val reconciledItems = current.reconciledItems + current.provisionalItems.take(pageSize.toInt())
+                            val reconciledItems =
+                                current.reconciledItems + current.provisionalItems.take(pageSize.toInt())
                             val provisionalItems = current.provisionalItems.drop(pageSize.toInt())
 
                             current.copy(
                                 reconciledItems = reconciledItems,
                                 provisionalItems = provisionalItems,
-                                reconciliationStatus = ReconciliationStatus.Reconcile(start = ViewIndex(reconciledItems.size))
+                                reconciliationStatus = ReconciliationStatus.Reconcile(
+                                    start = ViewIndex(
+                                        reconciledItems.size
+                                    )
+                                )
                                     .takeIf { provisionalItems.isNotEmpty() }
                                     ?: ReconciliationStatus.Failed
                             )
@@ -288,8 +299,12 @@ private class PagingDataSourceImpl<Row: Any, Item: Any, Payload> constructor(
                     val getId = databaseUpdateTracking.getItemIdentifier
 
                     current.copy(
-                        provisionalItems = current.provisionalItems.map { event.itemsById[getId(it)] ?: it },
-                        reconciledItems = current.reconciledItems.map { event.itemsById[getId(it)] ?: it }
+                        provisionalItems = current.provisionalItems.map {
+                            event.itemsById[getId(it)] ?: it
+                        },
+                        reconciledItems = current.reconciledItems.map {
+                            event.itemsById[getId(it)] ?: it
+                        }
                     )
                 }
             }
@@ -300,7 +315,7 @@ private class PagingDataSourceImpl<Row: Any, Item: Any, Payload> constructor(
                 val indices = indexQueries
                     .getForwardPage(collectionId, state.start + input.start, pageSize)
                     .executeAsList()
-                val cachedItems = indices.map { getItem(it.itemId).executeAsOne().let(mapper) }
+                val cachedItems = indices.mapNotNull { getItem(it.itemId).executeAsOneOrNull()?.let(mapper) }
                 emit(Event.AppendProvisionalItems(cachedItems))
             }
         }
@@ -360,7 +375,9 @@ private class PagingDataSourceImpl<Row: Any, Item: Any, Payload> constructor(
         if (databaseUpdateTracking != null) {
             whenInitialized {
                 databaseUpdateTracking.getUpdateHead.listenOneOrNull()
-                    .map { Event.DbUpdateHeadDidChange(it) }
+                    .map {
+                        Event.DbUpdateHeadDidChange(it)
+                    }
             }
 
             custom { snapshots ->
@@ -370,9 +387,11 @@ private class PagingDataSourceImpl<Row: Any, Item: Any, Payload> constructor(
                     .conflate()
                     .combinePrevious(null)
                     .map { (startExclusive, endInclusive) ->
-                        checkNotNull(endInclusive)
-                        val params =
-                            DatabaseUpdateTracking.RowQueryParams(startExclusive, endInclusive)
+                        if (endInclusive == null) {
+                            return@map Event.DidDiscoverUpdatedItems(emptyMap())
+                        }
+                        val params = DatabaseUpdateTracking
+                            .RowQueryParams(startExclusive, endInclusive)
 
                         @Suppress("UNCHECKED_CAST")
                         val query =

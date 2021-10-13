@@ -169,6 +169,7 @@ private fun NotificationItemPlaceholder(
         textModifier = Modifier
             .padding(bottom = 4.dp)
             .placeholder(visible = true, color = Color.LightGray),
+        markAsRead = {}
     )
 }
 
