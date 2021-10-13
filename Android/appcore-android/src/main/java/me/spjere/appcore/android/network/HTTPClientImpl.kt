@@ -10,6 +10,7 @@ import me.sphere.network.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 import java.net.ConnectException
 import java.net.UnknownHostException
@@ -60,7 +61,10 @@ class HTTPClientImpl(
         }
     }
 
-    override suspend fun webSocket(request: HTTPRequest<Unit>, protocol: String): WebSocketConnection {
+    override suspend fun webSocket(
+        request: HTTPRequest<Unit>,
+        protocol: String
+    ): WebSocketConnection {
         TODO("Web sockets are not used in the example")
     }
 
@@ -70,7 +74,15 @@ class HTTPClientImpl(
         val httpRequestBody = request.body
         val requestBuilder = Request.Builder()
             .url(httpUrl)
-            .method(request.method.name, httpRequestBody?.toRequestBody(mediaType))
+            .method(
+                request.method.name,
+                when (request.method) {
+                    HTTPRequest.Method.GET,
+                    HTTPRequest.Method.POST -> httpRequestBody?.toRequestBody(mediaType)
+                    HTTPRequest.Method.PATCH -> httpRequestBody?.toRequestBody(mediaType)
+                        ?: EMPTY_REQUEST
+                }
+            )
         request.headers?.forEach { header ->
             requestBuilder.addHeader(header.key, header.value)
         }

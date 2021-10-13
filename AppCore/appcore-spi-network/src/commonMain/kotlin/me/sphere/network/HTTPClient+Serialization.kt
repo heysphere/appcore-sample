@@ -3,6 +3,14 @@ package me.sphere.network
 import kotlinx.serialization.*
 import kotlinx.serialization.json.Json
 
+suspend fun  HTTPClient.request(
+    request: HTTPRequest<Unit>
+): Unit = request(
+    request,
+    requestMapper = {null},
+    responseMapper = {}
+)
+
 suspend fun <RequestBody : Any, ResponseBody> HTTPClient.request(
     request: HTTPRequest<RequestBody>,
     requestSerializationStrategy: SerializationStrategy<RequestBody>,

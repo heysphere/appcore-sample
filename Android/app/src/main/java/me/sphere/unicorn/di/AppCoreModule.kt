@@ -88,5 +88,8 @@ object AppCoreModule {
     fun notificationListUseCase(sphereStore: SphereStore) = sphereStore.notificationListUseCase
 
     @Provides
+    fun notificationActionUseCase(sphereStore: SphereStore) = sphereStore.notificationActionUseCase
+
+    @Provides
     fun notificationInfoUseCase(sphereStore: SphereStore) = sphereStore.notificationInfoUseCase
 }
