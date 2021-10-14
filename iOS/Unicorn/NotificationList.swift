@@ -6,25 +6,37 @@ final class NotificationListViewModel: ObservableObject {
   typealias State = PagingState<AppCoreObjC.Notification>
   @Published var notificationState = State(items: [], status: .loading)
 
+  var shouldShowAll = false {
+    didSet {
+      reload()
+    }
+  }
+
   let sphereStore: SphereStore
-  private let dataSource: PagingDataSource<AppCoreObjC.Notification>
+  private var dataSource: PagingDataSource<AppCoreObjC.Notification>!
   private var subscriptions = Set<AnyCancellable>()
 
   init(sphereStore: SphereStore) {
     self.sphereStore = sphereStore
-    self.dataSource = sphereStore.notificationListUseCase.notifications()
-
-    publisher(for: dataSource.state)
-      .receive(on: DispatchQueue.main)
-      .eraseToAnyPublisher()
-      .assign(to: \.notificationState, on: self)
-      .store(in: &subscriptions)
+    reload()
   }
 
   func next() {
     DispatchQueue.main.async {
       self.dataSource.next()
     }
+  }
+
+  func reload() {
+    self.dataSource = sphereStore.notificationListUseCase
+      .notifications(shouldShowAll: shouldShowAll)
+    publisher(for: dataSource.state)
+      .receive(on: DispatchQueue.main)
+      .eraseToAnyPublisher()
+      .sink { [weak self] state in
+        self?.notificationState = state
+      }
+      .store(in: &subscriptions)
   }
 }
 
@@ -37,30 +49,60 @@ struct NotificationList: View {
   }
 
   var body: some View {
+    VStack {
+      Picker("", selection: $viewModel.shouldShowAll) {
+        Text("All").tag(true)
+        Text("Unread").tag(false)
+      }
+      .pickerStyle(SegmentedPickerStyle())
+      .padding(.horizontal, 16)
+
+      ContentView(viewModel: viewModel, activeDetail: $activeDetail)
+    }
+    .navigationBarTitle("Notifications")
+  }
+}
+
+private struct ContentView: View {
+  @Binding private var activeDetail: AppCoreObjC.Notification?
+  @ObservedObject private var viewModel: NotificationListViewModel
+
+  init(viewModel: NotificationListViewModel, activeDetail: Binding<AppCoreObjC.Notification?>) {
+    self.viewModel = viewModel
+    self._activeDetail = activeDetail
+  }
+
+  var body: some View {
     switch viewModel.notificationState.status {
     case .loading, .hasMore:
       ProgressView()
         .progressViewStyle(CircularProgressViewStyle())
+        .frame(maxHeight: .infinity)
     case .failed:
       Text("Failed to fetch details")
+        .frame(maxHeight: .infinity)
     case .endOfCollection where viewModel.notificationState.items.isEmpty:
       Text("No notifications")
+        .frame(maxHeight: .infinity)
     case .endOfCollection:
-      List {
-        ForEach(viewModel.notificationState.items) { notification in
-          Button {
-            activeDetail = notification
-          } label: {
-            NotificationRow(
-              caption: notification.repositoryName,
-              title: notification.title,
-              trailingLabel: "#\(notification.subjectId)"
-            )
+      VStack {
+        List {
+          ForEach(viewModel.notificationState.items) { notification in
+            Button {
+              activeDetail = notification
+            } label: {
+              NotificationRow(
+                caption: notification.repositoryName,
+                title: notification.title,
+                trailingLabel: "#\(notification.subjectId)"
+              )
+            }
           }
         }
         Button(action: loadMore) {
           Text("")
-        }.hidden()
+        }
+        .hidden()
         .onAppear {
           DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime(uptimeNanoseconds: 10)) {
             self.loadMore()
@@ -75,7 +117,6 @@ struct NotificationList: View {
           )
         )
       }
-      .navigationTitle(Text("Notifications"))
     default:
       Text("Unknown")
     }
