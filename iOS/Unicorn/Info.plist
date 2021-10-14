@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>GITHUB_ACCESS_TOKEN</key>
-	<string>123</string>
+	<string>use_your_token_here</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
