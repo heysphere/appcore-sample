@@ -19,11 +19,8 @@ include 'appcore-database'
 include 'appcore-spi-network'
 include 'appcore-spi-logging'
 include 'appcore-spi-database'
-include 'appcore-spi-firestore'
 
 include 'appcore-actors-backend0'
-include 'appcore-actors-graphql'
-include 'appcore-schema-compat-test'
 
 include 'appcore-test-utils'
 include 'appcore-test-utils-database'

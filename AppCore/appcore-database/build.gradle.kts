@@ -36,7 +36,6 @@ kotlin {
                 api(BuildDependency.Kotlin.Datetime)
                 api(project(":appcore-spi-database"))
                 api(project(":appcore-spi-logging"))
-                api(project(":appcore-spi-firestore"))
                 api(project(":appcore-utils"))
                 api(project(":appcore-api-models"))
             }
