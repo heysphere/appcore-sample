@@ -34,7 +34,7 @@ final class NotificationListViewModel: ObservableObject {
     }
   }
 
-  func reload() {
+  private func reload() {
     self.dataSource = sphereStore.notificationListUseCase
       .notifications(shouldShowAll: shouldShowAll)
     publisher(for: dataSource.state)
@@ -81,7 +81,7 @@ private struct ContentView: View {
 
   var body: some View {
     switch viewModel.notificationState.status {
-    case .loading, .hasMore:
+    case .loading:
       ProgressView()
         .progressViewStyle(CircularProgressViewStyle())
         .frame(maxHeight: .infinity)
@@ -91,7 +91,7 @@ private struct ContentView: View {
     case .endOfCollection where viewModel.notificationState.items.isEmpty:
       Text("No notifications")
         .frame(maxHeight: .infinity)
-    case .endOfCollection:
+    case .endOfCollection, .hasMore:
       VStack {
         List {
           ForEach(viewModel.notificationState.items) { notification in
