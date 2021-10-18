@@ -27,6 +27,12 @@ final class NotificationListViewModel: ObservableObject {
     }
   }
 
+  func markAsRead(with id: String) {
+    DispatchQueue.main.async {
+      self.sphereStore.notificationActionUseCase.markAsRead(id: id)
+    }
+  }
+
   func reload() {
     self.dataSource = sphereStore.notificationListUseCase
       .notifications(shouldShowAll: shouldShowAll)
@@ -96,6 +102,13 @@ private struct ContentView: View {
                 title: notification.title,
                 trailingLabel: "#\(notification.subjectId)"
               )
+            }
+            .contextMenu {
+              Button {
+                viewModel.markAsRead(with: notification.notificationId)
+              } label: {
+                Label("Mark as read", systemImage: "envelope.open.fill")
+              }
             }
           }
         }
