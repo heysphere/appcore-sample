@@ -31,7 +31,6 @@ kotlin {
                     export(project(":appcore-spi-database"))
                     export(project(":appcore-api-models"))
                     export(project(":appcore-actors-backend0"))
-                    export(project(":appcore-actors-graphql"))
                     export(project(":appcore-api"))
                 }
             }
@@ -43,10 +42,8 @@ kotlin {
             dependencies {
                 api(project(":appcore-spi-network"))
                 api(project(":appcore-spi-logging"))
-                api(project(":appcore-spi-firestore"))
                 api(project(":appcore-spi-database"))
                 api(project(":appcore-actors-backend0"))
-                api(project(":appcore-actors-graphql"))
                 api(project(":appcore-api"))
                 api(project(":appcore-api-models"))
                 implementation(project(":appcore-utils"))
