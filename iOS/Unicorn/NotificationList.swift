@@ -30,6 +30,7 @@ final class NotificationListViewModel: ObservableObject {
   func markAsRead(with id: String) {
     DispatchQueue.main.async {
       self.sphereStore.notificationActionUseCase.markAsRead(id: id)
+      self.dataSource.reload()
     }
   }
 
