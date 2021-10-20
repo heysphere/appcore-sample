@@ -17,7 +17,9 @@ final class NotificationInfoViewModel: ObservableObject {
       .receive(on: DispatchQueue.main)
       .eraseToAnyPublisher()
       .map(DataSourceState.init)
-      .assign(to: \.notificationState, on: self)
+      .sink { [weak self] state in
+        self?.notificationState = state
+      }
       .store(in: &subscriptions)
   }
 }

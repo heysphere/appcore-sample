@@ -27,7 +27,14 @@ final class NotificationListViewModel: ObservableObject {
     }
   }
 
-  func reload() {
+  func markAsRead(with id: String) {
+    DispatchQueue.main.async {
+      self.sphereStore.notificationActionUseCase.markAsRead(id: id)
+      self.dataSource.reload()
+    }
+  }
+
+  private func reload() {
     self.dataSource = sphereStore.notificationListUseCase
       .notifications(shouldShowAll: shouldShowAll)
     publisher(for: dataSource.state)
@@ -74,7 +81,7 @@ private struct ContentView: View {
 
   var body: some View {
     switch viewModel.notificationState.status {
-    case .loading, .hasMore:
+    case .loading:
       ProgressView()
         .progressViewStyle(CircularProgressViewStyle())
         .frame(maxHeight: .infinity)
@@ -84,7 +91,7 @@ private struct ContentView: View {
     case .endOfCollection where viewModel.notificationState.items.isEmpty:
       Text("No notifications")
         .frame(maxHeight: .infinity)
-    case .endOfCollection:
+    case .endOfCollection, .hasMore:
       VStack {
         List {
           ForEach(viewModel.notificationState.items) { notification in
@@ -96,6 +103,13 @@ private struct ContentView: View {
                 title: notification.title,
                 trailingLabel: "#\(notification.subjectId)"
               )
+            }
+            .contextMenu {
+              Button {
+                viewModel.markAsRead(with: notification.notificationId)
+              } label: {
+                Label("Mark as read", systemImage: "envelope.open.fill")
+              }
             }
           }
         }
